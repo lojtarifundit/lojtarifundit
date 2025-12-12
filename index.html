@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Squid Game — Landing (Netflix style)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rubik:wght@400;600;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+
+
+
+
+
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --card:#0f0f16;
+      --accent:#ff2d55;
+      --muted:#a8a8b3;
+      --glass: rgba(255,255,255,0.04);
+    }
+
+
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Rubik, Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#fff;background:linear-gradient(180deg,#07060a 0%, #0b0b0f 40%);overflow-x:hidden;}
+    a{color:inherit;text-decoration:none}
+
+    /* Enhanced Navigation with Animations */
+    .nav{position:fixed;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;padding:18px 36px;z-index:40;backdrop-filter:blur(10px);background:rgba(11,11,15,0.8);transition:all 0.3s ease;}
+    .nav.scrolled{background:rgba(11,11,15,0.95);box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+    .nav .logo{font-weight:800;letter-spacing:1px;color:var(--accent);transition:transform 0.3s ease;}
+    .nav .logo:hover{transform:scale(1.05);}
+    .nav .menu{display:flex;gap:18px;align-items:center}
+    .nav .btn{background:var(--accent);color:#0b0b0f;padding:10px 16px;border-radius:6px;font-weight:700;transition:all 0.3s ease;cursor:pointer;}
+    .nav .btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,45,85,0.3);}
+
+    /* Hero Section with Parallax */
+    .hero{min-height:78vh;display:flex;align-items:center;padding:120px 6vw 60px;position:relative;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg');background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;}
+    .hero:hover::before{transform:scale(1.02);}
+    .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start}
+
+.hero-left h1{font-size:clamp(48px,8vw,120px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;text-shadow:2px 2px 4px rgba(0,0,0,0.5);}
+
+
+    .hero-left p.lead{color:var(--muted);max-width:60ch;font-size:16px;margin:12px 0 18px;animation:fadeInUp 1.2s ease;}
+    .cta-row{display:flex;gap:12px;align-items:center;animation:fadeInUp 1.4s ease;}
+    .cta{background:var(--accent);color:#0b0b0f;padding:12px 18px;border-radius:8px;font-weight:700;transition:all 0.3s ease;cursor:pointer;position:relative;overflow:hidden;}
+    .cta:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,45,85,0.4);}
+    .cta::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.5s;}
+    .cta:hover::before{left:100%;}
+    .meta{display:flex;gap:18px;color:var(--muted);font-size:14px;margin-top:18px;animation:fadeInUp 1.6s ease;}
+
+    /* Enhanced Cards with Hover Effects */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;box-shadow:0 6px 30px rgba(3,3,8,0.6);transition:all 0.3s ease;animation:fadeInRight 1s ease;}
+    .card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(3,3,8,0.8);}
+    
+    /* Carousel Container */
+    .carousel-container{position:relative;overflow:hidden;width:100%;padding:5px 0;}
+  
+  .carousel-track{display:flex;gap:10px;}
+  .carousel-track:hover{animation-play-state:paused;}
+
+    .carousel-item{flex:0 0 calc(33.333% - 7px);min-width:calc(33.333% - 7px);}
+    .carousel-item img{width:100%;height:88px;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;cursor:pointer;}
+    .carousel-item img:hover{transform:scale(1.05);}
+    
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Section Animations */
+    section{padding:60px 6vw;opacity:0;animation:fadeInSection 0.8s ease forwards;}
+    h2.section-title{font-size:28px;margin:0 0 18px;color:#fff;position:relative;}
+    h2.section-title::after{content:"";position:absolute;left:0;bottom:-10px;height:6px;width:0;border-radius:6px;background:linear-gradient(90deg,var(--accent),#6c5ce7);animation:expandLine 1s ease 0.5s forwards;}
+    .subtitle{color:var(--muted);margin-bottom:22px}
+
+    /* Player Cards with Staggered Animation */
+    .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    .player{background:var(--card);padding:14px;border-radius:12px;overflow:hidden;transition:all 0.3s ease;cursor:pointer;opacity:0;animation:fadeInUp 0.6s ease forwards;}
+    .player:nth-child(1){animation-delay:0.1s;}
+    .player:nth-child(2){animation-delay:0.2s;}
+    .player:nth-child(3){animation-delay:0.3s;}
+    .player:nth-child(4){animation-delay:0.4s;}
+    .player:hover{transform:translateY(-8px);box-shadow:0 12px 35px rgba(255,45,85,0.2);}
+    .player img{width:100%;height:180px;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;}
+    .player:hover img{transform:scale(1.05);}
+    .player .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+
+    /* Split Section Enhancements */
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+    .big-card{background:linear-gradient(180deg,#0f0f14,#0b0b10);padding:18px;border-radius:12px;transition:all 0.3s ease;cursor:pointer;}
+    .big-card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(255,45,85,0.1);}
+    .big-card img{transition:transform 0.3s ease;}
+    .big-card:hover img{transform:scale(1.02);}
+
+    /* Pills with Hover Effects */
+    .pill{background:var(--glass);padding:6px 10px;border-radius:999px;font-weight:600;transition:all 0.3s ease;cursor:pointer;}
+    .pill:hover{background:rgba(255,255,255,0.08);transform:translateY(-1px);}
+
+    /* Featured Episode Enhancement */
+    .featured-episode{position:relative;cursor:pointer;overflow:hidden;}
+    .featured-episode::after{content:"▶";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:48px;color:white;opacity:0;transition:opacity 0.3s ease;background:rgba(0,0,0,0.7);width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+    .featured-episode:hover::after{opacity:1;}
+    .featured-episode:hover img{transform:scale(1.02);}
+
+    /* Keyframe Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes fadeInSection {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes expandLine {
+      from { width: 0; }
+      to { width: 120px; }
+    }
+
+    /* Responsive Design */
+    @media (max-width:880px){
+      .hero-grid{grid-template-columns:1fr}
+      .hero{padding-top:96px}
+      .hero-left h1{font-size:56px}
+      .split{grid-template-columns:1fr}
+      .nav{padding:15px 20px;}
+      .nav .menu{gap:12px;}
+    }
+
+    footer{padding:40px 6vw;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.05);}
+
+    /* Smooth Scrolling */
+    html{scroll-behavior:smooth;}
+    
+    /* Loading Animation */
+    .loading{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;animation:fadeOut 2s ease 1s forwards;}
+    .loading .logo-placeholder{width:200px;height:200px;background:linear-gradient(135deg, var(--accent), #6c5ce7);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900;color:white;animation:pulse 1s infinite;}
+    .loading-text{font-size:36px;font-weight:700;color:var(--accent);animation:pulse 1s infinite;letter-spacing:2px;}
+    
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    @keyframes shakeContinuous {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+      20%, 40%, 60%, 80% { transform: translateX(3px); }
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading">
+    <!-- Replace the src with your actual logo URL from a public host like Imgur -->
+    <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVAXHSh9OHJ8ikPMPt59-kfZ6C3MMG7-M6juD0TxnChAMNoUDbwnWx0o3VLWPc0rPAFj9KmFwSX1eQcaTJbG8kT9qhgfkG-9x_7lvaQIbNibFc56-R2T45ma10bNrAa22CA8YEBgpCz2Nsm5mMjOAZ0xNZISzCrR91WU6jiebt5Yf2J3h4fDHxZYOyJPYkdPiUVTbevMqtrZ4Z8=w7105?key=fgch8bN3wKpw90mz1qcDaA" alt="Logo" style="width:200px;height:auto;animation:pulse 1s infinite;" onerror="this.style.display='none';document.querySelector('.logo-placeholder').style.display='flex';">
+    <div class="logo-placeholder" style="display:none;">LOGO</div>
+    <div class="loading-text">Good vibes only</div>
+  </div>
+
+  <header class="nav" id="navbar">
+    <div class="logo">LOJTARI<br><span style="color:white; font-weight:800">FUNDIT</span></div>
+    <div class="menu">
+      <div class="pill">TV Shows</div>
+      <div class="pill">Movies</div>
+      <div class="pill">My List</div>
+      <a class="btn" href="#">Apply</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <h1>SQUID<br>GAME ALBANIA</h1>
+          <p class="lead">456 players. One chance to win. Everything to lose. A dark, cinematic landing page built to present shows like a streaming platform — hero, highlights, cast cards and featured episodes.</p>
+          <div class="cta-row">
+            <a class="cta" href="#">Apply for Session II</a>
+            <a class="pill" href="#">Watch Trailer</a>
+          </div>
+          <div class="meta">
+            <div>TV-MA</div>
+            <div>2021</div>
+            <div>3 Seasons</div>
+            <div>Korean Drama</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div class="card" style="padding:2rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;background:linear-gradient(180deg, rgba(9,252,8,0.03), rgba(9,252,8,0.01));position:relative;overflow:hidden;">
+            <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(rgb(9 252 8 / 1%) 20%, rgba(8,13,7,0.4) 70%);pointer-events:none;z-index:1;"></div>
+            <h2 id="prize-title" style="display:flex;align-items:center;justify-content:center;gap:1rem;font-size:1.5rem;color:rgb(9,252,8);opacity:0.75;z-index:3;margin:0;transition:color 3000ms ease;">
+              <span style="padding-top:0.25em;line-height:0.5em;">*</span>
+              <span id="prize-title-text">CASH PRIZE</span>
+              <span style="padding-top:0.25em;line-height:0.5em;">*</span>      
+            </h2>
+            <h1 id="prize-display" style="display:flex;gap:0.5rem;height:5rem;line-height:5rem;font-size:5.5rem;color:rgb(9,252,8);z-index:3;font-family:'Orbitron',monospace;margin:0;position:relative;">
+              <span style="opacity:0.7;position:relative;">
+                $
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </span>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+              <span style="opacity:0.5;">,</span>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+            </h1>
+          </div>
+
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="width:64px;height:64px;background:linear-gradient(45deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:30pt;color:var(--accent);">♡</div>
+              <div>
+                <div style="font-weight:700">Sponsors of Squid Game Albania - <span style="color:#ff2d55">Session I</span></div>
+                <div style="color:var(--muted);font-size:13px">An intense death-game drama. Explore the characters and the deadliest competitions.</div>
+              </div>
+            </div>
+            <div class="carousel-container">
+              <div class="carousel-track" id="sponsorCarousel">
+                <!-- Images will be duplicated via JavaScript for infinite loop -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Meet the Players</h2>
+      <div class="subtitle">Each player has their own story — card layout works great to show cast with short bios.</div>
+      <div class="players">
+        <article class="player">
+          <img src="https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg" alt="Seong Gi-hun">
+          <h3 style="margin:8px 0 0">Seong Gi-hun</h3>
+          <div style="color:var(--muted);font-size:13px">Player 456 — a desperate father fighting for survival...</div>
+          <div class="meta"><span>Drama</span><span style="color:var(--muted)">Player 456</span></div>
+        </article>
+
+        <article class="player">
+          <img src="https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg" alt="Cho Sang-woo">
+          <h3 style="margin:8px 0 0">Cho Sang-woo</h3>
+          <div style="color:var(--muted);font-size:13px">Player 218 — former student with crushing debts...</div>
+          <div class="meta"><span>Strategy</span><span style="color:var(--muted)">Player 218</span></div>
+        </article>
+
+        <article class="player">
+          <img src="https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg" alt="Ali Abdul">
+          <h3 style="margin:8px 0 0">Ali Abdul</h3>
+          <div style="color:var(--muted);font-size:13px">Player 199 — immigrant worker seeking hope...</div>
+          <div class="meta"><span>Heart</span><span style="color:var(--muted)">Player 199</span></div>
+        </article>
+
+        <article class="player">
+          <img src="https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg" alt="Oh Il-nam">
+          <h3 style="margin:8px 0 0">Oh Il-nam</h3>
+          <div style="color:var(--muted);font-size:13px">Player 001 — wise elder with hidden secrets...</div>
+          <div class="meta"><span>Wise</span><span style="color:var(--muted)">Player 001</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">The Hunters and the Hunted</h2>
+      <div class="subtitle">Character spotlight — two column split with contrasting cards.</div>
+      <div class="split">
+        <div class="big-card">
+          <img src="https://static0.colliderimages.com/wordpress/wp-content/uploads/2024/12/squid-game-s-pink-soldiers-at-the-game-awards-2024.jpg" alt="The Guards" style="width:100%;height:260px;object-fit:cover;border-radius:8px;margin-bottom:12px">
+          <h3>The Guards</h3>
+          <p style="color:var(--muted)">Masked enforcers who control the deadly games with ruthless precision...</p>
+        </div>
+        <div class="big-card">
+          <img src="https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg" alt="Player 456" style="width:100%;height:260px;object-fit:cover;border-radius:8px;margin-bottom:12px">
+          <h3>Player 456</h3>
+          <p style="color:var(--muted)">The heart of the story, struggling to survive against impossible odds...</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Behind the Games</h2>
+      <div class="subtitle">Featured episode — large media card with interactive controls.</div>
+      <div class="card" style="padding:14px">
+        <div class="featured-episode">
+          <img src="https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg" alt="Red Light Green Light Episode" style="width:100%;height:340px;object-fit:cover;border-radius:10px;transition:transform 0.3s ease;">
+          <div style="position:absolute;left:18px;bottom:18px;background:linear-gradient(90deg, rgba(0,0,0,0.6), rgba(0,0,0,0.2));padding:12px;border-radius:8px">
+            <div style="font-weight:700">Red Light, Green Light</div>
+            <div style="color:var(--muted);font-size:13px">S1 • E1 • 41m</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
+      <div>&copy; 2025 Netflix — Fan Landing</div>
+      <div style="color:var(--muted)">Privacy • Terms • Contact</div>
+    </div>
+  </footer>
+
+  <script>
+    // Sponsor carousel setup
+    const sponsorImages = [
+      { src: 'https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg', alt: 'Sponsor 1' },
+      { src: 'https://static0.colliderimages.com/wordpress/wp-content/uploads/2024/12/squid-game-s-pink-soldiers-at-the-game-awards-2024.jpg', alt: 'Sponsor 2' },
+      { src: 'https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg', alt: 'Sponsor 3' },
+      { src: 'https://static0.colliderimages.com/wordpress/wp-content/uploads/2024/12/squid-game-s-pink-soldiers-at-the-game-awards-2024.jpg', alt: 'Sponsor 4' },
+      { src: 'https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg', alt: 'Sponsor 5' }
+      // Add more images as needed
+    ];
+    
+  
+async function loadSponsorData() {
+  try {
+    const url = "https://script.google.com/macros/s/AKfycbzxk472wrie94k1tnyYCsDckn7qMebnHwGdMvv6EfcXJxXz7FIKoQ_REUZ9xKTm6Bw_/exec";
+    const res = await fetch(url);
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.error("Error loading sponsor data:", e);
+    return [];
+  }
+}
+
+
+
+
+
+async function setupSponsorCarousel() {
+  const carousel = document.getElementById('sponsorCarousel');
+  if (!carousel) return;
+  
+  const sponsors = await loadSponsorData();
+  
+  const sponsorImages = sponsors.length > 0 
+    ? sponsors.map(s => ({ 
+        src: s["Image Link"], 
+        alt: s.Sponsor, 
+        link: s["Sponsor Link"] 
+      }))
+    : [];
+  
+  // Duplicate twice
+  const allImages = [...sponsorImages, ...sponsorImages];
+  
+  allImages.forEach(img => {
+    const item = document.createElement('div');
+    item.className = 'carousel-item';
+    item.innerHTML = `<a href="${img.link}" target="_blank" rel="noopener noreferrer"><img src="${img.src}" alt="${img.alt}"></a>`;
+    carousel.appendChild(item);
+  });
+  
+  // Smooth continuous scroll with JavaScript
+  let scrollPos = 0;
+  const scrollSpeed = 0.5;
+  
+  function animate() {
+    scrollPos += scrollSpeed;
+    const maxScroll = carousel.scrollWidth / 2;
+    
+    if (scrollPos >= maxScroll) {
+      scrollPos = 0;
+    }
+    
+    carousel.style.transform = `translateX(-${scrollPos}px)`;
+    requestAnimationFrame(animate);
+  }
+  
+  animate();
+  
+  carousel.addEventListener('mouseenter', () => {
+    carousel.style.animationPlayState = 'paused';
+  });
+}
+
+
+
+
+
+
+
+
+    
+    // Prize counter animation
+    const prizeAmount = 1000;
+    const digits = [1, 0, 0, 0];
+    const allDigits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    
+    function setupPrizeCounter() {
+      const tracks = document.querySelectorAll('.digit-track-prize');
+      const prizeDisplay = document.getElementById('prize-display');
+      const prizeTitle = document.getElementById('prize-title');
+      const prizeTitleText = document.getElementById('prize-title-text');
+      const digitBorders = document.querySelectorAll('.digit-border');
+      
+      tracks.forEach((track, index) => {
+        const iterations = index + 3;
+        let digitString = '';
+        for (let i = 0; i < iterations; i++) {
+          digitString += allDigits.join(' ') + ' ';
+        }
+        track.innerText = digitString.trim();
+      });
+      
+      // Function to animate the counter
+      function animateCounter() {
+        // Reset title
+        prizeTitle.style.animation = 'none';
+        prizeTitleText.textContent = 'CASH PRIZE';
+        
+        // Animate to $1,000 (green) - EASE IN-OUT: slow start, fast middle, super slow end
+        tracks.forEach((track) => {
+          track.style.transition = 'translate 3500ms cubic-bezier(0.65, 0, 0.35, 1)';
+        });
+        prizeDisplay.style.transition = 'color 3500ms ease';
+        prizeDisplay.style.color = 'rgb(9,252,8)';
+        prizeTitle.style.transition = 'color 3500ms ease';
+        prizeTitle.style.color = 'rgb(9,252,8)';
+        
+        // Fade borders to green
+        digitBorders.forEach((border) => {
+          border.style.background = 'rgb(9,252,8)';
+        });
+        
+        tracks.forEach((track, index) => {
+          const digit = digits[index];
+          const iterations = index + 3;
+          const activeDigit = (iterations - 1) * 10 + digit;
+          track.style.translate = `0rem ${activeDigit * -5}rem`;
+        });
+        
+        // Wait 10 seconds at $1,000
+        setTimeout(() => {
+          // IMMEDIATELY change text with shake for 1 second, then stop smoothly
+          prizeTitle.style.animation = 'shake 0.5s ease';
+          prizeTitleText.textContent = "DON'T MISS IT! APPLY NOW";
+          
+          // Add continuous shake after initial shake, then remove it after 1 second
+          setTimeout(() => {
+            prizeTitle.style.animation = 'shakeContinuous 0.3s ease infinite';
+            
+            // Stop shaking after 1 second
+            setTimeout(() => {
+              prizeTitle.style.animation = 'none';
+            }, 1000);
+          }, 500);
+          
+          // Fade to red and go down to $0 - EASE IN-OUT: slow start, fast middle, super slow end
+          prizeDisplay.style.transition = 'color 3500ms ease';
+          prizeDisplay.style.color = 'rgb(255,45,85)';
+          prizeTitle.style.transition = 'color 3500ms ease';
+          prizeTitle.style.color = 'rgb(255,45,85)';
+          
+          // Fade borders to red
+          digitBorders.forEach((border) => {
+            border.style.background = 'rgb(255,45,85)';
+          });
+          
+          tracks.forEach((track) => {
+            track.style.transition = 'translate 3500ms cubic-bezier(0.65, 0, 0.35, 1)'; // same smooth S-curve
+            track.style.translate = '0rem 0rem';
+          });
+          
+          // Wait 3.5 seconds for animation to complete + 1 second at $0, then restart
+          setTimeout(() => {
+            animateCounter();
+          }, 4500); // 3500ms animation + 1000ms wait
+        }, 10000);
+      }
+      
+      // Reset to start position
+      tracks.forEach((track) => {
+        track.style.transition = 'none';
+        track.style.translate = '0rem 0rem';
+      });
+      
+      // First animation after 1.2s
+      setTimeout(() => {
+        animateCounter();
+      }, 1200);
+    }
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Intersection Observer for section animations
+    const sections = document.querySelectorAll('section');
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Parallax effect for hero background
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const hero = document.querySelector('.hero::before');
+      if (hero) {
+        const rate = scrolled * -0.5;
+        hero.style.transform = `translateY(${rate}px)`;
+      }
+    });
+
+    // Add click interactions
+    document.querySelectorAll('.cta, .btn, .pill').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Create ripple effect
+        const ripple = document.createElement('span');
+        ripple.style.position = 'absolute';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(255,255,255,0.3)';
+        ripple.style.transform = 'scale(0)';
+        ripple.style.animation = 'ripple 0.6s linear';
+        ripple.style.left = e.offsetX + 'px';
+        ripple.style.top = e.offsetY + 'px';
+        
+        button.style.position = 'relative';
+        button.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+    });
+
+    // Initialize on load
+    window.addEventListener('load', () => {
+      setupSponsorCarousel();
+      setupPrizeCounter();
+    });
+  </script>
+</body>
+</html>
