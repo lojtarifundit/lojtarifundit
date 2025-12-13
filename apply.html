@@ -7,7 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rubik:wght@400;600;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
-
+ <!-- LOAD HEADER CSS CORRECTLY -->
+  <link rel="stylesheet" href="HeaderStyle.css">
+  
+  
+  
+  
   <style>
     :root{
       --bg:#0b0b0f;
@@ -33,8 +38,15 @@
     /* Hero Section with Parallax */
     .hero{min-height:78vh;display:flex;align-items:center;justify-content:center;padding:120px 6vw 60px;position:relative;overflow:hidden}
     .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%),
-      url('https://lh7-rt.googleusercontent.com/formsz/AN7BsVDlsdxP903QK7dykA8U1NY_3gHRsXxST-Uiysvyf-k5JbZO6GYu-zucvtEk6LC2tXSePLlCxPu4UmH-F2nZ4RFMWaZ-m5gPgWDHt-EvtGWa3pDPlOiZmqNvJoiQkvLyGA7GiPYip4-XHozf66t1VkeIV7OX6u840dS3FAqM7IoJWpP0WlJvFk7hP2pSi8xpSDIUdDfQ8HpzixjC=w740?key=fgch8bN3wKpw90mz1qcDaA');
-      background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;}
+      url('https://lh7-rt.googleusercontent.com/formsz/AN7BsVCrIC5k8FqRZnpjJacvNNpp1UO_ciyBJsc-w_ivgN-R7aSW1NZaUbnCrrcpcuEM-Md7HVngE9pxlzeg4kCrPNdzAhJ4Gw_wdW9uHlBY0ZensDATca-D7_OcFmS-8tS5a8TsfU5JtocbJ2UA-gSu7LerqFJVScrU9XaU2AO1sgO7wLdW1c_vgCXFEBxIS7Tu9cqS56vjUGlya9_I=w5184?key=fgch8bN3wKpw90mz1qcDaA');
+      background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;
+  filter: grayscale(100%);
+  opacity: 1;   
+  }
+  
+  
+
+  
     .hero:hover::before{transform:scale(1.02);}
     .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start;max-width:1400px;width:100%;margin:0 auto;}
 
@@ -370,6 +382,35 @@
     .pill:hover{background:rgba(255,255,255,0.08);transform:translateY(-1px);}
 
     section{padding:60px 6vw;opacity:0;animation:fadeInSection 0.8s ease forwards;}
+	
+	
+	
+	
+	
+	
+	
+	
+	@keyframes opacityFadeDelayed {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.1;
+  }
+}
+
+
+.hero::before {
+  opacity: 1;
+
+  animation: opacityFadeDelayed 2s ease forwards;
+  animation-delay: 3s;
+}
+
+
+
+	
+	
   </style>
 </head>
 <body>
@@ -380,15 +421,23 @@
     <div class="loading-text">Good vibes only</div>
   </div>
 
-  <header class="nav" id="navbar">
-    <div class="logo">LOJTARI<br><span style="color:white; font-weight:800">FUNDIT</span></div>
-    <div class="menu">
-      <div class="pill">TV Shows</div>
-      <div class="pill">Movies</div>
-      <div class="pill">My List</div>
-      <a class="btn" href="javascript:void(0);" onclick="window.location.href='support.html'">Support US</a>
-    </div>
-  </header>
+
+
+
+  <!-- HEADER PLACEHOLDER -->
+  <div id="header"></div>
+
+  <script>
+    fetch('headerMenu.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header').innerHTML = data;
+      });
+  </script>
+  
+  
+  
+  
 
   <main>
     <section class="hero">
@@ -399,16 +448,8 @@
           <br>
           <strong style="color:white">By EPOKA University</strong>
           </p>
-          <div class="cta-row">
-            <div class="cta" onclick="document.getElementById('application-form').scrollIntoView({behavior: 'smooth'})">Apply for Session II</div>
-            <a class="pill" href="#">Watch Trailer</a>
-          </div>
-          <div class="meta">
-            <div>Bigger</div>
-            <div>Bolder</div>
-            <div>Lauder</div>
-            <div>Brighter</div>
-          </div>
+
+    
 
           <!-- Application Form Section -->
           <div class="card" id="application-form" style="margin-top: 40px;">
@@ -441,8 +482,8 @@
 
                 <div class="form-group">
                   <label for="age">Age *</label>
-                  <input type="number" id="age" name="age" placeholder="18+" min="18" max="99" required>
-                  <span class="error-message" id="age-error">Please enter your age (18+)</span>
+                  <input type="number" id="age" name="age" placeholder="16+" min="16" max="25" required>
+                  <span class="error-message" id="age-error">Please enter your age (16+)</span>
                 </div>
 
                 <div class="form-group">
@@ -451,34 +492,64 @@
                     <option value="">Select gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
-                    <option value="other">Other</option>
                   </select>
                   <span class="error-message" id="gender-error">Please select your gender</span>
                 </div>
 
                 <div class="form-group">
-                  <label for="university">University/Institution *</label>
+                  <label for="university">University or High School *</label>
                   <input type="text" id="university" name="university" placeholder="EPOKA University" required>
                   <span class="error-message" id="university-error">Please enter your university</span>
                 </div>
 
                 <div class="form-group">
-                  <label for="studentId">Student ID *</label>
+                  <label for="studentId">Student ID or CARD ID *</label>
                   <input type="text" id="studentId" name="studentId" placeholder="Your student ID" required>
                   <span class="error-message" id="studentId-error">Please enter your student ID</span>
                 </div>
 
-                <div class="form-group">
-                  <label for="major">Major/Field of Study *</label>
-                  <input type="text" id="major" name="major" placeholder="Computer Science" required>
-                  <span class="error-message" id="major-error">Please enter your major</span>
+                   <div class="form-group">
+                  <label for="city">City *</label>
+                  <select id="city" name="gender" required>
+                    <option value="">Select city</option>
+<option value="tirana">Tirana</option>
+<option value="durrësi">Durrësi</option>
+<option value="shkodra">Shkodra</option>
+<option value="elbasani">Elbasani</option>
+<option value="vlora">Vlora</option>
+<option value="korça">Korça</option>
+<option value="fieri">Fieri</option>
+<option value="berati">Berati</option>
+<option value="lezha">Lezha</option>
+<option value="kukësi">Kukësi</option>
+<option value="gjirokastra">Gjirokastra</option>
+<option value="dibra">Dibra</option>
+<option value="dibra">Other</option>
+                  </select>
+                  <span class="error-message" id="city-error">Please select your city</span>
                 </div>
 
                 <div class="form-group">
-                  <label for="emergencyContact">Emergency Contact *</label>
-                  <input type="tel" id="emergencyContact" name="emergencyContact" placeholder="+355 XX XXX XXXX" required>
-                  <span class="error-message" id="emergencyContact-error">Please enter an emergency contact</span>
+                  <label for="shirt">T-Shirt Size *</label>
+                  <select id="shirt" name="shirt" required>
+                    <option value="">Select your size</option>
+                    <option value="male">S</option>
+					<option value="male">M</option>
+                    <option value="female">L</option>
+					<option value="female">XL</option>
+					<option value="female">XXL</option>
+					<option value="female">XXXL</option>
+                  </select>
+                  <span class="error-message" id="shirt-error">Please select your gender</span>
                 </div>
+				
+				
+				                <div class="form-group">
+                  <label for="notes">Comments *</label>
+                  <input type="text" id="commenti" name="studentId" placeholder="Anything you want to share with us">
+                  </div>
+				
+				
 
                 <div class="form-group full-width">
                   <button type="submit" class="submit-btn">Submit Application</button>
