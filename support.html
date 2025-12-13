@@ -1,39 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+
+  <!-- LOAD HEADER CSS CORRECTLY -->
+  <link rel="stylesheet" href="HeaderStyle.css">
+
+  <title>Support</title>
 </head>
-  <link rel="stylesheet" type="text/css" href="HeaderStyle.css">
 
 <body>
 
+  <!-- HEADER PLACEHOLDER -->
+  <div id="header"></div>
 
+  <script>
+    fetch('headerMenu.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header').innerHTML = data;
+      });
+  </script>
 
-    <div id="header"></div>
-
-<script>
-  fetch('headerMenu.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('header').innerHTML = data;
-    });
-</script>
-
-
-
-  
-<h1>-----Tiko----!--</h1>
-<p>Hello World!</p>
+  <h1>-----Tiko----!--</h1>
+  <p>Hello World!</p>
 
 </body>
 </html>
-
-
-
-
-
-
-
-  
-
-
-
