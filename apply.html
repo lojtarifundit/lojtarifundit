@@ -7,12 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rubik:wght@400;600;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
- <!-- LOAD HEADER CSS CORRECTLY -->
+    <!-- LOAD HEADER CSS CORRECTLY -->
   <link rel="stylesheet" href="HeaderStyle.css">
-  
-  
-  
-  
+
+
+
+
   <style>
     :root{
       --bg:#0b0b0f;
@@ -26,7 +26,6 @@
     body{margin:0;font-family:Rubik, Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#fff;background:linear-gradient(180deg,#07060a 0%, #0b0b0f 40%);overflow-x:hidden;}
     a{color:inherit;text-decoration:none}
 
-    /* Enhanced Navigation with Animations */
     .nav{position:fixed;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;padding:18px 36px;z-index:40;backdrop-filter:blur(10px);background:rgba(11,11,15,0.8);transition:all 0.3s ease;}
     .nav.scrolled{background:rgba(11,11,15,0.95);box-shadow:0 4px 20px rgba(0,0,0,0.3);}
     .nav .logo{font-weight:800;letter-spacing:1px;color:var(--accent);transition:transform 0.3s ease;}
@@ -35,25 +34,17 @@
     .nav .btn{background:var(--accent);color:#0b0b0f;padding:10px 16px;border-radius:6px;font-weight:700;transition:all 0.3s ease;cursor:pointer;}
     .nav .btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,45,85,0.3);}
 
-    /* Hero Section with Parallax */
     .hero{min-height:78vh;display:flex;align-items:center;justify-content:center;padding:120px 6vw 60px;position:relative;overflow:hidden}
     .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%),
       url('https://lh7-rt.googleusercontent.com/formsz/AN7BsVCrIC5k8FqRZnpjJacvNNpp1UO_ciyBJsc-w_ivgN-R7aSW1NZaUbnCrrcpcuEM-Md7HVngE9pxlzeg4kCrPNdzAhJ4Gw_wdW9uHlBY0ZensDATca-D7_OcFmS-8tS5a8TsfU5JtocbJ2UA-gSu7LerqFJVScrU9XaU2AO1sgO7wLdW1c_vgCXFEBxIS7Tu9cqS56vjUGlya9_I=w5184?key=fgch8bN3wKpw90mz1qcDaA');
-      background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;
-  filter: grayscale(100%);
-  opacity: 1;   
-  }
-  
-  
-
-  
+      background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05) grayscale(100%);z-index:0;transition:transform 0.5s ease;
+      opacity: 1;   
+    }
+    
     .hero:hover::before{transform:scale(1.02);}
     .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start;max-width:1400px;width:100%;margin:0 auto;}
 
-    .hero-left h1{font-size:clamp(48px,8vw,50px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;text-shadow:2px 2px 4px rgba(0,0,0,0.5);
-    font-family: "Game of Squids", sans-serif;
-    text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
-    }
+    .hero-left h1{font-size:clamp(48px,8vw,50px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;text-shadow:2px 2px 4px #000000, -2px -2px 4px #ffffff7d;}
 
     .hero-left p.lead{color:var(--muted);max-width:60ch;font-size:16px;margin:12px 0 18px;animation:fadeInUp 1.2s ease;}
     .cta-row{display:flex;gap:12px;align-items:center;animation:fadeInUp 1.4s ease;}
@@ -63,11 +54,9 @@
     .cta:hover::before{left:100%;}
     .meta{display:flex;gap:18px;color:var(--muted);font-size:14px;margin-top:18px;animation:fadeInUp 1.6s ease;}
 
-    /* Enhanced Cards with Hover Effects */
     .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;box-shadow:0 6px 30px rgba(3,3,8,0.6);transition:all 0.3s ease;animation:fadeInRight 1s ease;}
     .card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(3,3,8,0.8);}
 
-    /* Form Styles */
     .application-form {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -123,7 +112,6 @@
       box-shadow: 0 0 0 3px rgba(255,45,85,0.1);
     }
 
-    /* For autofill styling */
     .form-group input:-webkit-autofill,
     .form-group input:-webkit-autofill:hover,
     .form-group input:-webkit-autofill:focus {
@@ -141,6 +129,29 @@
     .form-group select.error {
       border-color: var(--accent);
       background: rgba(255,45,85,0.1);
+    }
+
+    .university-other-input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .university-other-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 0 3px rgba(255,45,85,0.1);
+    }
+
+    .university-other-input::placeholder {
+      color: var(--muted);
+      opacity: 0.6;
     }
 
     .error-message {
@@ -184,7 +195,7 @@
       margin-top: 10px;
     }
 
-    .submit-btn:hover {
+    .submit-btn:hover:not(:disabled) {
       transform: translateY(-2px);
       box-shadow: 0 10px 30px rgba(255,45,85,0.4);
     }
@@ -193,7 +204,11 @@
       transform: translateY(0);
     }
 
-    /* Timeline Styles */
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .timeline {
       position: relative;
       padding-left: 40px;
@@ -249,7 +264,6 @@
       line-height: 1.5;
     }
 
-    /* Announcements */
     .announcement-box {
       background: linear-gradient(135deg, rgba(255,45,85,0.1), rgba(255,45,85,0.05));
       border-left: 4px solid var(--accent);
@@ -279,7 +293,6 @@
       margin-bottom: 8px;
     }
 
-    /* Keyframe Animations */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
@@ -294,82 +307,37 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
-    @keyframes expandLine {
-      from { width: 0; }
-      to { width: 120px; }
-    }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.7; transform: scale(1.05); }
     }
 
-    /* Responsive Design */
+    @keyframes opacityFadeDelayed {
+      from { opacity: 1; }
+      to { opacity: 0.1; }
+    }
+
+    .hero::before {
+      animation: opacityFadeDelayed 2s ease forwards;
+      animation-delay: 3s;
+    }
+
     @media (max-width:900px){
       .hero-grid{grid-template-columns:1fr; width:98%; overflow:hidden;}
       .hero{padding-top:96px; padding-left:5vw; padding-right:5vw; width:100vw;}
       .hero-left{width:100%; overflow:hidden;}
-      .hero-left h1{
-        font-size:clamp(32px, 10vw, 56px); 
-        word-wrap:break-word;
-        width:100%;
-        max-width:100%;
-      }
-      .hero-left p.lead{
-        font-size:14px; 
-        max-width:100%;
-        width:100%;
-        word-wrap:break-word;
-      }
+      .hero-left h1{font-size:clamp(32px, 10vw, 56px); word-wrap:break-word;width:100%;max-width:100%;}
+      .hero-left p.lead{font-size:14px; max-width:100%;width:100%;word-wrap:break-word;}
       .nav{padding:15px 20px;}
       .nav .menu{gap:12px;}
-      .card{
-        padding:1rem; 
-        width:100%;
-        box-sizing:border-box;
-        overflow:hidden;
-      }
-      .application-form {
-        grid-template-columns: 1fr;
-      }
-      #prize-display{
-        font-size:clamp(2.5rem, 8vw, 5.5rem);
-        gap:0.3rem;
-      }
-      #prize-title{
-        font-size:clamp(1rem, 4vw, 1.5rem);
-      }
-      .digit-prize{
-        width:clamp(2rem, 8vw, 4rem);
-      }
-      .hero-left{
-        padding-right:10px;
-      }
-      .cta-row{
-        flex-wrap:wrap;
-        max-width:100%;
-      }
-      .cta, .pill{
-        font-size:13px;
-        padding:10px 14px;
-      }
-      .meta{
-        flex-wrap:wrap;
-        font-size:12px;
-      }
-      body{
-        padding:0;
-        margin:0;
-      }
+      .card{padding:1rem; width:100%;box-sizing:border-box;overflow:hidden;}
+      .application-form {grid-template-columns: 1fr;}
     }
 
     footer{padding:40px 6vw;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.05);}
-
-    /* Smooth Scrolling */
     html{scroll-behavior:smooth;}
     
-    /* Loading Animation */
     .loading{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;animation:fadeOut 2s ease 1s forwards;}
     .loading .logo-placeholder{width:200px;height:200px;background:linear-gradient(135deg, var(--accent), #6c5ce7);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900;color:white;animation:pulse 1s infinite;}
     .loading-text{font-size:36px;font-weight:700;color:var(--accent);animation:pulse 1s infinite;letter-spacing:2px;}
@@ -382,49 +350,24 @@
     .pill:hover{background:rgba(255,255,255,0.08);transform:translateY(-1px);}
 
     section{padding:60px 6vw;opacity:0;animation:fadeInSection 0.8s ease forwards;}
-	
-	
-	
-	
-	
-	
-	
-	
-	@keyframes opacityFadeDelayed {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0.1;
-  }
-}
-
-
-.hero::before {
-  opacity: 1;
-
-  animation: opacityFadeDelayed 2s ease forwards;
-  animation-delay: 3s;
-}
-
-
-
-	
-	
   </style>
 </head>
 <body>
-  <!-- Loading Screen -->
+
+ 
+  
+  
+  
   <div class="loading">
     <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVAXHSh9OHJ8ikPMPt59-kfZ6C3MMG7-M6juD0TxnChAMNoUDbwnWx0o3VLWPc0rPAFj9KmFwSX1eQcaTJbG8kT9qhgfkG-9x_7lvaQIbNibFc56-R2T45ma10bNrAa22CA8YEBgpCz2Nsm5mMjOAZ0xNZISzCrR91WU6jiebt5Yf2J3h4fDHxZYOyJPYkdPiUVTbevMqtrZ4Z8=w7105?key=fgch8bN3wKpw90mz1qcDaA" alt="Logo" style="width:200px;height:auto;animation:pulse 1s infinite;" onerror="this.style.display='none';document.querySelector('.logo-placeholder').style.display='flex';">
     <div class="logo-placeholder" style="display:none;">LOGO</div>
-    <div class="loading-text">Good vibes only</div>
+    <div class="loading-text">Stunning moments coming!</div>
   </div>
 
 
 
 
-  <!-- HEADER PLACEHOLDER -->
+ <!-- HEADER PLACEHOLDER -->
   <div id="header"></div>
 
   <script>
@@ -449,9 +392,6 @@
           <strong style="color:white">By EPOKA University</strong>
           </p>
 
-    
-
-          <!-- Application Form Section -->
           <div class="card" id="application-form" style="margin-top: 40px;">
             <h3 style="margin: 0 0 20px; color: var(--accent); font-size: 24px;">Apply for Session II</h3>
             <form id="squidGameForm" onsubmit="handleSubmit(event)">
@@ -498,8 +438,14 @@
 
                 <div class="form-group">
                   <label for="university">University or High School *</label>
-                  <input type="text" id="university" name="university" placeholder="EPOKA University" required>
-                  <span class="error-message" id="university-error">Please enter your university</span>
+                  <select id="university" name="university" required onchange="handleUniversityChange(this)">
+                    <option value="">Select your institution</option>
+                    <option value="EPOKA University">EPOKA University</option>
+                    <option value="Turgut Ozal">Turgut Ozal</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <input type="text" id="universityOther" name="universityOther" placeholder="Enter your High School name" style="display:none;margin-top:8px;" class="university-other-input">
+                  <span class="error-message" id="university-error">Please select your university</span>
                 </div>
 
                 <div class="form-group">
@@ -508,23 +454,23 @@
                   <span class="error-message" id="studentId-error">Please enter your student ID</span>
                 </div>
 
-                   <div class="form-group">
+                <div class="form-group">
                   <label for="city">City *</label>
-                  <select id="city" name="gender" required>
+                  <select id="city" name="city" required>
                     <option value="">Select city</option>
-<option value="tirana">Tirana</option>
-<option value="durrësi">Durrësi</option>
-<option value="shkodra">Shkodra</option>
-<option value="elbasani">Elbasani</option>
-<option value="vlora">Vlora</option>
-<option value="korça">Korça</option>
-<option value="fieri">Fieri</option>
-<option value="berati">Berati</option>
-<option value="lezha">Lezha</option>
-<option value="kukësi">Kukësi</option>
-<option value="gjirokastra">Gjirokastra</option>
-<option value="dibra">Dibra</option>
-<option value="dibra">Other</option>
+                    <option value="tirana">Tirana</option>
+                    <option value="durrësi">Durrësi</option>
+                    <option value="shkodra">Shkodra</option>
+                    <option value="elbasani">Elbasani</option>
+                    <option value="vlora">Vlora</option>
+                    <option value="korça">Korça</option>
+                    <option value="fieri">Fieri</option>
+                    <option value="berati">Berati</option>
+                    <option value="lezha">Lezha</option>
+                    <option value="kukësi">Kukësi</option>
+                    <option value="gjirokastra">Gjirokastra</option>
+                    <option value="dibra">Dibra</option>
+                    <option value="other">Other</option>
                   </select>
                   <span class="error-message" id="city-error">Please select your city</span>
                 </div>
@@ -533,23 +479,20 @@
                   <label for="shirt">T-Shirt Size *</label>
                   <select id="shirt" name="shirt" required>
                     <option value="">Select your size</option>
-                    <option value="male">S</option>
-					<option value="male">M</option>
-                    <option value="female">L</option>
-					<option value="female">XL</option>
-					<option value="female">XXL</option>
-					<option value="female">XXXL</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                    <option value="XXXL">XXXL</option>
                   </select>
-                  <span class="error-message" id="shirt-error">Please select your gender</span>
+                  <span class="error-message" id="shirt-error">Please select your size</span>
                 </div>
-				
-				
-				                <div class="form-group">
-                  <label for="notes">Comments *</label>
-                  <input type="text" id="commenti" name="studentId" placeholder="Anything you want to share with us">
-                  </div>
-				
-				
+
+                <div class="form-group full-width">
+                  <label for="commenti">Comments (Optional)</label>
+                  <input type="text" id="commenti" name="commenti" placeholder="Anything you want to share with us">
+                </div>
 
                 <div class="form-group full-width">
                   <button type="submit" class="submit-btn">Submit Application</button>
@@ -563,44 +506,18 @@
         </div>
 
         <div style="display:flex;flex-direction:column;gap:20px;">
-          <!-- Cash Prize Card - Remains unchanged -->
           <div class="card" style="padding:2rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;background:linear-gradient(180deg, rgba(9,252,8,0.03), rgba(9,252,8,0.01));position:relative;overflow:hidden;">
             <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(rgb(9 252 8 / 1%) 20%, rgba(8,13,7,0.4) 70%);pointer-events:none;z-index:1;"></div>
-            <h2 id="prize-title" style="display:flex;align-items:center;justify-content:center;gap:1rem;font-size:1.5rem;color:rgb(9,252,8);opacity:0.75;z-index:3;margin:0;transition:color 3000ms ease;">
-              <span style="padding-top:0.25em;line-height:0.5em;">*</span>
-              <span id="prize-title-text">CASH PRIZE</span>
-              <span style="padding-top:0.25em;line-height:0.5em;">*</span>      
+            <h2 style="display:flex;align-items:center;justify-content:center;gap:1rem;font-size:1.5rem;color:rgb(9,252,8);opacity:0.75;z-index:3;margin:0;">
+              <span>*</span>
+              <span>CASH PRIZE</span>
+              <span>*</span>      
             </h2>
-            <h1 id="prize-display" style="display:flex;gap:0.5rem;height:5rem;line-height:5rem;font-size:5.5rem;color:rgb(9,252,8);z-index:3;font-family:'Orbitron',monospace;margin:0;position:relative;">
-              <span style="opacity:0.7;position:relative;">
-                $
-                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
-              </span>
-              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
-                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
-                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
-                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
-              </div>
-              <span style="opacity:0.5;">,</span>
-              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
-                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
-                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
-                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
-              </div>
-              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
-                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
-                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
-                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
-              </div>
-              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
-                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
-                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
-                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
-              </div>
+            <h1 style="font-size:5.5rem;color:rgb(9,252,8);z-index:3;font-family:'Orbitron',monospace;margin:0;">
+              $1,000
             </h1>
           </div>
 
-          <!-- Timeline Card (replaces sponsors) -->
           <div class="card">
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
               <div style="width:64px;height:64px;background:linear-gradient(45deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:30pt;color:var(--accent);">📋</div>
@@ -633,13 +550,12 @@
               </div>
             </div>
 
-            <!-- Important Announcements -->
             <div class="announcement-box">
               <h4>⚠️ Important Announcements</h4>
               <ul>
                 <li>Application deadline: <strong>December 20, 2025</strong></li>
                 <li>Limited to <strong>456 participants</strong> - first come, first served</li>
-                <li>Participants must be <strong>18+ years old</strong></li>
+                <li>Participants must be <strong>16+ years old</strong></li>
                 <li>Physical fitness assessment required before games</li>
                 <li>No prior gaming experience necessary</li>
               </ul>
@@ -658,98 +574,36 @@
   </footer>
 
   <script>
-    // Prize counter animation
-    const prizeAmount = 1000;
-    const digits = [1, 0, 0, 0];
-    const allDigits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    
-    function setupPrizeCounter() {
-      const tracks = document.querySelectorAll('.digit-track-prize');
-      const prizeDisplay = document.getElementById('prize-display');
-      const prizeTitle = document.getElementById('prize-title');
-      const prizeTitleText = document.getElementById('prize-title-text');
-      const digitBorders = document.querySelectorAll('.digit-border');
+    // Handle university dropdown change
+    function handleUniversityChange(select) {
+      const otherInput = document.getElementById('universityOther');
+      const universityError = document.getElementById('university-error');
       
-      tracks.forEach((track, index) => {
-        const iterations = index + 3;
-        let digitString = '';
-        for (let i = 0; i < iterations; i++) {
-          digitString += allDigits.join(' ') + ' ';
-        }
-        track.innerText = digitString.trim();
-      });
-      
-      function animateCounter() {
-        prizeTitle.style.animation = 'none';
-        prizeTitleText.textContent = 'CASH PRIZE';
-        
-        tracks.forEach((track) => {
-          track.style.transition = 'translate 3500ms cubic-bezier(0.65, 0, 0.35, 1)';
-        });
-        prizeDisplay.style.transition = 'color 3500ms ease';
-        prizeDisplay.style.color = 'rgb(9,252,8)';
-        prizeTitle.style.transition = 'color 3500ms ease';
-        prizeTitle.style.color = 'rgb(9,252,8)';
-        
-        digitBorders.forEach((border) => {
-          border.style.background = 'rgb(9,252,8)';
-        });
-        
-        tracks.forEach((track, index) => {
-          const digit = digits[index];
-          const iterations = index + 3;
-          const activeDigit = (iterations - 1) * 10 + digit;
-          track.style.translate = `0rem ${activeDigit * -5}rem`;
-        });
-        
-        setTimeout(() => {
-          prizeTitle.style.animation = 'shake 0.5s ease';
-          prizeTitleText.textContent = "DON'T MISS IT! APPLY NOW";
-          
-          setTimeout(() => {
-            prizeTitle.style.animation = 'shakeContinuous 0.3s ease infinite';
-            
-            setTimeout(() => {
-              prizeTitle.style.animation = 'none';
-            }, 1000);
-          }, 500);
-          
-          prizeDisplay.style.transition = 'color 3500ms ease';
-          prizeDisplay.style.color = 'rgb(255,45,85)';
-          prizeTitle.style.transition = 'color 3500ms ease';
-          prizeTitle.style.color = 'rgb(255,45,85)';
-          
-          digitBorders.forEach((border) => {
-            border.style.background = 'rgb(255,45,85)';
-          });
-          
-          tracks.forEach((track) => {
-            track.style.transition = 'translate 3500ms cubic-bezier(0.65, 0, 0.35, 1)';
-            track.style.translate = '0rem 0rem';
-          });
-          
-          setTimeout(() => {
-            animateCounter();
-          }, 4500);
-        }, 10000);
+      if (select.value === 'other') {
+        otherInput.style.display = 'block';
+        otherInput.required = true;
+        select.removeAttribute('name'); // Remove name from select
+        otherInput.setAttribute('name', 'university'); // Add name to text input
+      } else {
+        otherInput.style.display = 'none';
+        otherInput.required = false;
+        otherInput.value = '';
+        select.setAttribute('name', 'university'); // Add name back to select
+        otherInput.removeAttribute('name'); // Remove name from text input
       }
       
-      tracks.forEach((track) => {
-        track.style.transition = 'none';
-        track.style.translate = '0rem 0rem';
-      });
-      
-      setTimeout(() => {
-        animateCounter();
-      }, 1200);
+      // Clear error when user makes selection
+      select.classList.remove('error');
+      otherInput.classList.remove('error');
+      universityError.classList.remove('show');
     }
-    
+
     // Navbar scroll effect
     window.addEventListener('scroll', () => {
       const navbar = document.getElementById('navbar');
-      if (window.scrollY > 100) {
+      if (navbar && window.scrollY > 100) {
         navbar.classList.add('scrolled');
-      } else {
+      } else if (navbar) {
         navbar.classList.remove('scrolled');
       }
     });
@@ -766,31 +620,67 @@
       let isValid = true;
       let firstErrorField = null;
       
-      // Validate each field
+      // FIXED: Added missing comma after 'shirt' field
       const fields = [
         { id: 'firstName', validator: (val) => val.trim().length > 0 },
         { id: 'lastName', validator: (val) => val.trim().length > 0 },
         { id: 'email', validator: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
         { id: 'phone', validator: (val) => val.trim().length > 0 },
-        { id: 'age', validator: (val) => val >= 18 && val <= 99 },
+        { id: 'age', validator: (val) => val >= 16 && val <= 25 },
         { id: 'gender', validator: (val) => val !== '' },
-        { id: 'university', validator: (val) => val.trim().length > 0 },
+        { 
+          id: 'university', 
+          validator: (val) => {
+            const select = document.getElementById('university');
+            const otherInput = document.getElementById('universityOther');
+            if (select.value === 'other') {
+              return otherInput.value.trim().length > 0;
+            }
+            return val !== '';
+          }
+        },
         { id: 'studentId', validator: (val) => val.trim().length > 0 },
-        { id: 'major', validator: (val) => val.trim().length > 0 },
-        { id: 'emergencyContact', validator: (val) => val.trim().length > 0 }
+        { id: 'city', validator: (val) => val !== '' },
+        { id: 'shirt', validator: (val) => val !== '' }
       ];
       
       fields.forEach(field => {
         const input = document.getElementById(field.id);
         const errorMsg = document.getElementById(field.id + '-error');
         
-        if (!field.validator(input.value)) {
-          isValid = false;
-          input.classList.add('error');
-          errorMsg.classList.add('show');
+        // Special handling for university field
+        if (field.id === 'university') {
+          const select = document.getElementById('university');
+          const otherInput = document.getElementById('universityOther');
           
-          if (!firstErrorField) {
-            firstErrorField = input;
+          if (select.value === 'other') {
+            if (!field.validator(otherInput.value)) {
+              isValid = false;
+              otherInput.classList.add('error');
+              errorMsg.classList.add('show');
+              if (!firstErrorField) {
+                firstErrorField = otherInput;
+              }
+            }
+          } else {
+            if (!field.validator(select.value)) {
+              isValid = false;
+              select.classList.add('error');
+              errorMsg.classList.add('show');
+              if (!firstErrorField) {
+                firstErrorField = select;
+              }
+            }
+          }
+        } else {
+          if (!field.validator(input.value)) {
+            isValid = false;
+            input.classList.add('error');
+            errorMsg.classList.add('show');
+            
+            if (!firstErrorField) {
+              firstErrorField = input;
+            }
           }
         }
       });
@@ -806,7 +696,6 @@
       
       // If validation passes, collect data
       const formData = new FormData(event.target);
-      const data = Object.fromEntries(formData.entries());
       
       // Show loading state
       const submitBtn = event.target.querySelector('.submit-btn');
@@ -872,11 +761,6 @@
           }
         });
       });
-    });
-
-    // Initialize on load
-    window.addEventListener('load', () => {
-      setupPrizeCounter();
     });
   </script>
 </body>
