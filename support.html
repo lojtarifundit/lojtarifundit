@@ -10,9 +10,25 @@ body  {
 </head>
 <body>
 
-<h1>The background-image Property</h1>
+
+
+  <div id="header"></div>
+
+<script>
+  fetch('headerMenu.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('header').innerHTML = data;
+    });
+</script>
+
+
+
+  
+<h1>----------------------------------</h1>
 
 <p>Hello World!</p>
 
 </body>
+
 </html>
