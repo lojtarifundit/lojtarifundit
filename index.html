@@ -45,7 +45,10 @@
     .hero:hover::before{transform:scale(1.02);}
     .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start}
 
-.hero-left h1{font-size:clamp(48px,8vw,120px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;text-shadow:2px 2px 4px rgba(0,0,0,0.5);}
+.hero-left h1{font-size:clamp(48px,8vw,50px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;text-shadow:2px 2px 4px rgba(0,0,0,0.5);
+font-family: "Game of Squids", sans-serif;
+text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
+}
 
 
     .hero-left p.lead{color:var(--muted);max-width:60ch;font-size:16px;margin:12px 0 18px;animation:fadeInUp 1.2s ease;}
@@ -67,7 +70,7 @@
   .carousel-track:hover{animation-play-state:paused;}
 
     .carousel-item{flex:0 0 calc(33.333% - 7px);min-width:calc(33.333% - 7px);}
-    .carousel-item img{width:100%;height:88px;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;cursor:pointer;}
+    .carousel-item img{width:100%;height:auto;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;cursor:pointer;}
     .carousel-item img:hover{transform:scale(1.05);}
     
     @keyframes scroll-left {
@@ -260,7 +263,7 @@
       <div class="pill">TV Shows</div>
       <div class="pill">Movies</div>
       <div class="pill">My List</div>
-      <a class="btn" href="javascript:void(0);" onclick="window.location.href='support.html'">Support US</a>
+      <a class="btn" href="pages/support.html">Support</a>
     </div>
   </header>
 
@@ -269,16 +272,19 @@
       <div class="hero-grid">
         <div class="hero-left">
           <h1>SQUID<br>GAME ALBANIA</h1>
-          <p class="lead">456 players. One chance to win. Everything to lose. A dark, cinematic landing page built to present shows like a streaming platform — hero, highlights, cast cards and featured episodes.</p>
+          <p class="lead">Hundreds of Players. 10 Special Games. One chance to win. Everything to lose. Are you here to win cash — or earn prestige!?
+		  <br>
+		  <Strong style="color:white">By EPOKA University</strong>
+		  </p>
           <div class="cta-row">
             <a class="cta" href="#">Apply for Session II</a>
             <a class="pill" href="#">Watch Trailer</a>
           </div>
           <div class="meta">
-            <div>TV-MA</div>
-            <div>2021</div>
-            <div>3 Seasons</div>
-            <div>Korean Drama</div>
+            <div>Bigger</div>
+            <div>Bolder</div>
+            <div>Lauder</div>
+            <div>Brighter</div>
           </div>
         </div>
 
@@ -324,7 +330,7 @@
               <div style="width:64px;height:64px;background:linear-gradient(45deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:30pt;color:var(--accent);">♡</div>
               <div>
                 <div style="font-weight:700">Sponsors of Squid Game Albania - <span style="color:#ff2d55">Session I</span></div>
-                <div style="color:var(--muted);font-size:13px">An intense death-game drama. Explore the characters and the deadliest competitions.</div>
+                <div style="color:var(--muted);font-size:13px">+300 voices saying THANK YOU to every sponsor who made the 1st Real Life - Squid Game Albania possible!</div>
               </div>
             </div>
             <div class="carousel-container">
@@ -338,36 +344,26 @@
     </section>
 
     <section>
-      <h2 class="section-title">Meet the Players</h2>
-      <div class="subtitle">Each player has their own story — card layout works great to show cast with short bios.</div>
+      <h2 class="section-title">Best all-around</h2>
+      <div class="subtitle">The journey of LojtariFundit is still young, but it has already brought together passion, competition, and unforgettable moments. What started as a single event is growing into a platform for games, challenges, and community experiences.</div>
       <div class="players">
         <article class="player">
           <img src="https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg" alt="Seong Gi-hun">
-          <h3 style="margin:8px 0 0">Seong Gi-hun</h3>
-          <div style="color:var(--muted);font-size:13px">Player 456 — a desperate father fighting for survival...</div>
-          <div class="meta"><span>Drama</span><span style="color:var(--muted)">Player 456</span></div>
+          <h3 style="margin:8px 0 0">Squid Game Series</h3>
+          <div style="color:var(--muted);font-size:13px">A high-stakes competition where strategy, pressure, and endurance decide who moves forward.</div>
+          <div class="meta"><span>$1000 Prize</span><span style="color:var(--muted)">1/Year</span></div>
         </article>
 
         <article class="player">
           <img src="https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg" alt="Cho Sang-woo">
-          <h3 style="margin:8px 0 0">Cho Sang-woo</h3>
-          <div style="color:var(--muted);font-size:13px">Player 218 — former student with crushing debts...</div>
-          <div class="meta"><span>Strategy</span><span style="color:var(--muted)">Player 218</span></div>
+          <h3 style="margin:8px 0 0">Quick Challenge Series</h3>
+          <div style="color:var(--muted);font-size:13px">Fast-paced challenges built on skill, speed, and creativity. Short games, big moments, and pure competitive fun.</div>
+          <div class="meta"><span>Gifts</span><span style="color:var(--muted)">1/Month</span></div>
         </article>
 
-        <article class="player">
-          <img src="https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg" alt="Ali Abdul">
-          <h3 style="margin:8px 0 0">Ali Abdul</h3>
-          <div style="color:var(--muted);font-size:13px">Player 199 — immigrant worker seeking hope...</div>
-          <div class="meta"><span>Heart</span><span style="color:var(--muted)">Player 199</span></div>
-        </article>
 
-        <article class="player">
-          <img src="https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg" alt="Oh Il-nam">
-          <h3 style="margin:8px 0 0">Oh Il-nam</h3>
-          <div style="color:var(--muted);font-size:13px">Player 001 — wise elder with hidden secrets...</div>
-          <div class="meta"><span>Wise</span><span style="color:var(--muted)">Player 001</span></div>
-        </article>
+
+
       </div>
     </section>
 
@@ -405,8 +401,8 @@
 
   <footer>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
-      <div>&copy; 2025 Netflix — Fan Landing</div>
-      <div style="color:var(--muted)">Privacy • Terms • Contact</div>
+      <div>&copy; 2026 LojtariFundit</div>
+      <div style="color:var(--muted)">lojtarifundit@gmail.com</div>
     </div>
   </footer>
 
@@ -663,13 +659,6 @@ async function setupSponsorCarousel() {
 </body>
 
 </html>
-
-
-
-
-
-
-
 
 
 
