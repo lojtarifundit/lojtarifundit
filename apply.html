@@ -1,4 +1,12 @@
-<!doctype html>
+
+
+
+  
+  
+  
+  
+  
+  <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -9,10 +17,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rubik:wght@400;600;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
     <!-- LOAD HEADER CSS CORRECTLY -->
   <link rel="stylesheet" href="HeaderStyle.css">
-
-
-
-
+  
+  
   <style>
     :root{
       --bg:#0b0b0f;
@@ -318,6 +324,18 @@
       to { opacity: 0.1; }
     }
 
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    @keyframes shakeContinuous {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
     .hero::before {
       animation: opacityFadeDelayed 2s ease forwards;
       animation-delay: 3s;
@@ -333,6 +351,9 @@
       .nav .menu{gap:12px;}
       .card{padding:1rem; width:100%;box-sizing:border-box;overflow:hidden;}
       .application-form {grid-template-columns: 1fr;}
+      #prize-display{font-size:clamp(2.5rem, 8vw, 5.5rem);gap:0.3rem;}
+      #prize-title{font-size:clamp(1rem, 4vw, 1.5rem);}
+      .digit-prize{width:clamp(2rem, 8vw, 4rem);}
     }
 
     footer{padding:40px 6vw;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.05);}
@@ -354,16 +375,6 @@
 </head>
 <body>
 
- 
-  
-  
-  
-  <div class="loading">
-    <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVAXHSh9OHJ8ikPMPt59-kfZ6C3MMG7-M6juD0TxnChAMNoUDbwnWx0o3VLWPc0rPAFj9KmFwSX1eQcaTJbG8kT9qhgfkG-9x_7lvaQIbNibFc56-R2T45ma10bNrAa22CA8YEBgpCz2Nsm5mMjOAZ0xNZISzCrR91WU6jiebt5Yf2J3h4fDHxZYOyJPYkdPiUVTbevMqtrZ4Z8=w7105?key=fgch8bN3wKpw90mz1qcDaA" alt="Logo" style="width:200px;height:auto;animation:pulse 1s infinite;" onerror="this.style.display='none';document.querySelector('.logo-placeholder').style.display='flex';">
-    <div class="logo-placeholder" style="display:none;">LOGO</div>
-    <div class="loading-text">Stunning moments coming!</div>
-  </div>
-
 
 
 
@@ -379,6 +390,13 @@
   </script>
   
   
+  
+  <div class="loading">
+    <img src="https://lh7-rt.googleusercontent.com/formsz/AN7BsVAXHSh9OHJ8ikPMPt59-kfZ6C3MMG7-M6juD0TxnChAMNoUDbwnWx0o3VLWPc0rPAFj9KmFwSX1eQcaTJbG8kT9qhgfkG-9x_7lvaQIbNibFc56-R2T45ma10bNrAa22CA8YEBgpCz2Nsm5mMjOAZ0xNZISzCrR91WU6jiebt5Yf2J3h4fDHxZYOyJPYkdPiUVTbevMqtrZ4Z8=w7105?key=fgch8bN3wKpw90mz1qcDaA" alt="Logo" style="width:200px;height:auto;animation:pulse 1s infinite;" onerror="this.style.display='none';document.querySelector('.logo-placeholder').style.display='flex';">
+    <div class="logo-placeholder" style="display:none;">LOGO</div>
+    <div class="loading-text">Stunning moments coming!</div>
+  </div>
+
   
   
 
@@ -444,7 +462,7 @@
                     <option value="Turgut Ozal">Turgut Ozal</option>
                     <option value="other">Other</option>
                   </select>
-                  <input type="text" id="universityOther" name="universityOther" placeholder="Enter your High School name" style="display:none;margin-top:8px;" class="university-other-input">
+                  <input type="text" id="universityOther" name="universityOther" placeholder="Enter your institution name" style="display:none;margin-top:8px;" class="university-other-input">
                   <span class="error-message" id="university-error">Please select your university</span>
                 </div>
 
@@ -508,13 +526,37 @@
         <div style="display:flex;flex-direction:column;gap:20px;">
           <div class="card" style="padding:2rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;background:linear-gradient(180deg, rgba(9,252,8,0.03), rgba(9,252,8,0.01));position:relative;overflow:hidden;">
             <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(rgb(9 252 8 / 1%) 20%, rgba(8,13,7,0.4) 70%);pointer-events:none;z-index:1;"></div>
-            <h2 style="display:flex;align-items:center;justify-content:center;gap:1rem;font-size:1.5rem;color:rgb(9,252,8);opacity:0.75;z-index:3;margin:0;">
-              <span>*</span>
-              <span>CASH PRIZE</span>
-              <span>*</span>      
+            <h2 id="prize-title" style="display:flex;align-items:center;justify-content:center;gap:1rem;font-size:1.5rem;color:rgb(9,252,8);opacity:0.75;z-index:3;margin:0;transition:color 3000ms ease;">
+              <span style="padding-top:0.25em;line-height:0.5em;">*</span>
+              <span id="prize-title-text">CASH PRIZE</span>
+              <span style="padding-top:0.25em;line-height:0.5em;">*</span>      
             </h2>
-            <h1 style="font-size:5.5rem;color:rgb(9,252,8);z-index:3;font-family:'Orbitron',monospace;margin:0;">
-              $1,000
+            <h1 id="prize-display" style="display:flex;gap:0.5rem;height:5rem;line-height:5rem;font-size:5.5rem;color:rgb(9,252,8);z-index:3;font-family:'Orbitron',monospace;margin:0;position:relative;">
+              <span style="opacity:0.7;position:relative;">
+                $
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </span>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+              <span style="opacity:0.5;">,</span>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
             </h1>
           </div>
 
@@ -761,6 +803,97 @@
           }
         });
       });
+    });
+    
+    // Prize counter animation
+    const prizeAmount = 1000;
+    const digits = [1, 0, 0, 0];
+    const allDigits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    
+    function setupPrizeCounter() {
+      const tracks = document.querySelectorAll('.digit-track-prize');
+      const prizeDisplay = document.getElementById('prize-display');
+      const prizeTitle = document.getElementById('prize-title');
+      const prizeTitleText = document.getElementById('prize-title-text');
+      const digitBorders = document.querySelectorAll('.digit-border');
+      
+      tracks.forEach((track, index) => {
+        const iterations = index + 3;
+        let digitString = '';
+        for (let i = 0; i < iterations; i++) {
+          digitString += allDigits.join(' ') + ' ';
+        }
+        track.innerText = digitString.trim();
+      });
+      
+      function animateCounter() {
+        prizeTitle.style.animation = 'none';
+        prizeTitleText.textContent = 'CASH PRIZE';
+        
+        tracks.forEach((track) => {
+          track.style.transition = 'translate 3500ms cubic-bezier(0.65, 0, 0.35, 1)';
+        });
+        prizeDisplay.style.transition = 'color 3500ms ease';
+        prizeDisplay.style.color = 'rgb(9,252,8)';
+        prizeTitle.style.transition = 'color 3500ms ease';
+        prizeTitle.style.color = 'rgb(9,252,8)';
+        
+        digitBorders.forEach((border) => {
+          border.style.background = 'rgb(9,252,8)';
+        });
+        
+        tracks.forEach((track, index) => {
+          const digit = digits[index];
+          const iterations = index + 3;
+          const activeDigit = (iterations - 1) * 10 + digit;
+          track.style.translate = `0rem ${activeDigit * -5}rem`;
+        });
+        
+        setTimeout(() => {
+          prizeTitle.style.animation = 'shake 0.5s ease';
+          prizeTitleText.textContent = "DON'T MISS IT! APPLY NOW";
+          
+          setTimeout(() => {
+            prizeTitle.style.animation = 'shakeContinuous 0.3s ease infinite';
+            
+            setTimeout(() => {
+              prizeTitle.style.animation = 'none';
+            }, 1000);
+          }, 500);
+          
+          prizeDisplay.style.transition = 'color 3500ms ease';
+          prizeDisplay.style.color = 'rgb(255,45,85)';
+          prizeTitle.style.transition = 'color 3500ms ease';
+          prizeTitle.style.color = 'rgb(255,45,85)';
+          
+          digitBorders.forEach((border) => {
+            border.style.background = 'rgb(255,45,85)';
+          });
+          
+          tracks.forEach((track) => {
+            track.style.transition = 'translate 3500ms cubic-bezier(0.65, 0, 0.35, 1)';
+            track.style.translate = '0rem 0rem';
+          });
+          
+          setTimeout(() => {
+            animateCounter();
+          }, 4500);
+        }, 10000);
+      }
+      
+      tracks.forEach((track) => {
+        track.style.transition = 'none';
+        track.style.translate = '0rem 0rem';
+      });
+      
+      setTimeout(() => {
+        animateCounter();
+      }, 1200);
+    }
+    
+    // Initialize prize counter on load
+    window.addEventListener('load', () => {
+      setupPrizeCounter();
     });
   </script>
 </body>
