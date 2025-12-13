@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Squid Game — Landing (Netflix style)</title>
+  <title>LojtariFundit</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rubik:wght@400;600;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
@@ -257,15 +257,30 @@ text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
     <div class="loading-text">Good vibes only</div>
   </div>
 
-  <header class="nav" id="navbar">
+
+
+
+<div id="header"></div>
+
+<script>
+  fetch('headerMenu.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('header').innerHTML = data;
+    });
+</script>
+
+
+ <!--- <header class="nav" id="navbar">
     <div class="logo">LOJTARI<br><span style="color:white; font-weight:800">FUNDIT</span></div>
     <div class="menu">
       <div class="pill">TV Shows</div>
       <div class="pill">Movies</div>
       <div class="pill">My List</div>
-     <a class="btn" href="javascript:void(0);" onclick="window.location.href='support.html'">Support US</a>
+     <a class="btn" href="javascript:void(0);" onclick="window.location.href='support.html'">Support US-</a>
     </div>
   </header>
+---!>
 
   <main>
     <section class="hero">
@@ -659,7 +674,6 @@ async function setupSponsorCarousel() {
 </body>
 
 </html>
-
 
 
 
