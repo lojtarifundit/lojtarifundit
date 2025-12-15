@@ -12,15 +12,6 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway|Rock+Salt|Source+Code+Pro:300,400,600" rel="stylesheet">
 
   
-  <script>
-    fetch('headerMenu.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('header').innerHTML = data;
-      });
-  </script>
-
-  
   <style>
 body {
     margin: 0;
@@ -415,6 +406,21 @@ input {
 </head>
 
 <body>
+
+     <!-- HEADER PLACEHOLDER -->
+  <div id="header"></div>
+  
+  <script>
+    fetch('headerMenu.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header').innerHTML = data;
+      });
+  </script>
+
+
+
+  
   <div class="payment-title">
     <h1>Be the light of the night, shining in every heart so bright!</h1>
   </div>
@@ -623,3 +629,4 @@ input {
 </body>
 
 </html>
+
