@@ -3,8 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- LOAD HEADER CSS CORRECTLY -->
+  <link rel="stylesheet" href="HeaderStyle.css">
+
+  
   <title>Support LojtariFundit</title>
   <link href="https://fonts.googleapis.com/css?family=Raleway|Rock+Salt|Source+Code+Pro:300,400,600" rel="stylesheet">
+
+  
+  <script>
+    fetch('headerMenu.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header').innerHTML = data;
+      });
+  </script>
+
   
   <style>
 body {
@@ -606,4 +621,5 @@ input {
     }
   </script>
 </body>
+
 </html>
