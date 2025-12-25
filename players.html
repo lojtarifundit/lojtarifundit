@@ -105,7 +105,6 @@ const PhotoGrid = () => {
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
         const total = shuffled.length;
-        // find cols & rows to fit screen
         let bestCols=1,bestSize=0;
         for(let c=1;c<=total;c++){
             const r = Math.ceil(total/c);
@@ -120,45 +119,55 @@ const PhotoGrid = () => {
         setCols(bestCols);
     },[shuffled]);
 
-    // Reveal
+    // Reveal randomly
     useEffect(()=>{
         if(!isReady || shuffled.length===0) return;
-        shuffled.forEach((player,index)=>{
+        const indices = [...Array(shuffled.length).keys()];
+        for(let i=indices.length-1;i>0;i--){
+            const j = Math.floor(Math.random()*(i+1));
+            [indices[i],indices[j]]=[indices[j],indices[i]];
+        }
+        indices.forEach((index, order)=>{
             setTimeout(()=>{
                 setVisiblePhotos(prev=>new Set([...prev,index]));
-                if(index%5===0) playPopSound();
-                if(index===shuffled.length-1) setTimeout(()=>setAllVisible(true),100);
-            },index*FADE_IN_DELAY);
+                if(order % 5 === 0) playPopSound();
+                if(order === indices.length-1) setTimeout(()=>setAllVisible(true),100);
+            }, order*FADE_IN_DELAY);
         });
     },[shuffled,isReady]);
 
-    // Elimination
+    // Elimination randomly
     useEffect(()=>{
         if(!allVisible) return;
         setTimeout(()=>{
-            const groupSize=Math.max(1,Math.floor(shuffled.length/5));
+            const groupSize = Math.max(1,Math.floor(shuffled.length/5));
             const nonWinners = shuffled.filter(p=>!p.isWinner);
             const winnerPlayer = shuffled.find(p=>p.isWinner);
+
+            let remaining = [...nonWinners];
             const numGroups = Math.ceil(nonWinners.length/groupSize);
+
             for(let i=0;i<numGroups;i++){
                 setTimeout(()=>{
-                    const start=i*groupSize;
-                    const end=Math.min(start+groupSize,nonWinners.length);
-                    const flashingIds=[];
-                    for(let j=start;j<end;j++) flashingIds.push(nonWinners[j].id);
+                    const group = [];
+                    for(let g=0;g<groupSize && remaining.length>0;g++){
+                        const randIdx = Math.floor(Math.random()*remaining.length);
+                        group.push(remaining[randIdx].id);
+                        remaining.splice(randIdx,1);
+                    }
 
-                    setFlashing(prev=>new Set([...prev,...flashingIds]));
+                    setFlashing(prev=>new Set([...prev,...group]));
                     playEliminationSound();
 
                     setTimeout(()=>{
                         setEliminated(prev=>{
                             const newSet = new Set(prev);
-                            flashingIds.forEach(id=>newSet.add(id));
+                            group.forEach(id=>newSet.add(id));
                             return newSet;
                         });
                         setFlashing(prev=>{
                             const newSet = new Set(prev);
-                            flashingIds.forEach(id=>newSet.delete(id));
+                            group.forEach(id=>newSet.delete(id));
                             return newSet;
                         });
                     }, ELIMINATION_FLASH_DURATION);
