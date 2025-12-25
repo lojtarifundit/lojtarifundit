@@ -82,8 +82,7 @@ const PhotoGrid = () => {
     const playEliminationSound = () => { playSound(80,0.15,'sawtooth',0.4); setTimeout(()=>playSound(60,0.1,'sawtooth',0.3),50); }
     const playWinnerSound = () => { setTimeout(()=>playSound(523.25,0.5,'triangle',0.3),0); setTimeout(()=>playSound(659.25,0.5,'triangle',0.3),150); setTimeout(()=>playSound(783.99,0.7,'triangle',0.3),300); setTimeout(()=>playSound(1046.5,1.0,'triangle',0.4),450); }
 
-    // Shuffle players
-    const [shuffled, setShuffled] = useState([]);
+    const [shuffled,setShuffled] = useState([]);
     useEffect(()=>{
         if(players.length===0) return;
         const pos = [...Array(players.length).keys()];
@@ -99,7 +98,27 @@ const PhotoGrid = () => {
         setShuffled(mapped);
     },[players,winnerNumber]);
 
-    const cols = 5;
+    // Calculate grid to fit all images
+    const [cols,setCols] = useState(1);
+    useEffect(()=>{
+        if(shuffled.length===0) return;
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const total = shuffled.length;
+        // find cols & rows to fit screen
+        let bestCols=1,bestSize=0;
+        for(let c=1;c<=total;c++){
+            const r = Math.ceil(total/c);
+            const cellW = screenWidth/c;
+            const cellH = screenHeight/r;
+            const size = Math.min(cellW,cellH);
+            if(size>bestSize){
+                bestSize=size;
+                bestCols=c;
+            }
+        }
+        setCols(bestCols);
+    },[shuffled]);
 
     // Reveal
     useEffect(()=>{
@@ -117,7 +136,7 @@ const PhotoGrid = () => {
     useEffect(()=>{
         if(!allVisible) return;
         setTimeout(()=>{
-            const groupSize=3;
+            const groupSize=Math.max(1,Math.floor(shuffled.length/5));
             const nonWinners = shuffled.filter(p=>!p.isWinner);
             const winnerPlayer = shuffled.find(p=>p.isWinner);
             const numGroups = Math.ceil(nonWinners.length/groupSize);
@@ -161,17 +180,17 @@ const PhotoGrid = () => {
     }
 
     return (
-        <div className="w-full h-screen bg-black overflow-auto p-4 relative">
-            <div className="mb-4 text-white text-center">
+        <div className="w-full h-screen bg-black relative flex flex-col items-center justify-center">
+            <div className="mb-2 text-white text-center">
                 <p className="text-lg">Visible: {visiblePhotos.size} | Eliminated: {eliminated.size} | Remaining: {visiblePhotos.size-eliminated.size}</p>
             </div>
-            <div className="grid gap-1" style={{gridTemplateColumns:`repeat(${cols}, minmax(0,1fr))`}}>
+            <div className="grid gap-1" style={{gridTemplateColumns:`repeat(${cols}, 1fr)`, width:'100%', height:'100%'}}>
                 {shuffled.map(player=>{
                     const isVisible = visiblePhotos.has(player.id);
                     const isEliminated = eliminated.has(player.id);
                     const isFlashing = flashing.has(player.id);
                     const isWinner = player.isWinner && winner;
-                    return <div key={player.id} className="relative aspect-square"
+                    return <div key={player.id} className="relative w-full h-full"
                         style={{
                             opacity:!isVisible?0:isEliminated?ELIMINATED_OPACITY:1,
                             transform:!isVisible?'scale(0.5)':isFlashing?`scale(${FLASH_SCALE})`:isEliminated?`scale(${FADE_SCALE})`:'scale(1)',
@@ -179,11 +198,9 @@ const PhotoGrid = () => {
                             zIndex:isFlashing?10:1,
                             transition:isFlashing?`all ${ELIMINATION_FLASH_DURATION}ms ease-out`:`all ${FADE_OUT_DURATION}ms ease-out`
                         }}>
-                        <div className="absolute inset-0 overflow-hidden bg-gray-900 flex items-center justify-center p-2">
-                            <img src={isWinner?winner.image:player.image} alt={player.name} className="w-full h-full object-contain"/>
-                        </div>
-                        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-xs py-1 px-2 text-center">
-                            <div className="font-bold">{player.number}</div>
+                        <img src={isWinner?winner.image:player.image} alt={player.name} className="w-full h-full object-contain"/>
+                        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-xs py-1 px-1 text-center font-bold">
+                            {player.number}
                         </div>
                         {(isEliminated||isFlashing)&&<div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black bg-opacity-70">
                             <div className="text-red-600 text-6xl font-bold drop-shadow-lg" style={{textShadow:'0 0 20px rgba(220,38,38,0.8)'}}>✕</div>
