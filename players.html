@@ -24,10 +24,10 @@ const { useState, useEffect } = React;
 const PhotoGrid = () => {
     const ELIM_FLASH_DUR = 500;
     const FADE_OUT_DUR = 700;
-    const FLASH_SCALE = 1.1;
+    const FLASH_SCALE = 1.01;
     const FADE_SCALE = 0.9;
     const ELIM_OPACITY = 0.4;
-    const FLASH_BRIGHT = 1.5;
+    const FLASH_BRIGHT = 1.2;
 
     const [visible,setVisible] = useState(new Set());
     const [eliminated,setEliminated] = useState(new Set());
@@ -129,7 +129,7 @@ const PhotoGrid = () => {
             setTimeout(()=>{
                 setVisible(prev=>new Set([...prev,idx]));
                 playFadeInSound();
-                if(order===indices.length-1) setTimeout(()=>setAllVisible(true),50);
+                if(order===indices.length-1) setTimeout(()=>setAllVisible(true),1000); // 1 sec pause
             },delay);
         });
     },[shuffled,started]);
@@ -198,7 +198,7 @@ const PhotoGrid = () => {
                     const isEliminated=eliminated.has(player.id);
                     const isFlashing=flashing.has(player.id);
                     const isWinner=player.isWinner && winner;
-                    return <div key={player.id} className="relative w-full h-full"
+                    return <div key={player.id} className="relative w-full h-full border border-white"
                         style={{
                             opacity:!isVisible?0:isEliminated?ELIM_OPACITY:1,
                             transform:!isVisible?'scale(0.5)':isFlashing?`scale(${FLASH_SCALE})`:isEliminated?`scale(${FADE_SCALE})`:'scale(1)',
@@ -207,8 +207,8 @@ const PhotoGrid = () => {
                             transition:isFlashing?`all ${ELIM_FLASH_DUR}ms ease-out`:`all ${FADE_OUT_DUR}ms ease-out`
                         }}>
                         <img src={isWinner && showWinnerCard ? winner.image : player.image} alt={player.name} className="w-full h-full object-contain"/>
-                        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-xs md:text-sm py-1 px-1 text-center font-bold">
-                            {player.number}
+                        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-green-400 text-xs md:text-sm py-1 px-1 text-center font-bold">
+                            Player {player.number}
                         </div>
                         {(isEliminated||isFlashing)&&<div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black bg-opacity-70">
                             <div className="text-red-600 text-4xl md:text-6xl font-bold drop-shadow-lg" style={{textShadow:'0 0 20px rgba(220,38,38,0.8)'}}>✕</div>
