@@ -22,167 +22,166 @@ body { margin:0; padding:0; overflow:hidden; }
 const { useState, useEffect } = React;
 
 const PhotoGrid = () => {
-    const FADE_IN_DELAY = 25;
-    const ELIMINATION_GROUP_DELAY = 600;
-    const ELIMINATION_FLASH_DURATION = 500;
-    const FADE_OUT_DURATION = 700;
+    const ELIM_FLASH_DUR = 500;
+    const FADE_OUT_DUR = 700;
     const FLASH_SCALE = 1.1;
     const FADE_SCALE = 0.9;
-    const ELIMINATED_OPACITY = 0.2;
-    const FLASH_BRIGHTNESS = 1.5;
+    const ELIM_OPACITY = 0.4;
+    const FLASH_BRIGHT = 1.5;
 
-    const [visiblePhotos,setVisiblePhotos] = useState(new Set());
+    const [visible,setVisible] = useState(new Set());
     const [eliminated,setEliminated] = useState(new Set());
     const [flashing,setFlashing] = useState(new Set());
     const [allVisible,setAllVisible] = useState(false);
     const [winner,setWinner] = useState(null);
-    const [audioContext,setAudioContext] = useState(null);
-    const [isReady,setIsReady] = useState(false);
+    const [audioCtx,setAudioCtx] = useState(null);
     const [started,setStarted] = useState(false);
     const [players,setPlayers] = useState([]);
-    const [winnerNumber,setWinnerNumber] = useState(null);
+    const [winnerNum,setWinnerNum] = useState(null);
+    const [showWinnerCard,setShowWinnerCard] = useState(true);
+    const [shuffled,setShuffled] = useState([]);
+    const [cols,setCols] = useState(1);
+
+    useEffect(()=>{
+        try{
+            const ctx = new (window.AudioContext||window.webkitAudioContext)();
+            setAudioCtx(ctx);
+        }catch(e){}
+    },[]);
 
     const fetchPlayers = async () => {
-        try{
-            const res = await fetch("https://script.google.com/macros/s/AKfycbxIRwkoQFXXWxSCxd8rP3MQvCmnkl1Ha_nAi-n3Zh4DwB_e2pzR2QMblfNhyaADx_4j/exec");
-            const data = await res.json();
-            setPlayers(data.players);
-            setWinnerNumber(data.winnerNumber);
-        }catch(e){
-            console.error("Error fetching players:",e);
-        }
+        const res = await fetch("https://script.google.com/macros/s/AKfycbxIRwkoQFXXWxSCxd8rP3MQvCmnkl1Ha_nAi-n3Zh4DwB_e2pzR2QMblfNhyaADx_4j/exec");
+        const data = await res.json();
+        setPlayers(data.players);
+        setWinnerNum(data.winnerNumber);
     };
 
-    const initAudioAndStart = () => {
+    const initGame = () => {
         setStarted(true);
         fetchPlayers();
-        let context;
-        try{
-            context = new (window.AudioContext||window.webkitAudioContext)();
-            setAudioContext(context);
-            context.resume().then(()=>setIsReady(true)).catch(()=>setIsReady(true));
-            setTimeout(()=>setIsReady(true),500);
-        }catch(e){setIsReady(true);}
     };
 
-    const playSound = (f,d,t='sine',v=0.3) => {
-        if(!audioContext) return;
-        try{
-            const o = audioContext.createOscillator();
-            const g = audioContext.createGain();
-            o.connect(g); g.connect(audioContext.destination);
-            o.frequency.value=f; o.type=t;
-            g.gain.setValueAtTime(v,audioContext.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.01,audioContext.currentTime+d);
-            o.start(audioContext.currentTime);
-            o.stop(audioContext.currentTime+d);
-        }catch(e){}
+    const playSound = (freq,dur,type='sine',vol=0.3)=>{
+        if(!audioCtx) return;
+        const o=audioCtx.createOscillator();
+        const g=audioCtx.createGain();
+        o.connect(g); g.connect(audioCtx.destination);
+        o.frequency.value=freq; o.type=type;
+        g.gain.setValueAtTime(vol,audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+dur);
+        o.start(audioCtx.currentTime); o.stop(audioCtx.currentTime+dur);
     };
-    const playPopSound = () => playSound(1200,0.08,'sine',0.15);
-    const playEliminationSound = () => { playSound(80,0.15,'sawtooth',0.4); setTimeout(()=>playSound(60,0.1,'sawtooth',0.3),50); }
-    const playWinnerSound = () => { setTimeout(()=>playSound(523.25,0.5,'triangle',0.3),0); setTimeout(()=>playSound(659.25,0.5,'triangle',0.3),150); setTimeout(()=>playSound(783.99,0.7,'triangle',0.3),300); setTimeout(()=>playSound(1046.5,1.0,'triangle',0.4),450); }
 
-    const [shuffled,setShuffled] = useState([]);
+    const playFadeInSound=()=>playSound(1000,0.08,'sine',0.2);
+    const playElimSound=()=>playSound(200,0.12,'triangle',0.3);
+    const playWinnerSound=()=>{
+        playSound(523.25,0.5,'triangle',0.3);
+        setTimeout(()=>playSound(659.25,0.5,'triangle',0.3),150);
+        setTimeout(()=>playSound(783.99,0.7,'triangle',0.3),300);
+        setTimeout(()=>playSound(1046.5,1.0,'triangle',0.4),450);
+    };
+
     useEffect(()=>{
         if(players.length===0) return;
-        const pos = [...Array(players.length).keys()];
+        const pos=[...Array(players.length).keys()];
         for(let i=pos.length-1;i>0;i--){
-            const j = Math.floor(Math.random()*(i+1));
+            const j=Math.floor(Math.random()*(i+1));
             [pos[i],pos[j]]=[pos[j],pos[i]];
         }
         const mapped = pos.map((p,i)=>({
             ...players[p],
             id:i,
-            isWinner: players[p].number === winnerNumber
+            isWinner: players[p].number===winnerNum
         }));
         setShuffled(mapped);
-    },[players,winnerNumber]);
+    },[players,winnerNum]);
 
-    // Calculate grid to fit all images
-    const [cols,setCols] = useState(1);
     useEffect(()=>{
         if(shuffled.length===0) return;
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-        const total = shuffled.length;
+        const sw=window.innerWidth; const sh=window.innerHeight;
+        const total=shuffled.length;
         let bestCols=1,bestSize=0;
         for(let c=1;c<=total;c++){
-            const r = Math.ceil(total/c);
-            const cellW = screenWidth/c;
-            const cellH = screenHeight/r;
-            const size = Math.min(cellW,cellH);
-            if(size>bestSize){
-                bestSize=size;
-                bestCols=c;
-            }
+            const r=Math.ceil(total/c);
+            const cw=sw/c; const ch=sh/r;
+            const size=Math.min(cw,ch);
+            if(size>bestSize){bestSize=size;bestCols=c;}
         }
         setCols(bestCols);
     },[shuffled]);
 
-    // Reveal randomly
+    // Fade-in: first 5 slower, rest finish in <2s
     useEffect(()=>{
-        if(!isReady || shuffled.length===0) return;
-        const indices = [...Array(shuffled.length).keys()];
+        if(!started || shuffled.length===0) return;
+        const indices=[...Array(shuffled.length).keys()];
         for(let i=indices.length-1;i>0;i--){
-            const j = Math.floor(Math.random()*(i+1));
+            const j=Math.floor(Math.random()*(i+1));
             [indices[i],indices[j]]=[indices[j],indices[i]];
         }
-        indices.forEach((index, order)=>{
-            setTimeout(()=>{
-                setVisiblePhotos(prev=>new Set([...prev,index]));
-                if(order % 5 === 0) playPopSound();
-                if(order === indices.length-1) setTimeout(()=>setAllVisible(true),100);
-            }, order*FADE_IN_DELAY);
-        });
-    },[shuffled,isReady]);
+        const totalFast = shuffled.length - 5;
+        const fastDuration = 2000; // 2 seconds total for remaining
+        const perFast = fastDuration / totalFast;
 
-    // Elimination randomly
+        indices.forEach((idx,order)=>{
+            let delay;
+            if(order<5) delay = order*400; // first 5 slow
+            else delay = 5*400 + (order-5)*perFast; // rest fast
+            setTimeout(()=>{
+                setVisible(prev=>new Set([...prev,idx]));
+                playFadeInSound();
+                if(order===indices.length-1) setTimeout(()=>setAllVisible(true),50);
+            },delay);
+        });
+    },[shuffled,started]);
+
+    // Random elimination
     useEffect(()=>{
         if(!allVisible) return;
         setTimeout(()=>{
-            const groupSize = Math.max(1,Math.floor(shuffled.length/5));
-            const nonWinners = shuffled.filter(p=>!p.isWinner);
-            const winnerPlayer = shuffled.find(p=>p.isWinner);
-
-            let remaining = [...nonWinners];
-            const numGroups = Math.ceil(nonWinners.length/groupSize);
+            const groupSize=Math.max(1,Math.floor(shuffled.length/5));
+            const nonWinners=shuffled.filter(p=>!p.isWinner);
+            const winnerPlayer=shuffled.find(p=>p.isWinner);
+            let remaining=[...nonWinners];
+            const numGroups=Math.ceil(nonWinners.length/groupSize);
 
             for(let i=0;i<numGroups;i++){
                 setTimeout(()=>{
-                    const group = [];
+                    const group=[];
                     for(let g=0;g<groupSize && remaining.length>0;g++){
-                        const randIdx = Math.floor(Math.random()*remaining.length);
+                        const randIdx=Math.floor(Math.random()*remaining.length);
                         group.push(remaining[randIdx].id);
                         remaining.splice(randIdx,1);
                     }
-
                     setFlashing(prev=>new Set([...prev,...group]));
-                    playEliminationSound();
-
+                    playElimSound();
                     setTimeout(()=>{
                         setEliminated(prev=>{
-                            const newSet = new Set(prev);
+                            const newSet=new Set(prev);
                             group.forEach(id=>newSet.add(id));
                             return newSet;
                         });
                         setFlashing(prev=>{
-                            const newSet = new Set(prev);
+                            const newSet=new Set(prev);
                             group.forEach(id=>newSet.delete(id));
                             return newSet;
                         });
-                    }, ELIMINATION_FLASH_DURATION);
+                    },ELIM_FLASH_DUR);
 
                     if(i===numGroups-1){
-                        setTimeout(()=>{ playWinnerSound(); setWinner(winnerPlayer); }, ELIMINATION_FLASH_DURATION+1000);
+                        setTimeout(()=>{
+                            setWinner(winnerPlayer);
+                            setShowWinnerCard(true);
+                            playWinnerSound();
+                        },ELIM_FLASH_DUR+100);
                     }
-                }, i*ELIMINATION_GROUP_DELAY);
+                },i*ELIM_FLASH_DUR*2);
             }
-        },1000);
-    },[allVisible, shuffled]);
+        },50);
+    },[allVisible,shuffled]);
 
     if(!started){
         return <div className="w-full h-screen flex items-center justify-center bg-black">
-            <button onClick={initAudioAndStart} className="bg-pink-500 hover:bg-pink-600 text-white text-xl font-bold py-6 px-12 rounded-lg shadow-lg animate-fadeIn">
+            <button onClick={initGame} className="bg-pink-500 hover:bg-pink-600 text-white text-xl font-bold py-6 px-6 md:px-12 rounded-lg shadow-lg animate-fadeIn text-center">
                 Show contestants of 1st Real Life - Squid Game Albania
             </button>
         </div>
@@ -191,48 +190,49 @@ const PhotoGrid = () => {
     return (
         <div className="w-full h-screen bg-black relative flex flex-col items-center justify-center">
             <div className="mb-2 text-white text-center">
-                <p className="text-lg">Visible: {visiblePhotos.size} | Eliminated: {eliminated.size} | Remaining: {visiblePhotos.size-eliminated.size}</p>
+                <p className="text-sm md:text-lg">Visible: {visible.size} | Eliminated: {eliminated.size} | Remaining: {visible.size-eliminated.size}</p>
             </div>
-            <div className="grid gap-1" style={{gridTemplateColumns:`repeat(${cols}, 1fr)`, width:'100%', height:'100%'}}>
+            <div className="grid gap-1 w-full h-full" style={{gridTemplateColumns:`repeat(${cols},1fr)`}}>
                 {shuffled.map(player=>{
-                    const isVisible = visiblePhotos.has(player.id);
-                    const isEliminated = eliminated.has(player.id);
-                    const isFlashing = flashing.has(player.id);
-                    const isWinner = player.isWinner && winner;
+                    const isVisible=visible.has(player.id);
+                    const isEliminated=eliminated.has(player.id);
+                    const isFlashing=flashing.has(player.id);
+                    const isWinner=player.isWinner && winner;
                     return <div key={player.id} className="relative w-full h-full"
                         style={{
-                            opacity:!isVisible?0:isEliminated?ELIMINATED_OPACITY:1,
+                            opacity:!isVisible?0:isEliminated?ELIM_OPACITY:1,
                             transform:!isVisible?'scale(0.5)':isFlashing?`scale(${FLASH_SCALE})`:isEliminated?`scale(${FADE_SCALE})`:'scale(1)',
-                            filter:isFlashing?`brightness(${FLASH_BRIGHTNESS})`:'none',
+                            filter:isFlashing?`brightness(${FLASH_BRIGHT})`:'none',
                             zIndex:isFlashing?10:1,
-                            transition:isFlashing?`all ${ELIMINATION_FLASH_DURATION}ms ease-out`:`all ${FADE_OUT_DURATION}ms ease-out`
+                            transition:isFlashing?`all ${ELIM_FLASH_DUR}ms ease-out`:`all ${FADE_OUT_DUR}ms ease-out`
                         }}>
-                        <img src={isWinner?winner.image:player.image} alt={player.name} className="w-full h-full object-contain"/>
-                        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-xs py-1 px-1 text-center font-bold">
+                        <img src={isWinner && showWinnerCard ? winner.image : player.image} alt={player.name} className="w-full h-full object-contain"/>
+                        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-xs md:text-sm py-1 px-1 text-center font-bold">
                             {player.number}
                         </div>
                         {(isEliminated||isFlashing)&&<div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black bg-opacity-70">
-                            <div className="text-red-600 text-6xl font-bold drop-shadow-lg" style={{textShadow:'0 0 20px rgba(220,38,38,0.8)'}}>✕</div>
+                            <div className="text-red-600 text-4xl md:text-6xl font-bold drop-shadow-lg" style={{textShadow:'0 0 20px rgba(220,38,38,0.8)'}}>✕</div>
                         </div>}
                     </div>
                 })}
             </div>
 
-            {winner && <div className="fixed inset-0 flex items-center justify-center z-50 animate-fadeIn">
+            {winner && showWinnerCard && <div className="fixed inset-0 flex items-center justify-center z-50 animate-fadeIn">
                 <div className="absolute inset-0 bg-black bg-opacity-80"/>
                 <div className="relative animate-scaleIn">
                     <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 rounded-lg blur-3xl opacity-75 animate-pulse" style={{transform:'scale(1.5)'}}/>
-                    <div className="relative bg-gradient-to-br from-yellow-500 to-yellow-600 p-2 rounded-lg shadow-2xl">
-                        <div className="w-80 h-80 overflow-hidden rounded-lg border-4 border-yellow-300 flex items-center justify-center">
+                    <div className="relative bg-gradient-to-br from-yellow-500 to-yellow-600 p-2 rounded-lg shadow-2xl w-72 md:w-96">
+                        <button onClick={()=>setShowWinnerCard(false)} className="absolute top-2 right-2 text-white font-bold text-xl bg-red-600 px-3 py-1 rounded-lg z-50">X</button>
+                        <div className="w-full h-72 md:h-80 overflow-hidden rounded-lg border-4 border-yellow-300 flex items-center justify-center">
                             <img src={winner.image} alt={winner.name} className="w-full h-full object-contain"/>
                         </div>
                         <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-yellow-500 px-8 py-3 rounded-full shadow-xl border-4 border-yellow-300">
-                            <div className="text-2xl font-bold text-white flex items-center gap-2">
-                                <span className="text-3xl">👑</span>WINNER<span className="text-3xl">👑</span>
+                            <div className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+                                <span className="text-2xl md:text-3xl">👑</span>WINNER<span className="text-2xl md:text-3xl">👑</span>
                             </div>
                         </div>
                         <div className="mt-4 text-center bg-black bg-opacity-30 rounded-lg py-3 px-4">
-                            <div className="text-3xl font-bold text-white mb-1">Player {winner.number}</div>
+                            <div className="text-2xl md:text-3xl font-bold text-white mb-1">Player {winner.number}</div>
                         </div>
                     </div>
                 </div>
