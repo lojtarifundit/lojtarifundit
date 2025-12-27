@@ -628,6 +628,10 @@ async function setupSponsorCarousel() {
     // Add click interactions
     document.querySelectorAll('.cta, .btn, .pill').forEach(button => {
       button.addEventListener('click', (e) => {
+
+		  if (button.tagName === 'A' && button.href) return;
+
+		  
         e.preventDefault();
         // Create ripple effect
         const ripple = document.createElement('span');
@@ -657,6 +661,7 @@ async function setupSponsorCarousel() {
 </body>
 
 </html>
+
 
 
 
