@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ Section</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #0b0b0f;
+      margin: 0;
+      padding: 50px;
+      color: #fff;
+    }
+
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: #ff2d55;
+    }
+
+    .faq-item {
+      background: #0f0f16;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .faq-question {
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 18px 20px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      transition: background 0.3s ease;
+    }
+
+    .faq-question:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+      transition: all 0.4s ease;
+      padding: 0 20px;
+      line-height: 1.6;
+      color: #a8a8b3;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 300px;
+      padding: 15px 20px;
+    }
+
+    .faq-icon {
+      font-size: 20px;
+      color: #ff2d55;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+  </style>
+</head>
+<body>
+
+  <section class="faq-container">
+    <h2 class="faq-title">Frequently Asked Questions</h2>
+    <div id="faqList"></div>
+  </section>
+
+  <script>
+    async function loadFAQData() {
+      try {
+        const url = "https://script.google.com/macros/s/AKfycbzMWz4hkSNCeZcVu4olWL7-B6frxrYwLSQexZaYSFzhdw_F5I97FS-xu4aOPiWr8b9a/exec";
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+      } catch (e) {
+        console.error("Error loading FAQ data:", e);
+        return [];
+      }
+    }
+
+    async function setupFAQSection() {
+      const faqList = document.getElementById('faqList');
+      if (!faqList) return;
+      
+      const faqs = await loadFAQData();
+      
+      if (faqs.length === 0) {
+        faqList.innerHTML = '<p style="text-align:center;color:#a8a8b3;">No FAQs available at the moment.</p>';
+        return;
+      }
+      
+      faqs.forEach((faq) => {
+        const item = document.createElement('div');
+        item.className = 'faq-item';
+        item.innerHTML = `
+          <button class="faq-question">
+            ${faq.Header}
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            ${faq.Description}
+          </div>
+        `;
+        faqList.appendChild(item);
+      });
+      
+      document.querySelectorAll(".faq-item").forEach((faq) => {
+        faq.querySelector(".faq-question").addEventListener("click", () => {
+          document.querySelectorAll(".faq-item").forEach((item) => {
+            if (item !== faq) item.classList.remove("active");
+          });
+          faq.classList.toggle("active");
+        });
+      });
+    }
+
+    window.addEventListener('load', () => {
+      setupFAQSection();
+    });
+  </script>
+
+</body>
+</html>
