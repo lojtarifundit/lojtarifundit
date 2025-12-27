@@ -1,1 +1,19 @@
+
+     <!-- HEADER PLACEHOLDER -->
+  <div id="header"></div>
+  
+  <script>
+    fetch('headerMenu.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header').innerHTML = data;
+      });
+  </script>
+
+
+    <!-- LOAD HEADER CSS CORRECTLY -->
+  <link rel="stylesheet" href="HeaderStyle.css">
+
+
+
 Coming Soon
