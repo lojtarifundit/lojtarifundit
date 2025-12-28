@@ -33,7 +33,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
         }
 
@@ -59,6 +60,7 @@
             padding: 20px;
             position: relative;
             z-index: 1;
+            padding-bottom: 100px;
         }
 
         .header {
@@ -101,7 +103,7 @@
         }
 
         .subtitle {
-            font-size: clamp(1rem, 3vw, 1.4rem);
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
             text-transform: uppercase;
             letter-spacing: 3px;
             color: var(--warning-yellow);
@@ -432,22 +434,33 @@
 
         @media (max-width: 600px) {
             .game-info {
-                flex-direction: column;
-                gap: 15px;
+                padding: 15px 10px;
             }
 
             .stat {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                padding-bottom: 10px;
+                padding: 0;
             }
 
-            .stat:last-child {
-                border-bottom: none;
-                padding-bottom: 0;
+            .stat-label {
+                font-size: 0.75rem;
+                margin-bottom: 3px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
             }
 
             .glass-panel {
                 aspect-ratio: 1;
+            }
+
+            .bridge {
+                padding: 40px 10px;
+            }
+
+            .button {
+                padding: 15px 30px;
+                font-size: 1.3rem;
             }
         }
 
@@ -471,15 +484,11 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">
-                SQUID GAME<br>
-                <span>ALBANIA</span>
-            </div>
-            <div class="subtitle">Season 2 • Glass Bridge</div>
+            <div class="subtitle">LOJTARI FUNDIT - BRIDGE GAME</div>
         </div>
 
         <div class="instructions">
-            Zgjidh xhamin e sigurt për të kaluar! Një gabim = Eliminim.
+            Zgjidh xhamin e sigurt për të kaluar!
         </div>
 
         <div class="game-info">
