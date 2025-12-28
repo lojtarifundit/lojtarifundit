@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Bridge Challenge - Squid Game Albania S2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blood-red: #d32f2f;
+            --dark-bg: #0a0a0a;
+            --glass-blue: #1e88e5;
+            --glass-cyan: #00bcd4;
+            --warning-yellow: #ffc107;
+            --death-red: #b71c1c;
+            --success-green: #00e676;
+            --text-white: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Barlow Condensed', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            color: var(--text-white);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.03) 2px, rgba(255, 255, 255, 0.03) 4px);
+            animation: scan 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50%); }
+        }
+
+        .container {
+            max-width: 800px;
+            width: 95%;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2rem, 8vw, 4.5rem);
+            letter-spacing: 4px;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(211, 47, 47, 0.5);
+        }
+
+        .logo span {
+            color: var(--blood-red);
+            display: inline-block;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 2px); }
+            94% { transform: translate(2px, -2px); }
+            96% { transform: translate(-2px, -2px); }
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--warning-yellow);
+            font-weight: 700;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(211, 47, 47, 0.3);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--warning-yellow);
+        }
+
+        .bridge-container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+
+        .bridge {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-origin: top center;
+        }
+
+        .row {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .glass-panel {
+            aspect-ratio: 1;
+            border: 3px solid rgba(30, 136, 229, 0.5);
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            background: 
+                linear-gradient(135deg, rgba(211, 47, 47, 0.15), transparent),
+                linear-gradient(135deg, rgba(30, 136, 229, 0.1), rgba(0, 188, 212, 0.1));
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .glass-panel::after {
+            content: '🦅';
+            position: absolute;
+            font-size: 3rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.15;
+            pointer-events: none;
+            filter: drop-shadow(0 0 10px rgba(211, 47, 47, 0.3));
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .glass-panel:hover::before {
+            transform: translateX(100%);
+        }
+
+        .glass-panel:hover:not(.revealed):not(.broken):not(.safe) {
+            transform: scale(1.05);
+            border-color: rgba(30, 136, 229, 1);
+            box-shadow: 0 0 30px rgba(30, 136, 229, 0.6);
+        }
+
+        .glass-panel.safe {
+            background: linear-gradient(135deg, rgba(0, 230, 118, 0.3), rgba(0, 230, 118, 0.1));
+            border-color: var(--success-green);
+            animation: safeGlow 1s ease;
+            cursor: default;
+        }
+
+        @keyframes safeGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 230, 118, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 230, 118, 0.8); }
+        }
+
+        .glass-panel.broken {
+            background: linear-gradient(135deg, rgba(183, 28, 28, 0.4), rgba(211, 47, 47, 0.2));
+            border-color: var(--death-red);
+            animation: shatter 0.6s ease;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        @keyframes shatter {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(0.8); opacity: 0.3; }
+        }
+
+        .glass-panel.current-row {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { border-color: rgba(30, 136, 229, 0.5); }
+            50% { border-color: rgba(255, 193, 7, 0.8); }
+        }
+
+        .glass-panel .panel-icon {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .glass-panel.safe .panel-icon {
+            opacity: 1;
+            color: var(--success-green);
+            animation: iconPop 0.5s ease;
+        }
+
+        .glass-panel.broken .panel-icon {
+            opacity: 1;
+            color: var(--death-red);
+            animation: iconPop 0.5s ease;
+        }
+
+        @keyframes iconPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .message {
+            text-align: center;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 30px 0;
+            min-height: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .message.success {
+            color: var(--success-green);
+            text-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+        }
+
+        .message.danger {
+            color: var(--death-red);
+            text-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 18px 40px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--blood-red), #b71c1c);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(211, 47, 47, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .button:hover::before {
+            transform: translateX(100%);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(211, 47, 47, 0.6);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button.secondary {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #0a0a0a);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            border: 3px solid var(--blood-red);
+            box-shadow: 0 0 60px rgba(211, 47, 47, 0.5);
+            animation: modalSlide 0.5s ease;
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+        }
+
+        .modal-title.win {
+            color: var(--success-green);
+            text-shadow: 0 0 20px rgba(0, 230, 118, 0.5);
+        }
+
+        .modal-title.lose {
+            color: var(--death-red);
+            text-shadow: 0 0 20px rgba(211, 47, 47, 0.5);
+        }
+
+        .modal-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .player-marker {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--warning-yellow);
+            border-radius: 50%;
+            border: 3px solid var(--dark-bg);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 600px) {
+            .game-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .stat {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding-bottom: 10px;
+            }
+
+            .stat:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+
+            .glass-panel {
+                aspect-ratio: 1;
+            }
+        }
+
+        .instructions {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            animation: fadeIn 1s ease 0.6s both;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                SQUID GAME<br>
+                <span>ALBANIA</span>
+            </div>
+            <div class="subtitle">Season 2 • Glass Bridge</div>
+        </div>
+
+        <div class="instructions">
+            Zgjidh xhamin e sigurt për të kaluar! Një gabim = Eliminim.
+        </div>
+
+        <div class="game-info">
+            <div class="stat">
+                <div class="stat-label">Nivel</div>
+                <div class="stat-value" id="level">1</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Shkallë</div>
+                <div class="stat-value" id="step">0/3</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Jetë</div>
+                <div class="stat-value" id="lives">❤️</div>
+            </div>
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="bridge-container">
+            <div class="bridge" id="bridge"></div>
+        </div>
+
+        <button class="button secondary" id="startBtn" onclick="startGame()">Fillo Lojën</button>
+    </div>
+
+    <div class="modal" id="gameOverModal">
+        <div class="modal-content">
+            <div class="modal-title lose">ELIMINUAR!</div>
+            <div class="modal-text">
+                Xhami u thye! Ti ra nga ura.<br><br>
+                Arrite deri në <strong>shkallën <span id="finalStep">0</span></strong>.<br><br>
+                Dëshiron të regjistrohesh për <strong>Squid Game Albania Season 2</strong>?<br>
+                10 lojëra reale në 2500m² fushë!
+            </div>
+            <button class="button" onclick="register()">Regjistrohu Tani</button>
+            <button class="button secondary" onclick="closeModal()">Provo Përsëri</button>
+        </div>
+    </div>
+
+    <div class="modal" id="winModal">
+        <div class="modal-content">
+            <div class="modal-title win">FITORE!</div>
+            <div class="modal-text">
+                Urime! Kalove urën me sukses!<br><br>
+                Niveli <span id="winLevel">1</span> përfundoi.<br><br>
+                A je gati për sfidën e vërtetë?<br>
+                Regjistrohu për <strong>Squid Game Albania Season 2</strong>!
+            </div>
+            <button class="button" onclick="register()">Regjistrohu Tani</button>
+            <button class="button secondary" onclick="nextLevel()">Nivel Tjetër</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let currentLevel = 1;
+        let gameActive = false;
+        let totalSteps = 3;
+        let bridge = [];
+        let hasLife = true;
+
+        function initGame() {
+            currentStep = 0;
+            bridge = [];
+            
+            for (let i = 0; i < totalSteps; i++) {
+                bridge.push(Math.random() < 0.5 ? 0 : 1);
+            }
+            
+            const bridgeEl = document.getElementById('bridge');
+            bridgeEl.style.transform = 'translateY(0)';
+            
+            renderBridge();
+            updateUI();
+        }
+
+        function renderBridge() {
+            const bridgeEl = document.getElementById('bridge');
+            bridgeEl.innerHTML = '';
+            
+            // More precise calculation for movement
+            // Get the actual rendered size after the bridge is built
+            setTimeout(() => {
+                const firstRow = bridgeEl.querySelector('.row');
+                if (firstRow && currentStep > 0) {
+                    const rowRect = firstRow.getBoundingClientRect();
+                    const rowHeight = rowRect.height + 20; // actual height + gap
+                    const moveDistance = currentStep * rowHeight;
+                    bridgeEl.style.transform = `translateY(-${moveDistance}px)`;
+                }
+            }, 10);
+            
+            for (let i = 0; i < totalSteps; i++) {
+                const row = document.createElement('div');
+                row.className = 'row';
+                
+                for (let j = 0; j < 2; j++) {
+                    const panel = document.createElement('div');
+                    panel.className = 'glass-panel';
+                    
+                    if (i === currentStep) {
+                        panel.classList.add('current-row');
+                    }
+                    
+                    // Mark already completed steps as safe
+                    if (i < currentStep) {
+                        panel.classList.add('safe');
+                        if (bridge[i] === j) {
+                            const icon = document.createElement('div');
+                            icon.className = 'panel-icon';
+                            icon.textContent = '✓';
+                            icon.style.opacity = '1';
+                            panel.appendChild(icon);
+                        }
+                    } else {
+                        const icon = document.createElement('div');
+                        icon.className = 'panel-icon';
+                        panel.appendChild(icon);
+                        
+                        // TESTING: Show correct glass with green border
+                        if (bridge[i] === j) {
+                            panel.style.borderColor = 'rgba(0, 230, 118, 0.6)';
+                            panel.style.boxShadow = '0 0 15px rgba(0, 230, 118, 0.4)';
+                        }
+                    }
+                    
+                    panel.onclick = () => selectPanel(i, j);
+                    row.appendChild(panel);
+                }
+                
+                bridgeEl.appendChild(row);
+            }
+        }
+
+        function selectPanel(step, side) {
+            if (!gameActive || step !== currentStep) return;
+            
+            const panels = document.querySelectorAll('.row')[step].querySelectorAll('.glass-panel');
+            const selectedPanel = panels[side];
+            const icon = selectedPanel.querySelector('.panel-icon');
+            
+            if (bridge[step] === side) {
+                // Correct choice
+                selectedPanel.classList.remove('current-row');
+                selectedPanel.classList.add('safe');
+                icon.textContent = '✓';
+                
+                document.getElementById('message').textContent = 'E SAKTË!';
+                document.getElementById('message').className = 'message success';
+                
+                currentStep++;
+                updateUI();
+                
+                if (currentStep >= totalSteps) {
+                    setTimeout(() => {
+                        gameActive = false;
+                        showWinModal();
+                    }, 1000);
+                } else {
+                    setTimeout(() => {
+                        renderBridge();
+                        document.getElementById('message').textContent = '';
+                    }, 800);
+                }
+            } else {
+                // Wrong choice
+                selectedPanel.classList.remove('current-row');
+                selectedPanel.classList.add('broken');
+                icon.textContent = '✕';
+                
+                document.getElementById('message').textContent = 'GABIM!';
+                document.getElementById('message').className = 'message danger';
+                
+                if (hasLife) {
+                    hasLife = false;
+                    updateUI();
+                    setTimeout(() => {
+                        selectedPanel.classList.remove('broken');
+                        selectedPanel.classList.add('revealed');
+                        renderBridge();
+                        document.getElementById('message').textContent = 'Mundësi e dytë!';
+                        document.getElementById('message').className = 'message';
+                        setTimeout(() => {
+                            document.getElementById('message').textContent = '';
+                        }, 1500);
+                    }, 1500);
+                } else {
+                    gameActive = false;
+                    setTimeout(() => {
+                        showGameOverModal();
+                    }, 1500);
+                }
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('level').textContent = currentLevel;
+            document.getElementById('step').textContent = `${currentStep}/${totalSteps}`;
+            document.getElementById('lives').textContent = hasLife ? '❤️' : '💔';
+        }
+
+        function startGame() {
+            gameActive = true;
+            hasLife = true;
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('message').textContent = 'Zgjidh me kujdes...';
+            document.getElementById('message').className = 'message';
+            initGame();
+            
+            setTimeout(() => {
+                document.getElementById('message').textContent = '';
+            }, 2000);
+        }
+
+        function showGameOverModal() {
+            document.getElementById('finalStep').textContent = currentStep;
+            document.getElementById('gameOverModal').classList.add('active');
+        }
+
+        function showWinModal() {
+            document.getElementById('winLevel').textContent = currentLevel;
+            document.getElementById('winModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('gameOverModal').classList.remove('active');
+            document.getElementById('winModal').classList.remove('active');
+            resetGame();
+        }
+
+        function resetGame() {
+            currentStep = 0;
+            hasLife = true;
+            document.getElementById('startBtn').style.display = 'block';
+            document.getElementById('bridge').innerHTML = '';
+            document.getElementById('bridge').style.transform = 'translateY(0)';
+            document.getElementById('message').textContent = '';
+            updateUI();
+        }
+
+        function nextLevel() {
+            currentLevel++;
+            totalSteps = Math.min(3 + (currentLevel - 1) * 2, 15);
+            closeModal();
+            startGame();
+        }
+
+        function register() {
+            // Redirect to registration page
+            alert('Regjistrimi do të hapet së shpejti!\n\nNa ndiqni për më shumë informacion:\n📧 info@squidgamealbania.com\n📱 Instagram: @squidgamealbania');
+            
+            // You can replace this with actual registration link:
+            // window.location.href = 'https://your-registration-page.com';
+        }
+
+        // Initialize on load
+        window.onload = () => {
+            updateUI();
+        };
+    </script>
+</body>
+</html>
