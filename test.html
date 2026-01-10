@@ -519,7 +519,7 @@
       try {
         // TODO: Replace this URL with your NEW news-specific Google Apps Script URL
         // This should be DIFFERENT from your sponsors URL
-        const url = "https://script.google.com/macros/s/AKfycbwLfjcRc49CpAiEDLavn5cVCUuO9j9kCFQWt7CZUwyn2FYlXA7u9aibgKYL9jn1WmCg/exec";
+        const url = "YOUR_NEWS_SCRIPT_URL_HERE";
         const res = await fetch(url);
         const data = await res.json();
         return data;
@@ -537,12 +537,34 @@
         return;
       }
 
+      console.log("News data loaded:", newsData); // Debug: see what data we got
+
       newsData.forEach((news, i) => {
         const item = document.createElement('div');
         item.className = 'news-item' + (i === 0 ? ' active' : '');
-        // Image path format: News/imagename.jpg from GitHub
-        const imagePath = news["Image Name"] ? `News/${news["Image Name"]}` : '';
-        item.innerHTML = `<img src="${imagePath}" class="news-item-image" onerror="this.src='https://via.placeholder.com/400x300?text=News'"/><h3 class="news-item-title">${news["Event Name"] || 'Untitled'}</h3><div class="news-item-date">${news["Date"] || ''}</div>`;
+        
+        // Use column positions instead of names:
+        // Column 0 = Event Name
+        // Column 1 = Date
+        // Column 2 = Image Name
+        // Column 3 = Link
+        const columns = Object.values(news);
+        const eventName = (columns[0] || 'Untitled').toString().trim();
+        const date = (columns[1] || '').toString().trim();
+        const imageName = (columns[2] || '').toString().trim();
+        const link = (columns[3] || '#').toString().trim();
+        
+        // Construct image path: News/imagename.png
+        const imagePath = imageName ? `News/${imageName}` : '';
+        
+        console.log(`News item ${i}:`, {eventName, date, imageName, link, imagePath}); // Debug
+        
+        // Make image clickable with the link from column 3
+        const imageHtml = imagePath 
+          ? `<a href="${link}" target="_blank" rel="noopener noreferrer"><img src="${imagePath}" class="news-item-image" onerror="this.src='https://via.placeholder.com/400x300?text=News';console.error('Failed to load: ${imagePath}')"/></a>`
+          : `<img src="https://via.placeholder.com/400x300?text=News" class="news-item-image"/>`;
+        
+        item.innerHTML = `${imageHtml}<h3 class="news-item-title">${eventName}</h3><div class="news-item-date">${date}</div>`;
         newsContainer.appendChild(item);
 
         const dot = document.createElement('div');
