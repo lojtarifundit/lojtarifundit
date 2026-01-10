@@ -535,41 +535,32 @@
         return;
       }
 
-      console.log("News data loaded:", newsData); // Debug: see what data we got
+      console.log("News data loaded:", newsData);
 
       newsData.forEach((news, i) => {
         const item = document.createElement('div');
         item.className = 'news-item' + (i === 0 ? ' active' : '');
         
-        // Use column positions instead of names:
-        // Column 0 = Event Name
-        // Column 1 = Date
-        // Column 2 = Image Name
-        // Column 3 = Link
+        // Get data using column positions (same as your spreadsheet)
         const columns = Object.values(news);
         const eventName = (columns[0] || 'Untitled').toString().trim();
         const date = (columns[1] || '').toString().trim();
-        let imageName = (columns[2] || '').toString().trim();
+        const imageName = (columns[2] || '').toString().trim();
         let link = (columns[3] || '#').toString().trim();
         
-        // Fix link: if it doesn't start with http:// or https://, add https://
+        // Fix link if needed
         if (link && link !== '#' && !link.startsWith('http://') && !link.startsWith('https://')) {
           link = 'https://' + link;
         }
         
-        // Construct image path
-        // If imageName already contains 'News/', use as is
-        // Otherwise, prepend 'News/'
-        let imagePath = '';
-        if (imageName) {
-          imagePath = imageName.includes('News/') ? imageName : `News/${imageName}`;
-        }
+        // Use imageName exactly as it is from the spreadsheet (e.g., "News/lajthiza.png")
+        const imagePath = imageName || 'https://via.placeholder.com/400x300?text=News';
         
-        console.log(`News item ${i}:`, {eventName, date, imageName, link, imagePath}); // Debug
+        console.log(`News item ${i}:`, {eventName, date, imageName, link, imagePath});
         
-        // Make image clickable with the link from column 3
-        const imageHtml = imagePath 
-          ? `<a href="${link}" target="_blank" rel="noopener noreferrer"><img src="${imagePath}" class="news-item-image" onerror="this.src='https://via.placeholder.com/400x300?text=News';console.error('Failed to load: ${imagePath}')"/></a>`
+        // Make image clickable
+        const imageHtml = imageName 
+          ? `<a href="${link}" target="_blank" rel="noopener noreferrer"><img src="${imagePath}" class="news-item-image" onerror="this.src='https://via.placeholder.com/400x300?text=Image+Not+Found';console.error('Failed to load: ${imagePath}')"/></a>`
           : `<img src="https://via.placeholder.com/400x300?text=News" class="news-item-image"/>`;
         
         item.innerHTML = `${imageHtml}<h3 class="news-item-title">${eventName}</h3><div class="news-item-date">${date}</div>`;
@@ -732,9 +723,9 @@
     // Navbar scroll effect
     window.addEventListener('scroll', () => {
       const navbar = document.getElementById('navbar');
-      if (window.scrollY > 100) {
+      if (navbar && window.scrollY > 100) {
         navbar.classList.add('scrolled');
-      } else {
+      } else if (navbar) {
         navbar.classList.remove('scrolled');
       }
     });
