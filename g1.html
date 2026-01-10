@@ -30,12 +30,11 @@
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
             color: var(--text-white);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: block;
             overflow-x: hidden;
             overflow-y: auto;
             position: relative;
+            padding: 20px 0;
         }
 
         body::before {
@@ -60,7 +59,8 @@
             padding: 20px;
             position: relative;
             z-index: 1;
-            padding-bottom: 100px;
+            margin: 0 auto;
+            padding-bottom: 40px;
         }
 
         .header {
@@ -150,6 +150,7 @@
             perspective: 1000px;
             margin-bottom: 30px;
             min-height: 400px;
+            max-height: 50vh;
             position: relative;
             overflow: hidden;
             mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
@@ -433,8 +434,28 @@
         }
 
         @media (max-width: 600px) {
+            body {
+                padding: 10px 0;
+            }
+
+            .header {
+                margin-bottom: 20px;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+            }
+
+            .instructions {
+                margin-bottom: 15px;
+                padding: 10px;
+                font-size: 0.95rem;
+            }
+
             .game-info {
-                padding: 15px 10px;
+                padding: 12px 10px;
+                margin-bottom: 20px;
             }
 
             .stat {
@@ -442,25 +463,53 @@
             }
 
             .stat-label {
-                font-size: 0.75rem;
+                font-size: 0.7rem;
                 margin-bottom: 3px;
             }
 
             .stat-value {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+            }
+
+            .message {
+                font-size: 1rem;
+                margin: 15px 0;
+                min-height: 30px;
+            }
+
+            .bridge-container {
+                min-height: 300px;
+                max-height: 45vh;
+                margin-bottom: 20px;
             }
 
             .glass-panel {
                 aspect-ratio: 1;
             }
 
+            .glass-panel::after {
+                font-size: 2rem;
+            }
+
             .bridge {
-                padding: 40px 10px;
+                padding: 30px 10px;
+                gap: 15px;
+            }
+
+            .row {
+                gap: 15px;
             }
 
             .button {
-                padding: 15px 30px;
-                font-size: 1.3rem;
+                padding: 14px 30px;
+                font-size: 1.2rem;
+                max-width: 250px;
+                margin: 15px auto;
+            }
+
+            .container {
+                padding: 10px;
+                padding-bottom: 30px;
             }
         }
 
@@ -484,7 +533,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="subtitle">LOJTARI FUNDIT - BRIDGE GAME</div>
+            <div class="subtitle">LOJTARI FUNDIT - BRIDGE GAME v1.0</div>
         </div>
 
         <div class="instructions">
