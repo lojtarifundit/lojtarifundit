@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>LojtariFundit - Live Preview</title>
+  <title>LojtariFundit</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rubik:wght@400;600;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
@@ -21,7 +21,6 @@
     body{margin:0;font-family:Rubik, Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#fff;background:linear-gradient(180deg,#07060a 0%, #0b0b0f 40%);overflow-x:hidden;}
     a{color:inherit;text-decoration:none}
 
-    /* Enhanced Navigation with Animations */
     .nav{position:fixed;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;padding:18px 36px;z-index:40;backdrop-filter:blur(10px);background:rgba(11,11,15,0.8);transition:all 0.3s ease;}
     .nav.scrolled{background:rgba(11,11,15,0.95);box-shadow:0 4px 20px rgba(0,0,0,0.3);}
     .nav .logo{font-weight:800;letter-spacing:1px;color:var(--accent);transition:transform 0.3s ease;}
@@ -30,7 +29,6 @@
     .nav .btn{background:var(--accent);color:#0b0b0f;padding:10px 16px;border-radius:6px;font-weight:700;transition:all 0.3s ease;cursor:pointer;}
     .nav .btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,45,85,0.3);}
 
-    /* NEWS WIDGET - TOP RIGHT */
     .news-widget {
       position: fixed;
       top: 80px;
@@ -46,12 +44,10 @@
       transition: all 0.3s ease;
       overflow: hidden;
     }
-
     .news-widget:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 40px rgba(0,0,0,0.5);
     }
-
     .news-widget-header {
       display: flex;
       align-items: center;
@@ -60,7 +56,6 @@
       padding-bottom: 10px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-
     .news-widget-title {
       font-size: 14px;
       font-weight: 700;
@@ -69,13 +64,11 @@
       align-items: center;
       gap: 6px;
     }
-
     .news-items-container {
       position: relative;
       height: 180px;
       overflow: hidden;
     }
-
     .news-item {
       position: absolute;
       top: 0;
@@ -86,13 +79,11 @@
       transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none;
     }
-
     .news-item.active {
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
     }
-
     .news-item-image {
       width: 100%;
       height: 110px;
@@ -101,11 +92,9 @@
       margin-bottom: 10px;
       transition: transform 0.3s ease;
     }
-
     .news-item:hover .news-item-image {
       transform: scale(1.03);
     }
-
     .news-item-title {
       font-size: 13px;
       font-weight: 600;
@@ -113,18 +102,15 @@
       margin: 0 0 4px;
       color: #fff;
     }
-
     .news-item-date {
       font-size: 11px;
       color: var(--muted);
     }
-
     .news-progress {
       display: flex;
       gap: 6px;
       margin-top: 12px;
     }
-
     .progress-dot {
       flex: 1;
       height: 3px;
@@ -133,7 +119,6 @@
       overflow: hidden;
       position: relative;
     }
-
     .progress-fill {
       position: absolute;
       top: 0;
@@ -143,21 +128,17 @@
       width: 0%;
       transition: width 0.1s linear;
     }
-
     .progress-dot.active .progress-fill {
       animation: progressFill 5s linear forwards;
     }
-
     @keyframes progressFill {
       from { width: 0%; }
       to { width: 100%; }
     }
-
     .news-nav {
       display: flex;
       gap: 8px;
     }
-
     .news-nav-btn {
       background: rgba(255,255,255,0.1);
       border: none;
@@ -172,20 +153,16 @@
       font-size: 12px;
       transition: all 0.2s ease;
     }
-
     .news-nav-btn:hover {
       background: var(--accent);
       transform: scale(1.1);
     }
 
-    /* Hero Section with Parallax */
     .hero{min-height:78vh;display:flex;align-items:center;padding:120px 6vw 60px;position:relative;overflow:hidden}
-    .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=1600&h=900&fit=crop');background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;}
+    .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('IMG_3565.jpg');background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;}
     .hero:hover::before{transform:scale(1.02);}
     .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start}
-
-    .hero-left h1{font-size:clamp(48px,8vw,50px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;text-shadow:2px 2px 4px #000000, -2px -2px 4px #ffffff7d;}
-
+    .hero-left h1{font-size:clamp(48px,8vw,50px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;font-family: "Game of Squids", sans-serif;text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;}
     .hero-left p.lead{color:var(--muted);max-width:60ch;font-size:16px;margin:12px 0 18px;animation:fadeInUp 1.2s ease;}
     .cta-row{display:flex;gap:12px;align-items:center;animation:fadeInUp 1.4s ease;}
     .cta{background:var(--accent);color:#0b0b0f;padding:12px 18px;border-radius:8px;font-weight:700;transition:all 0.3s ease;cursor:pointer;position:relative;overflow:hidden;}
@@ -193,25 +170,17 @@
     .cta::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.5s;}
     .cta:hover::before{left:100%;}
     .meta{display:flex;gap:18px;color:var(--muted);font-size:14px;margin-top:18px;animation:fadeInUp 1.6s ease;}
-
-    /* Enhanced Cards with Hover Effects */
     .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;box-shadow:0 6px 30px rgba(3,3,8,0.6);transition:all 0.3s ease;animation:fadeInRight 1s ease;}
     .card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(3,3,8,0.8);}
-    
-    /* Carousel Container */
     .carousel-container{position:relative;overflow:hidden;width:100%;padding:5px 0;}
     .carousel-track{display:flex;gap:5px;}
     .carousel-item{flex:0 0 calc(33.333% - 7px);min-width:calc(33.333% - 7px);}
     .carousel-item img{width:90%;height:auto;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;cursor:pointer;opacity:80%;}
     .carousel-item img:hover{transform:scale(1.05);}
-
-    /* Section Animations */
     section{padding:60px 6vw;opacity:0;animation:fadeInSection 0.8s ease forwards;}
     h2.section-title{font-size:28px;margin:0 0 18px;color:#fff;position:relative;}
     h2.section-title::after{content:"";position:absolute;left:0;bottom:-10px;height:6px;width:0;border-radius:6px;background:linear-gradient(90deg,var(--accent),#6c5ce7);animation:expandLine 1s ease 0.5s forwards;}
     .subtitle{color:var(--muted);margin-bottom:22px}
-
-    /* Player Cards with Staggered Animation */
     .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
     .player{background:var(--card);padding:14px;border-radius:12px;overflow:hidden;transition:all 0.3s ease;cursor:pointer;opacity:0;animation:fadeInUp 0.6s ease forwards;}
     .player:nth-child(1){animation-delay:0.1s;}
@@ -221,50 +190,43 @@
     .player img{width:100%;height:180px;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;}
     .player:hover img{transform:scale(1.05);}
     .player .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
-
-    /* Pills with Hover Effects */
     .pill{background:var(--glass);padding:6px 10px;border-radius:999px;font-weight:600;transition:all 0.3s ease;cursor:pointer;}
     .pill:hover{background:rgba(255,255,255,0.08);transform:translateY(-1px);}
-
-    /* Keyframe Animations */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
     @keyframes fadeInRight {
       from { opacity: 0; transform: translateX(30px); }
       to { opacity: 1; transform: translateX(0); }
     }
-    
     @keyframes fadeInSection {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
     @keyframes expandLine {
       from { width: 0; }
       to { width: 120px; }
     }
-
-    /* Responsive Design */
     @media (max-width:900px){
-      .hero-grid{grid-template-columns:1fr;}
-      .hero{padding-top:96px;}
-      .hero-left h1{font-size:clamp(32px, 10vw, 56px);}
-      .hero-left p.lead{font-size:14px;}
+      .hero-grid{grid-template-columns:1fr; width:98%; overflow:hidden;}
+      .hero{padding-top:96px; padding-left:5vw; padding-right:5vw; width:100vw;}
+      .hero-left{width:100%; overflow:hidden; padding-right:10px;}
+      .hero-left h1{font-size:clamp(32px, 10vw, 56px); word-wrap:break-word; width:100%; max-width:100%;}
+      .hero-left p.lead{font-size:14px; max-width:100%; width:100%; word-wrap:break-word;}
       .nav{padding:15px 20px;}
       .nav .menu{gap:12px;}
-      section{padding:40px 5vw;}
-      .card{padding:1rem;}
+      section{padding:40px 5vw; width:100vw; box-sizing:border-box;}
+      .card{padding:1rem; width:90%; margin:0 auto; box-sizing:border-box; overflow:hidden;}
+      .card > div{font-size:13px; word-wrap:break-word; overflow-wrap:break-word;}
       #prize-display{font-size:clamp(2.5rem, 8vw, 5.5rem);gap:0.3rem;}
       #prize-title{font-size:clamp(1rem, 4vw, 1.5rem);}
       .digit-prize{width:clamp(2rem, 8vw, 4rem);}
-      .cta-row{flex-wrap:wrap;}
+      .cta-row{flex-wrap:wrap; max-width:100%;}
       .cta, .pill{font-size:13px;padding:10px 14px;}
       .meta{flex-wrap:wrap;font-size:12px;}
       .carousel-item{flex:0 0 calc(50% - 5px);min-width:calc(50% - 5px);}
-      
+      body{padding:0; margin:0;}
       .news-widget {
         position: static;
         width: 90%;
@@ -272,16 +234,13 @@
         margin: 20px auto;
       }
     }
-
     footer{padding:40px 6vw;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.05);}
     html{scroll-behavior:smooth;}
-    
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
       20%, 40%, 60%, 80% { transform: translateX(5px); }
     }
-    
     @keyframes shakeContinuous {
       0%, 100% { transform: translateX(0); }
       10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
@@ -290,7 +249,6 @@
   </style>
 </head>
 <body>
-  <!-- News Widget -->
   <div class="news-widget" id="newsWidget">
     <div class="news-widget-header">
       <div class="news-widget-title">
@@ -323,7 +281,7 @@
           <h1>SQUID<br>GAME ALBANIA</h1>
           <p class="lead">Hundreds of Players. 10 Special Games. One chance to win. Everything to lose. Are you here to win cash — or earn prestige!?<br><strong style="color:white">By EPOKA University</strong></p>
           <div class="cta-row">
-            <a class="cta" href="#">Apply for Season II</a>     
+            <a class="cta" href="apply.html">Apply for Season II</a>     
             <a class="pill" href="https://www.instagram.com/p/DSxtRWHDkC_/" target="_blank">Watch Trailer</a>
           </div>
           <div class="meta">
@@ -376,7 +334,7 @@
               <div style="width:64px;height:64px;background:linear-gradient(45deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:30pt;color:var(--accent);">♡</div>
               <div>
                 <div style="font-weight:700">Sponsors of Squid Game Albania - <span style="color:#ff2d55">Session I</span></div>
-                <div style="color:var(--muted);font-size:13px">+300 voices saying THANK YOU to every sponsor!</div>
+                <div style="color:var(--muted);font-size:13px">+300 voices saying THANK YOU to every sponsor who made the 1st Real Life - Squid Game Albania possible!</div>
               </div>
             </div>
             <div class="carousel-container">
@@ -389,24 +347,24 @@
 
     <section>
       <h2 class="section-title">Best all-around</h2>
-      <div class="subtitle">The journey of LojtariFundit is still young, but it has already brought together passion, competition, and unforgettable moments.</div>
+      <div class="subtitle">The journey of LojtariFundit is still young, but it has already brought together passion, competition, and unforgettable moments. What started as a single event is growing into a platform for games, challenges, and community experiences.</div>
       <div class="players">
         <article class="player">
-          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=300&fit=crop" alt="1 Session">
+          <img src="SGA_1.jpg" alt="1 Session">
           <h3 style="margin:8px 0 0">1st Real Life Squid Game Albania</h3>
-          <div style="color:var(--muted);font-size:13px">11 Hours of Challenges, Fund, Dance, Rythm and Victory!</div>
+          <div style="color:var(--muted);font-size:13px">11 Hours of Challenges, Fund, Dance, Rythm and Vistory!</div>
           <div class="meta"><span>$1000 Prize</span><span style="color:var(--muted)">30 April, 2025</span></div>
         </article>
         
         <article class="player">
-          <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=300&fit=crop" alt="Guards">
+          <img src="IMG_3565.jpg" alt="Guards">
           <h3 style="margin:8px 0 0">The Guards</h3>
           <div style="color:var(--muted);font-size:13px">Masked enforcers who control the fun games with ruthless precision...</div>
           <div class="meta"><span>~50 Soldiers</span><span style="color:var(--muted)">Chaos Control</span></div>
         </article>
         
         <article class="player">
-          <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop" alt="Players">
+          <img src="IMG_3612.jpg" alt="Players">
           <h3 style="margin:8px 0 0">The Players</h3>
           <div style="color:var(--muted);font-size:13px">The heart of the story, struggling to survive against impossible odds...</div>
           <div class="meta"><span>~200 Players</span><span style="color:var(--muted)">Happy Chaos</span></div>
@@ -423,7 +381,6 @@
   </footer>
 
   <script>
-    // NEWS WIDGET
     const newsData = [
       {title: "Season II Applications Now Open!", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=300&fit=crop", date: "Jan 10, 2026"},
       {title: "Behind the Scenes: Making Squid Game Albania", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=300&fit=crop", date: "Jan 8, 2026"},
@@ -456,16 +413,14 @@
       document.querySelectorAll('.progress-dot').forEach(dot => {
         dot.classList.remove('active');
         const fill = dot.querySelector('.progress-fill');
-        // Force reflow to restart animation
         fill.style.animation = 'none';
-        void fill.offsetWidth; // trigger reflow
+        void fill.offsetWidth;
       });
       
       document.querySelectorAll('.news-item')[index].classList.add('active');
       const activeDot = document.querySelectorAll('.progress-dot')[index];
       activeDot.classList.add('active');
       
-      // Start progress animation after a small delay
       setTimeout(() => {
         const activeFill = activeDot.querySelector('.progress-fill');
         activeFill.style.animation = 'progressFill 5s linear forwards';
@@ -478,7 +433,7 @@
     }
 
     function startAutoRotate() { 
-      stopAutoRotate(); // Clear any existing interval
+      stopAutoRotate();
       autoRotateInterval = setInterval(nextNews, 5000); 
     }
     
@@ -492,29 +447,49 @@
     document.getElementById('prevBtn').onclick = () => {
       currentNewsIndex = (currentNewsIndex - 1 + newsData.length) % newsData.length;
       showNews(currentNewsIndex);
-      startAutoRotate(); // Restart with fresh 5 second interval
+      startAutoRotate();
     };
     
     document.getElementById('nextBtn').onclick = () => { 
       nextNews(); 
-      startAutoRotate(); // Restart with fresh 5 second interval
+      startAutoRotate();
     };
     
     document.getElementById('newsWidget').onmouseenter = stopAutoRotate;
     document.getElementById('newsWidget').onmouseleave = startAutoRotate;
 
-    // SPONSORS
+    async function loadSponsorData() {
+      try {
+        const url = "https://script.google.com/macros/s/AKfycbzxk472wrie94k1tnyYCsDckn7qMebnHwGdMvv6EfcXJxXz7FIKoQ_REUZ9xKTm6Bw_/exec";
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+      } catch (e) {
+        console.error("Error loading sponsor data:", e);
+        return [];
+      }
+    }
+
     async function setupSponsors() {
       const carousel = document.getElementById('sponsorCarousel');
-      const imgs = [
-        "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=200&h=150&fit=crop",
-        "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=200&h=150&fit=crop",
-        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=200&h=150&fit=crop"
-      ];
-      [...imgs, ...imgs].forEach(src => {
+      if (!carousel) return;
+      
+      const sponsors = await loadSponsorData();
+      
+      const sponsorImages = sponsors.length > 0 
+        ? sponsors.map(s => ({ 
+            src: s["Image Link"], 
+            alt: s.Sponsor, 
+            link: s["Sponsor Link"] 
+          }))
+        : [];
+      
+      const allImages = [...sponsorImages, ...sponsorImages];
+      
+      allImages.forEach(img => {
         const item = document.createElement('div');
         item.className = 'carousel-item';
-        item.innerHTML = `<img src="${src}">`;
+        item.innerHTML = `<a href="${img.link}" target="_blank" rel="noopener noreferrer"><img src="${img.src}" alt="${img.alt}"></a>`;
         carousel.appendChild(item);
       });
       
@@ -528,7 +503,6 @@
       animate();
     }
 
-    // PRIZE COUNTER
     function setupPrize() {
       const tracks = document.querySelectorAll('.digit-track-prize');
       const digits = [1,0,0,0], allDigits = [0,1,2,3,4,5,6,7,8,9];
@@ -541,13 +515,23 @@
       });
 
       function animate() {
+        document.getElementById('prize-title').style.animation = 'none';
         document.getElementById('prize-title-text').textContent = 'CASH PRIZE';
+        
+        tracks.forEach((track) => {
+          track.style.transition = 'translate 3500ms cubic-bezier(0.65, 0, 0.35, 1)';
+        });
+        document.getElementById('prize-display').style.transition = 'color 3500ms ease';
         document.getElementById('prize-display').style.color = 'rgb(9,252,8)';
+        document.getElementById('prize-title').style.transition = 'color 3500ms ease';
         document.getElementById('prize-title').style.color = 'rgb(9,252,8)';
+        
         document.querySelectorAll('.digit-border').forEach(b => b.style.background = 'rgb(9,252,8)');
         
-        tracks.forEach((track, i) => {
-          const activeDigit = (i + 2) * 10 + digits[i];
+        tracks.forEach((track, index) => {
+          const digit = digits[index];
+          const iterations = index + 3;
+          const activeDigit = (iterations - 1) * 10 + digit;
           track.style.translate = `0rem ${activeDigit * -5}rem`;
         });
 
@@ -559,14 +543,25 @@
             setTimeout(() => document.getElementById('prize-title').style.animation = 'none', 1000);
           }, 500);
           
+          document.getElementById('prize-display').style.transition = 'color 3500ms ease';
           document.getElementById('prize-display').style.color = 'rgb(255,45,85)';
+          document.getElementById('prize-title').style.transition = 'color 3500ms ease';
           document.getElementById('prize-title').style.color = 'rgb(255,45,85)';
           document.querySelectorAll('.digit-border').forEach(b => b.style.background = 'rgb(255,45,85)');
-          tracks.forEach(track => track.style.translate = '0rem 0rem');
+          
+          tracks.forEach(track => {
+            track.style.transition = 'translate 3500ms cubic-bezier(0.65, 0, 0.35, 1)';
+            track.style.translate = '0rem 0rem';
+          });
           
           setTimeout(animate, 4500);
         }, 10000);
       }
+      
+      tracks.forEach((track) => {
+        track.style.transition = 'none';
+        track.style.translate = '0rem 0rem';
+      });
       
       setTimeout(animate, 1200);
     }
