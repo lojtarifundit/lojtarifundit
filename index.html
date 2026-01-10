@@ -30,17 +30,16 @@
     .nav .btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,45,85,0.3);}
 
     .news-widget {
-      position: fixed;
-      top: 80px;
-      right: 20px;
-      width: 240px;
+      position: static;
+      width: 90%;
+      max-width: 400px;
+      margin: 20px auto;
       background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
       backdrop-filter: blur(20px);
       border-radius: 16px;
       padding: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
       border: 1px solid rgba(255,255,255,0.08);
-      z-index: 35;
       transition: all 0.3s ease;
       overflow: hidden;
     }
@@ -227,12 +226,6 @@
       .meta{flex-wrap:wrap;font-size:12px;}
       .carousel-item{flex:0 0 calc(50% - 5px);min-width:calc(50% - 5px);}
       body{padding:0; margin:0;}
-      .news-widget {
-        position: static;
-        width: 90%;
-        max-width: 400px;
-        margin: 20px auto;
-      }
     }
     footer{padding:40px 6vw;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.05);}
     html{scroll-behavior:smooth;}
@@ -249,28 +242,12 @@
   </style>
 </head>
 <body>
-  <div class="news-widget" id="newsWidget">
-    <div class="news-widget-header">
-      <div class="news-widget-title">
-        <span>📰</span>
-        <span>NEWS & EVENTS</span>
-      </div>
-      <div class="news-nav">
-        <button class="news-nav-btn" id="prevBtn">←</button>
-        <button class="news-nav-btn" id="nextBtn">→</button>
-      </div>
-    </div>
-    <div class="news-items-container" id="newsContainer"></div>
-    <div class="news-progress" id="newsProgress"></div>
-  </div>
-
   <header class="nav" id="navbar">
     <div class="logo">LOJTARI<br><span style="color:white; font-weight:800">FUNDIT</span></div>
     <div class="menu">
-      <div class="pill">TV Shows</div>
-      <div class="pill">Movies</div>
-      <div class="pill">My List</div>
-      <a class="btn" href="#">Sponsor US</a>
+      <div class="pill">HOME</div>
+      <div class="pill">FAQ</div>
+      <a class="btn" href="Sponsor">Sponsor US</a>
     </div>
   </header>
 
@@ -289,6 +266,21 @@
             <div>Bolder</div>
             <div>Lauder</div>
             <div>Brighter</div>
+          </div>
+
+          <div class="news-widget" id="newsWidget">
+            <div class="news-widget-header">
+              <div class="news-widget-title">
+                <span>📰</span>
+                <span>NEWS & EVENTS</span>
+              </div>
+              <div class="news-nav">
+                <button class="news-nav-btn" id="prevBtn">←</button>
+                <button class="news-nav-btn" id="nextBtn">→</button>
+              </div>
+            </div>
+            <div class="news-items-container" id="newsContainer"></div>
+            <div class="news-progress" id="newsProgress"></div>
           </div>
         </div>
 
