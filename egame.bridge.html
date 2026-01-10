@@ -202,7 +202,7 @@
             overflow: hidden;
         }
 
-        .glass-panel::after {
+        /* .glass-panel::after {
             content: '🦅';
             position: absolute;
             font-size: 3rem;
@@ -212,7 +212,37 @@
             opacity: 0.15;
             pointer-events: none;
             filter: drop-shadow(0 0 10px rgba(211, 47, 47, 0.3));
-        }
+        } */
+
+        .glass-panel.left::after,
+.glass-panel.right::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.25;
+    pointer-events: none;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.6));
+}
+
+.glass-panel.left::after {
+    background-image: url('LojtariFundit Logo.png');
+}
+
+.glass-panel.right::after {
+    background-image: url('LojtariFundit Logo.png');
+}
+
+
+
+
+
+
+
+
+        
 
         .glass-panel::before {
             content: '';
@@ -648,9 +678,19 @@
                 const row = document.createElement('div');
                 row.className = 'row';
                 
-                for (let j = 0; j < 2; j++) {
-                    const panel = document.createElement('div');
-                    panel.className = 'glass-panel';
+                // for (let j = 0; j < 2; j++) {
+                //     const panel = document.createElement('div');
+                //     panel.className = 'glass-panel';
+
+
+for (let j = 0; j < 2; j++) {
+    const panel = document.createElement('div');
+    panel.className = 'glass-panel ' + (j === 0 ? 'left' : 'right');
+
+                
+
+
+                
                     
                     if (i === currentStep) {
                         panel.classList.add('current-row');
