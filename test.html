@@ -517,8 +517,6 @@
 
     async function loadNewsData() {
       try {
-        // TODO: Replace this URL with your NEW news-specific Google Apps Script URL
-        // This should be DIFFERENT from your sponsors URL
         const url = "https://script.google.com/macros/s/AKfycbwLfjcRc49CpAiEDLavn5cVCUuO9j9kCFQWt7CZUwyn2FYlXA7u9aibgKYL9jn1WmCg/exec";
         const res = await fetch(url);
         const data = await res.json();
@@ -551,11 +549,21 @@
         const columns = Object.values(news);
         const eventName = (columns[0] || 'Untitled').toString().trim();
         const date = (columns[1] || '').toString().trim();
-        const imageName = (columns[2] || '').toString().trim();
-        const link = (columns[3] || '#').toString().trim();
+        let imageName = (columns[2] || '').toString().trim();
+        let link = (columns[3] || '#').toString().trim();
         
-        // Construct image path: News/imagename.png
-        const imagePath = imageName ? `News/${imageName}` : '';
+        // Fix link: if it doesn't start with http:// or https://, add https://
+        if (link && link !== '#' && !link.startsWith('http://') && !link.startsWith('https://')) {
+          link = 'https://' + link;
+        }
+        
+        // Construct image path
+        // If imageName already contains 'News/', use as is
+        // Otherwise, prepend 'News/'
+        let imagePath = '';
+        if (imageName) {
+          imagePath = imageName.includes('News/') ? imageName : `News/${imageName}`;
+        }
         
         console.log(`News item ${i}:`, {eventName, date, imageName, link, imagePath}); // Debug
         
