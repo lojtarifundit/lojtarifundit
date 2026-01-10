@@ -3,14 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>LojtariFundit</title>
+  <title>LojtariFundit - Live Preview</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rubik:wght@400;600;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
-
-
-
-
 
   <style>
     :root{
@@ -20,7 +16,6 @@
       --muted:#a8a8b3;
       --glass: rgba(255,255,255,0.04);
     }
-
 
     *{box-sizing:border-box}
     body{margin:0;font-family:Rubik, Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#fff;background:linear-gradient(180deg,#07060a 0%, #0b0b0f 40%);overflow-x:hidden;}
@@ -35,21 +30,161 @@
     .nav .btn{background:var(--accent);color:#0b0b0f;padding:10px 16px;border-radius:6px;font-weight:700;transition:all 0.3s ease;cursor:pointer;}
     .nav .btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,45,85,0.3);}
 
+    /* NEWS WIDGET - TOP RIGHT */
+    .news-widget {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      width: 240px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      z-index: 35;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .news-widget:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+
+    .news-widget-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .news-widget-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .news-items-container {
+      position: relative;
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .news-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+
+    .news-item.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .news-item-image {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .news-item:hover .news-item-image {
+      transform: scale(1.03);
+    }
+
+    .news-item-title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin: 0 0 4px;
+      color: #fff;
+    }
+
+    .news-item-date {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .news-progress {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .progress-dot {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    .progress-dot.active .progress-fill {
+      animation: progressFill 5s linear forwards;
+    }
+
+    @keyframes progressFill {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+
+    .news-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .news-nav-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .news-nav-btn:hover {
+      background: var(--accent);
+      transform: scale(1.1);
+    }
+
     /* Hero Section with Parallax */
     .hero{min-height:78vh;display:flex;align-items:center;padding:120px 6vw 60px;position:relative;overflow:hidden}
-    .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%),
-      
-      url('IMG_3565.jpg');
-      
-                  background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;}
+    .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=1600&h=900&fit=crop');background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;}
     .hero:hover::before{transform:scale(1.02);}
     .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start}
 
-.hero-left h1{font-size:clamp(48px,8vw,50px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;text-shadow:2px 2px 4px rgba(0,0,0,0.5);
-font-family: "Game of Squids", sans-serif;
-text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
-}
-
+    .hero-left h1{font-size:clamp(48px,8vw,50px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;text-shadow:2px 2px 4px #000000, -2px -2px 4px #ffffff7d;}
 
     .hero-left p.lead{color:var(--muted);max-width:60ch;font-size:16px;margin:12px 0 18px;animation:fadeInUp 1.2s ease;}
     .cta-row{display:flex;gap:12px;align-items:center;animation:fadeInUp 1.4s ease;}
@@ -65,18 +200,10 @@ text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
     
     /* Carousel Container */
     .carousel-container{position:relative;overflow:hidden;width:100%;padding:5px 0;}
-  
-  .carousel-track{display:flex;gap:5px;}
-  .carousel-track:hover{animation-play-state:paused;}
-
+    .carousel-track{display:flex;gap:5px;}
     .carousel-item{flex:0 0 calc(33.333% - 7px);min-width:calc(33.333% - 7px);}
     .carousel-item img{width:90%;height:auto;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;cursor:pointer;opacity:80%;}
     .carousel-item img:hover{transform:scale(1.05);}
-    
-    @keyframes scroll-left {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
 
     /* Section Animations */
     section{padding:60px 6vw;opacity:0;animation:fadeInSection 0.8s ease forwards;}
@@ -90,28 +217,14 @@ text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
     .player:nth-child(1){animation-delay:0.1s;}
     .player:nth-child(2){animation-delay:0.2s;}
     .player:nth-child(3){animation-delay:0.3s;}
-    .player:nth-child(4){animation-delay:0.4s;}
     .player:hover{transform:translateY(-8px);box-shadow:0 12px 35px rgba(255,45,85,0.2);}
     .player img{width:100%;height:180px;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;}
     .player:hover img{transform:scale(1.05);}
     .player .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
 
-    /* Split Section Enhancements */
-    .split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
-    .big-card{background:linear-gradient(180deg,#0f0f14,#0b0b10);padding:18px;border-radius:12px;transition:all 0.3s ease;cursor:pointer;}
-    .big-card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(255,45,85,0.1);}
-    .big-card img{transition:transform 0.3s ease;}
-    .big-card:hover img{transform:scale(1.02);}
-
     /* Pills with Hover Effects */
     .pill{background:var(--glass);padding:6px 10px;border-radius:999px;font-weight:600;transition:all 0.3s ease;cursor:pointer;}
     .pill:hover{background:rgba(255,255,255,0.08);transform:translateY(-1px);}
-
-    /* Featured Episode Enhancement */
-    .featured-episode{position:relative;cursor:pointer;overflow:hidden;}
-    .featured-episode::after{content:"▶";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:48px;color:white;opacity:0;transition:opacity 0.3s ease;background:rgba(0,0,0,0.7);width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-    .featured-episode:hover::after{opacity:1;}
-    .featured-episode:hover img{transform:scale(1.02);}
 
     /* Keyframe Animations */
     @keyframes fadeInUp {
@@ -135,98 +248,33 @@ text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
     }
 
     /* Responsive Design */
-@media (max-width:900px){
-  .hero-grid{grid-template-columns:1fr; width:98%; overflow:hidden;}
-  .hero{padding-top:96px; padding-left:5vw; padding-right:5vw; width:100vw;}
-  .hero-left{width:100%; overflow:hidden;}
-  .hero-left h1{
-    font-size:clamp(32px, 10vw, 56px); 
-    word-wrap:break-word;
-    width:100%;
-    max-width:100%;
-  }
-  .hero-left p.lead{
-    font-size:14px; 
-    max-width:100%;
-    width:100%;
-    word-wrap:break-word;
-  }
-  .split{grid-template-columns:1fr}
-  .nav{padding:15px 20px;}
-  .nav .menu{gap:12px;}
-  section{padding:40px 5vw; width:100vw; box-sizing:border-box;}
-  .card{
-    padding:1rem; 
-    width:100%;
-    box-sizing:border-box;
-    overflow:hidden;
-  }
-  .card > div{
-    font-size:13px;
-    word-wrap:break-word;
-    overflow-wrap:break-word;
-  }
-  #prize-display{
-    font-size:clamp(2.5rem, 8vw, 5.5rem);
-    gap:0.3rem;
-  }
-  #prize-title{
-    font-size:clamp(1rem, 4vw, 1.5rem);
-  }
-  .digit-prize{
-    width:clamp(2rem, 8vw, 4rem);
-  }
- .hero-left{
-    padding-right:10px;
-  }
-  .cta-row{
-    flex-wrap:wrap;
-    max-width:100%;
-  }
-  .cta, .pill{
-    font-size:13px;
-    padding:10px 14px;
-  }
-  .meta{
-    flex-wrap:wrap;
-    font-size:12px;
-  }
-  .carousel-item{
-    flex:0 0 calc(50% - 5px);
-    min-width:calc(50% - 5px);
-  }
-  body{
-    padding:0;
-    margin:0;
-  }
-  
-  .card{
-  padding:1rem; 
-  width:90%;
-  margin:0 auto;
-  box-sizing:border-box;
-}
-  
-}
+    @media (max-width:900px){
+      .hero-grid{grid-template-columns:1fr;}
+      .hero{padding-top:96px;}
+      .hero-left h1{font-size:clamp(32px, 10vw, 56px);}
+      .hero-left p.lead{font-size:14px;}
+      .nav{padding:15px 20px;}
+      .nav .menu{gap:12px;}
+      section{padding:40px 5vw;}
+      .card{padding:1rem;}
+      #prize-display{font-size:clamp(2.5rem, 8vw, 5.5rem);gap:0.3rem;}
+      #prize-title{font-size:clamp(1rem, 4vw, 1.5rem);}
+      .digit-prize{width:clamp(2rem, 8vw, 4rem);}
+      .cta-row{flex-wrap:wrap;}
+      .cta, .pill{font-size:13px;padding:10px 14px;}
+      .meta{flex-wrap:wrap;font-size:12px;}
+      .carousel-item{flex:0 0 calc(50% - 5px);min-width:calc(50% - 5px);}
+      
+      .news-widget {
+        position: static;
+        width: 90%;
+        max-width: 400px;
+        margin: 20px auto;
+      }
+    }
 
     footer{padding:40px 6vw;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.05);}
-
-    /* Smooth Scrolling */
     html{scroll-behavior:smooth;}
-    
-    /* Loading Animation */
-    .loading{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;animation:fadeOut 2s ease 1s forwards;}
-    .loading .logo-placeholder{width:200px;height:200px;background:linear-gradient(135deg, var(--accent), #6c5ce7);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900;color:white;animation:pulse 1s infinite;}
-    .loading-text{font-size:36px;font-weight:700;color:var(--accent);animation:pulse 1s infinite;letter-spacing:2px;}
-    
-    @keyframes fadeOut {
-      to { opacity: 0; visibility: hidden; }
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.05); }
-    }
     
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
@@ -239,62 +287,43 @@ text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
       10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
       20%, 40%, 60%, 80% { transform: translateX(3px); }
     }
-    
-    @keyframes ripple {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
-    }
   </style>
 </head>
 <body>
-  <!-- Loading Screen -->
-  <div class="loading">
-    <!-- Replace the src with your actual logo URL from a public host like Imgur -->
-    <img src="LojtariFundit Logo.png" alt="Logo" style="width:200px;height:auto;animation:pulse 1s infinite;" onerror="this.style.display='none';document.querySelector('.logo-placeholder').style.display='flex';">
-    <div class="logo-placeholder" style="display:none;">LOGO</div>
-    <div class="loading-text">Good vibes only</div>
+  <!-- News Widget -->
+  <div class="news-widget" id="newsWidget">
+    <div class="news-widget-header">
+      <div class="news-widget-title">
+        <span>📰</span>
+        <span>NEWS & EVENTS</span>
+      </div>
+      <div class="news-nav">
+        <button class="news-nav-btn" id="prevBtn">←</button>
+        <button class="news-nav-btn" id="nextBtn">→</button>
+      </div>
+    </div>
+    <div class="news-items-container" id="newsContainer"></div>
+    <div class="news-progress" id="newsProgress"></div>
   </div>
 
-
-
-
-<div id="header"></div>
-
-<script>
-  fetch('headerMenu.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('header').innerHTML = data;
-    });
-</script>
-
-
- <!-- <header class="nav" id="navbar">
+  <header class="nav" id="navbar">
     <div class="logo">LOJTARI<br><span style="color:white; font-weight:800">FUNDIT</span></div>
     <div class="menu">
       <div class="pill">TV Shows</div>
       <div class="pill">Movies</div>
       <div class="pill">My List</div>
-     <a class="btn" href="javascript:void(0);" onclick="window.location.href='Sponsor'">Sponsor US</a>
+      <a class="btn" href="#">Sponsor US</a>
     </div>
-  </header> -->
+  </header>
 
   <main>
     <section class="hero">
       <div class="hero-grid">
         <div class="hero-left">
           <h1>SQUID<br>GAME ALBANIA</h1>
-          <p class="lead">Hundreds of Players. 10 Special Games. One chance to win. Everything to lose. Are you here to win cash — or earn prestige!?
-		  <br>
-		  <Strong style="color:white">By EPOKA University</strong>
-		  </p>
+          <p class="lead">Hundreds of Players. 10 Special Games. One chance to win. Everything to lose. Are you here to win cash — or earn prestige!?<br><strong style="color:white">By EPOKA University</strong></p>
           <div class="cta-row">
-
-			  <a class="cta" href="javascript:void(0);" onclick="window.location.href='apply.html'">Apply for Season II</a>     
-
-			  
+            <a class="cta" href="#">Apply for Season II</a>     
             <a class="pill" href="https://www.instagram.com/p/DSxtRWHDkC_/" target="_blank">Watch Trailer</a>
           </div>
           <div class="meta">
@@ -347,13 +376,11 @@ text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
               <div style="width:64px;height:64px;background:linear-gradient(45deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:30pt;color:var(--accent);">♡</div>
               <div>
                 <div style="font-weight:700">Sponsors of Squid Game Albania - <span style="color:#ff2d55">Session I</span></div>
-                <div style="color:var(--muted);font-size:13px">+300 voices saying THANK YOU to every sponsor who made the 1st Real Life - Squid Game Albania possible!</div>
+                <div style="color:var(--muted);font-size:13px">+300 voices saying THANK YOU to every sponsor!</div>
               </div>
             </div>
             <div class="carousel-container">
-              <div class="carousel-track" id="sponsorCarousel">
-                <!-- Images will be duplicated via JavaScript for infinite loop -->
-              </div>
+              <div class="carousel-track" id="sponsorCarousel"></div>
             </div>
           </div>
         </div>
@@ -362,39 +389,30 @@ text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
 
     <section>
       <h2 class="section-title">Best all-around</h2>
-      <div class="subtitle">The journey of LojtariFundit is still young, but it has already brought together passion, competition, and unforgettable moments. What started as a single event is growing into a platform for games, challenges, and community experiences.</div>
+      <div class="subtitle">The journey of LojtariFundit is still young, but it has already brought together passion, competition, and unforgettable moments.</div>
       <div class="players">
         <article class="player">
-          <img src="SGA_1.jpg" alt="1 Session">
+          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=300&fit=crop" alt="1 Session">
           <h3 style="margin:8px 0 0">1st Real Life Squid Game Albania</h3>
-          <div style="color:var(--muted);font-size:13px">11 Hours of Challenges, Fund, Dance, Rythm and Vistory!</div>
+          <div style="color:var(--muted);font-size:13px">11 Hours of Challenges, Fund, Dance, Rythm and Victory!</div>
           <div class="meta"><span>$1000 Prize</span><span style="color:var(--muted)">30 April, 2025</span></div>
         </article>
-		
-		
-		        <article class="player">
-          <img src="IMG_3565.jpg" alt="1 Session">
+        
+        <article class="player">
+          <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=300&fit=crop" alt="Guards">
           <h3 style="margin:8px 0 0">The Guards</h3>
           <div style="color:var(--muted);font-size:13px">Masked enforcers who control the fun games with ruthless precision...</div>
           <div class="meta"><span>~50 Soldiers</span><span style="color:var(--muted)">Chaos Control</span></div>
         </article>
-		
-		
-		        <article class="player">
-          <img src="IMG_3612.jpg" alt="1 Session">
+        
+        <article class="player">
+          <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop" alt="Players">
           <h3 style="margin:8px 0 0">The Players</h3>
           <div style="color:var(--muted);font-size:13px">The heart of the story, struggling to survive against impossible odds...</div>
           <div class="meta"><span>~200 Players</span><span style="color:var(--muted)">Happy Chaos</span></div>
         </article>
-
-  
-
-
-
       </div>
     </section>
-
-
   </main>
 
   <footer>
@@ -405,286 +423,163 @@ text-shadow: 2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
   </footer>
 
   <script>
-    // Sponsor carousel setup
-    const sponsorImages = [
-      { src: 'https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg', alt: 'Sponsor 1' },
-      { src: 'https://static0.colliderimages.com/wordpress/wp-content/uploads/2024/12/squid-game-s-pink-soldiers-at-the-game-awards-2024.jpg', alt: 'Sponsor 2' },
-      { src: 'https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg', alt: 'Sponsor 3' },
-      { src: 'https://static0.colliderimages.com/wordpress/wp-content/uploads/2024/12/squid-game-s-pink-soldiers-at-the-game-awards-2024.jpg', alt: 'Sponsor 4' },
-      { src: 'https://media.vogue.fr/photos/67409fd7b513514788bc3cc9/1:1/w_1612,h_1612,c_limit/Squidgame_Unit_203_N052612.jpg', alt: 'Sponsor 5' }
-      // Add more images as needed
+    // NEWS WIDGET
+    const newsData = [
+      {title: "Season II Applications Now Open!", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=300&fit=crop", date: "Jan 10, 2026"},
+      {title: "Behind the Scenes: Making Squid Game Albania", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=300&fit=crop", date: "Jan 8, 2026"},
+      {title: "New Sponsors Join for Season II", image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&h=300&fit=crop", date: "Jan 5, 2026"},
+      {title: "Exclusive Interview with Season I Winner", image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop", date: "Jan 3, 2026"},
+      {title: "Training Sessions Announced", image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=300&fit=crop", date: "Dec 28, 2025"}
     ];
-    
-  
-async function loadSponsorData() {
-  try {
-    const url = "https://script.google.com/macros/s/AKfycbzxk472wrie94k1tnyYCsDckn7qMebnHwGdMvv6EfcXJxXz7FIKoQ_REUZ9xKTm6Bw_/exec";
-    const res = await fetch(url);
-    const data = await res.json();
-    return data;
-  } catch (e) {
-    console.error("Error loading sponsor data:", e);
-    return [];
-  }
-}
 
+    let currentNewsIndex = 0, autoRotateInterval;
+    const newsContainer = document.getElementById('newsContainer');
+    const newsProgress = document.getElementById('newsProgress');
 
+    function initNewsWidget() {
+      newsData.forEach((news, i) => {
+        const item = document.createElement('div');
+        item.className = 'news-item' + (i === 0 ? ' active' : '');
+        item.innerHTML = `<img src="${news.image}" class="news-item-image"/><h3 class="news-item-title">${news.title}</h3><div class="news-item-date">${news.date}</div>`;
+        newsContainer.appendChild(item);
 
-
-
-async function setupSponsorCarousel() {
-  const carousel = document.getElementById('sponsorCarousel');
-  if (!carousel) return;
-  
-  const sponsors = await loadSponsorData();
-  
-  const sponsorImages = sponsors.length > 0 
-    ? sponsors.map(s => ({ 
-        src: s["Image Link"], 
-        alt: s.Sponsor, 
-        link: s["Sponsor Link"] 
-      }))
-    : [];
-  
-  // Duplicate twice
-  const allImages = [...sponsorImages, ...sponsorImages];
-  
-  allImages.forEach(img => {
-    const item = document.createElement('div');
-    item.className = 'carousel-item';
-    item.innerHTML = `<a href="${img.link}" target="_blank" rel="noopener noreferrer"><img src="${img.src}" alt="${img.alt}"></a>`;
-    carousel.appendChild(item);
-  });
-  
-  // Smooth continuous scroll with JavaScript
-  let scrollPos = 0;
-  const scrollSpeed = 1.5;
-  
-  function animate() {
-    scrollPos += scrollSpeed;
-    const maxScroll = carousel.scrollWidth / 2;
-    
-    if (scrollPos >= maxScroll) {
-      scrollPos = 0;
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
+        dot.innerHTML = '<div class="progress-fill"></div>';
+        newsProgress.appendChild(dot);
+      });
+      startAutoRotate();
     }
-    
-    carousel.style.transform = `translateX(-${scrollPos}px)`;
-    requestAnimationFrame(animate);
-  }
-  
-  animate();
-  
-  carousel.addEventListener('mouseenter', () => {
-    carousel.style.animationPlayState = 'paused';
-  });
-}
 
-
-
-
-
-
-
-
-    
-    // Prize counter animation
-    const prizeAmount = 1000;
-    const digits = [1, 0, 0, 0];
-    const allDigits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    
-    function setupPrizeCounter() {
-      const tracks = document.querySelectorAll('.digit-track-prize');
-      const prizeDisplay = document.getElementById('prize-display');
-      const prizeTitle = document.getElementById('prize-title');
-      const prizeTitleText = document.getElementById('prize-title-text');
-      const digitBorders = document.querySelectorAll('.digit-border');
-      
-      tracks.forEach((track, index) => {
-        const iterations = index + 3;
-        let digitString = '';
-        for (let i = 0; i < iterations; i++) {
-          digitString += allDigits.join(' ') + ' ';
-        }
-        track.innerText = digitString.trim();
+    function showNews(index) {
+      document.querySelectorAll('.news-item').forEach(item => item.classList.remove('active'));
+      document.querySelectorAll('.progress-dot').forEach(dot => {
+        dot.classList.remove('active');
+        const fill = dot.querySelector('.progress-fill');
+        // Force reflow to restart animation
+        fill.style.animation = 'none';
+        void fill.offsetWidth; // trigger reflow
       });
       
-      // Function to animate the counter
-      function animateCounter() {
-        // Reset title
-        prizeTitle.style.animation = 'none';
-        prizeTitleText.textContent = 'CASH PRIZE';
+      document.querySelectorAll('.news-item')[index].classList.add('active');
+      const activeDot = document.querySelectorAll('.progress-dot')[index];
+      activeDot.classList.add('active');
+      
+      // Start progress animation after a small delay
+      setTimeout(() => {
+        const activeFill = activeDot.querySelector('.progress-fill');
+        activeFill.style.animation = 'progressFill 5s linear forwards';
+      }, 50);
+    }
+
+    function nextNews() {
+      currentNewsIndex = (currentNewsIndex + 1) % newsData.length;
+      showNews(currentNewsIndex);
+    }
+
+    function startAutoRotate() { 
+      stopAutoRotate(); // Clear any existing interval
+      autoRotateInterval = setInterval(nextNews, 5000); 
+    }
+    
+    function stopAutoRotate() { 
+      if (autoRotateInterval) {
+        clearInterval(autoRotateInterval); 
+        autoRotateInterval = null;
+      }
+    }
+
+    document.getElementById('prevBtn').onclick = () => {
+      currentNewsIndex = (currentNewsIndex - 1 + newsData.length) % newsData.length;
+      showNews(currentNewsIndex);
+      startAutoRotate(); // Restart with fresh 5 second interval
+    };
+    
+    document.getElementById('nextBtn').onclick = () => { 
+      nextNews(); 
+      startAutoRotate(); // Restart with fresh 5 second interval
+    };
+    
+    document.getElementById('newsWidget').onmouseenter = stopAutoRotate;
+    document.getElementById('newsWidget').onmouseleave = startAutoRotate;
+
+    // SPONSORS
+    async function setupSponsors() {
+      const carousel = document.getElementById('sponsorCarousel');
+      const imgs = [
+        "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=200&h=150&fit=crop",
+        "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=200&h=150&fit=crop",
+        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=200&h=150&fit=crop"
+      ];
+      [...imgs, ...imgs].forEach(src => {
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        item.innerHTML = `<img src="${src}">`;
+        carousel.appendChild(item);
+      });
+      
+      let pos = 0;
+      function animate() {
+        pos += 1.5;
+        if (pos >= carousel.scrollWidth / 2) pos = 0;
+        carousel.style.transform = `translateX(-${pos}px)`;
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // PRIZE COUNTER
+    function setupPrize() {
+      const tracks = document.querySelectorAll('.digit-track-prize');
+      const digits = [1,0,0,0], allDigits = [0,1,2,3,4,5,6,7,8,9];
+      
+      tracks.forEach((track, i) => {
+        const iterations = i + 3;
+        let str = '';
+        for (let j = 0; j < iterations; j++) str += allDigits.join(' ') + ' ';
+        track.innerText = str.trim();
+      });
+
+      function animate() {
+        document.getElementById('prize-title-text').textContent = 'CASH PRIZE';
+        document.getElementById('prize-display').style.color = 'rgb(9,252,8)';
+        document.getElementById('prize-title').style.color = 'rgb(9,252,8)';
+        document.querySelectorAll('.digit-border').forEach(b => b.style.background = 'rgb(9,252,8)');
         
-        // Animate to $1,000 (green) - EASE IN-OUT: slow start, fast middle, super slow end
-        tracks.forEach((track) => {
-          track.style.transition = 'translate 3500ms cubic-bezier(0.65, 0, 0.35, 1)';
-        });
-        prizeDisplay.style.transition = 'color 3500ms ease';
-        prizeDisplay.style.color = 'rgb(9,252,8)';
-        prizeTitle.style.transition = 'color 3500ms ease';
-        prizeTitle.style.color = 'rgb(9,252,8)';
-        
-        // Fade borders to green
-        digitBorders.forEach((border) => {
-          border.style.background = 'rgb(9,252,8)';
-        });
-        
-        tracks.forEach((track, index) => {
-          const digit = digits[index];
-          const iterations = index + 3;
-          const activeDigit = (iterations - 1) * 10 + digit;
+        tracks.forEach((track, i) => {
+          const activeDigit = (i + 2) * 10 + digits[i];
           track.style.translate = `0rem ${activeDigit * -5}rem`;
         });
-        
-        // Wait 10 seconds at $1,000
+
         setTimeout(() => {
-          // IMMEDIATELY change text with shake for 1 second, then stop smoothly
-          prizeTitle.style.animation = 'shake 0.5s ease';
-          prizeTitleText.textContent = "DON'T MISS IT! APPLY NOW";
-          
-          // Add continuous shake after initial shake, then remove it after 1 second
+          document.getElementById('prize-title').style.animation = 'shake 0.5s ease';
+          document.getElementById('prize-title-text').textContent = "DON'T MISS IT! APPLY NOW";
           setTimeout(() => {
-            prizeTitle.style.animation = 'shakeContinuous 0.3s ease infinite';
-            
-            // Stop shaking after 1 second
-            setTimeout(() => {
-              prizeTitle.style.animation = 'none';
-            }, 1000);
+            document.getElementById('prize-title').style.animation = 'shakeContinuous 0.3s ease infinite';
+            setTimeout(() => document.getElementById('prize-title').style.animation = 'none', 1000);
           }, 500);
           
-          // Fade to red and go down to $0 - EASE IN-OUT: slow start, fast middle, super slow end
-          prizeDisplay.style.transition = 'color 3500ms ease';
-          prizeDisplay.style.color = 'rgb(255,45,85)';
-          prizeTitle.style.transition = 'color 3500ms ease';
-          prizeTitle.style.color = 'rgb(255,45,85)';
+          document.getElementById('prize-display').style.color = 'rgb(255,45,85)';
+          document.getElementById('prize-title').style.color = 'rgb(255,45,85)';
+          document.querySelectorAll('.digit-border').forEach(b => b.style.background = 'rgb(255,45,85)');
+          tracks.forEach(track => track.style.translate = '0rem 0rem');
           
-          // Fade borders to red
-          digitBorders.forEach((border) => {
-            border.style.background = 'rgb(255,45,85)';
-          });
-          
-          tracks.forEach((track) => {
-            track.style.transition = 'translate 3500ms cubic-bezier(0.65, 0, 0.35, 1)'; // same smooth S-curve
-            track.style.translate = '0rem 0rem';
-          });
-          
-          // Wait 3.5 seconds for animation to complete + 1 second at $0, then restart
-          setTimeout(() => {
-            animateCounter();
-          }, 4500); // 3500ms animation + 1000ms wait
+          setTimeout(animate, 4500);
         }, 10000);
       }
       
-      // Reset to start position
-      tracks.forEach((track) => {
-        track.style.transition = 'none';
-        track.style.translate = '0rem 0rem';
-      });
-      
-      // First animation after 1.2s
-      setTimeout(() => {
-        animateCounter();
-      }, 1200);
+      setTimeout(animate, 1200);
     }
-    
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-      const navbar = document.getElementById('navbar');
-      if (window.scrollY > 100) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
 
-    // Intersection Observer for section animations
-    const sections = document.querySelectorAll('section');
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
+    window.onload = () => {
+      initNewsWidget();
+      setupSponsors();
+      setupPrize();
     };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = 'running';
-        }
-      });
-    }, observerOptions);
-
-    sections.forEach(section => {
-      observer.observe(section);
-    });
-
-    // Parallax effect for hero background
-    window.addEventListener('scroll', () => {
-      const scrolled = window.pageYOffset;
-      const hero = document.querySelector('.hero::before');
-      if (hero) {
-        const rate = scrolled * -0.5;
-        hero.style.transform = `translateY(${rate}px)`;
-      }
-    });
-
-    // Add click interactions
-    document.querySelectorAll('.cta, .btn, .pill').forEach(button => {
-      button.addEventListener('click', (e) => {
-
-		  if (button.tagName === 'A' && button.href) return;
-
-		  
-        e.preventDefault();
-        // Create ripple effect
-        const ripple = document.createElement('span');
-        ripple.style.position = 'absolute';
-        ripple.style.borderRadius = '50%';
-        ripple.style.background = 'rgba(255,255,255,0.3)';
-        ripple.style.transform = 'scale(0)';
-        ripple.style.animation = 'ripple 0.6s linear';
-        ripple.style.left = e.offsetX + 'px';
-        ripple.style.top = e.offsetY + 'px';
-        
-        button.style.position = 'relative';
-        button.appendChild(ripple);
-        
-        setTimeout(() => {
-          ripple.remove();
-        }, 600);
-      });
-    });
-
-    // Initialize on load
-    window.addEventListener('load', () => {
-      setupSponsorCarousel();
-      setupPrizeCounter();
-    });
+    window.onscroll = () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 100);
+    };
   </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
