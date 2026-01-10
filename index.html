@@ -32,7 +32,7 @@
 
     /* NEWS WIDGET - BELOW HERO META */
     .news-widget {
-      width: 240px;
+      width: 280px;
       background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
       backdrop-filter: blur(20px);
       border-radius: 16px;
@@ -296,6 +296,8 @@
       }
       .hero-left{
         padding-right:10px;
+        width:100%;
+        max-width:100%;
       }
       .cta-row{
         flex-wrap:wrap;
@@ -326,9 +328,10 @@
       }
 
       .news-widget {
-        width: 90%;
-        max-width: 400px;
-        margin: 20px auto;
+        width: 100%;
+        max-width: 100%;
+        margin: 20px 0;
+        box-sizing: border-box;
       }
     }
 
@@ -358,7 +361,6 @@
 </head>
 <body>
   <div id="header"></div>
-
   <script>
     fetch('headerMenu.html')
       .then(response => response.text())
@@ -366,15 +368,6 @@
         document.getElementById('header').innerHTML = data;
       });
   </script>
-
-  <header class="nav" id="navbar">
-    <div class="logo">LOJTARI<br><span style="color:white; font-weight:800">FUNDIT</span></div>
-    <div class="menu">
-      <div class="pill">Home</div>
-      <div class="pill">FAQ</div>
-      <a class="btn" href="javascript:void(0);" onclick="window.location.href='Sponsor'">Sponsor US</a>
-    </div>
-  </header>
 
   <main>
     <section class="hero">
@@ -503,11 +496,11 @@
   <footer>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
       <div>&copy; 2026 LojtariFundit</div>
-      <div style="color:var(--muted)">lojtarifundit@gmail.com</div>
+      <div style="color:var(--muted)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5e3231342a3f2c37382b303a372a1e39333f3732703d3133">[email&#160;protected]</a></div>
     </div>
   </footer>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // NEWS WIDGET FUNCTIONALITY
     const newsData = [
       {title: "Season II Applications Now Open!", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=300&fit=crop", date: "Jan 10, 2026"},
