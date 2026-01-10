@@ -263,155 +263,7 @@
         word-wrap:break-word;
         width:100%;
         max-width:100%;
-      } catch (e) {
-        console.error("Error loading sponsor data:", e);
-        return [];
       }
-    }
-
-    async function setupSponsors() {
-      const carousel = document.getElementById('sponsorCarousel');
-      if (!carousel) return;
-      
-      const sponsors = await loadSponsorData();
-      
-      const sponsorImages = sponsors.length > 0 
-        ? sponsors.map(s => ({ 
-            src: s["Image Link"], 
-            alt: s.Sponsor, 
-            link: s["Sponsor Link"] 
-          }))
-        : [];
-      
-      const allImages = [...sponsorImages, ...sponsorImages];
-      
-      allImages.forEach(img => {
-        const item = document.createElement('div');
-        item.className = 'carousel-item';
-        item.innerHTML = `<a href="${img.link}" target="_blank" rel="noopener noreferrer"><img src="${img.src}" alt="${img.alt}"></a>`;
-        carousel.appendChild(item);
-      });
-      
-      let pos = 0;
-      function animate() {
-        pos += 1.5;
-        if (pos >= carousel.scrollWidth / 2) pos = 0;
-        carousel.style.transform = `translateX(-${pos}px)`;
-        requestAnimationFrame(animate);
-      }
-      animate();
-    }
-
-    // ========================================
-    // PRIZE COUNTER (Keep original code)
-    // ========================================
-    function setupPrize() {
-      const tracks = document.querySelectorAll('.digit-track-prize');
-      const digits = [1,0,0,0], allDigits = [0,1,2,3,4,5,6,7,8,9];
-      
-      tracks.forEach((track, i) => {
-        const iterations = i + 3;
-        let str = '';
-        for (let j = 0; j < iterations; j++) str += allDigits.join(' ') + ' ';
-        track.innerText = str.trim();
-      });
-
-      function animate() {
-        document.getElementById('prize-title-text').textContent = 'CASH PRIZE';
-        document.getElementById('prize-display').style.color = 'rgb(9,252,8)';
-        document.getElementById('prize-title').style.color = 'rgb(9,252,8)';
-        document.querySelectorAll('.digit-border').forEach(b => b.style.background = 'rgb(9,252,8)');
-        
-        tracks.forEach((track, i) => {
-          const activeDigit = (i + 2) * 10 + digits[i];
-          track.style.translate = `0rem ${activeDigit * -5}rem`;
-        });
-
-        setTimeout(() => {
-          document.getElementById('prize-title').style.animation = 'shake 0.5s ease';
-          document.getElementById('prize-title-text').textContent = "DON'T MISS IT! APPLY NOW";
-          setTimeout(() => {
-            document.getElementById('prize-title').style.animation = 'shakeContinuous 0.3s ease infinite';
-            setTimeout(() => document.getElementById('prize-title').style.animation = 'none', 1000);
-          }, 500);
-          
-          document.getElementById('prize-display').style.color = 'rgb(255,45,85)';
-          document.getElementById('prize-title').style.color = 'rgb(255,45,85)';
-          document.querySelectorAll('.digit-border').forEach(b => b.style.background = 'rgb(255,45,85)');
-          tracks.forEach(track => track.style.translate = '0rem 0rem');
-          
-          setTimeout(animate, 4500);
-        }, 10000);
-      }
-      
-      setTimeout(animate, 1200);
-    }
-
-    // ========================================
-    // UI EFFECTS (Keep original code)
-    // ========================================
-    window.addEventListener('scroll', () => {
-      const navbar = document.getElementById('navbar');
-      if (navbar) {
-        if (window.scrollY > 100) {
-          navbar.classList.add('scrolled');
-        } else {
-          navbar.classList.remove('scrolled');
-        }
-      }
-    });
-
-    const sections = document.querySelectorAll('section');
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = 'running';
-        }
-      });
-    }, observerOptions);
-
-    sections.forEach(section => {
-      observer.observe(section);
-    });
-
-    document.querySelectorAll('.cta, .btn, .pill').forEach(button => {
-      button.addEventListener('click', (e) => {
-		  if (button.tagName === 'A' && button.href) return;
-        e.preventDefault();
-        const ripple = document.createElement('span');
-        ripple.style.position = 'absolute';
-        ripple.style.borderRadius = '50%';
-        ripple.style.background = 'rgba(255,255,255,0.3)';
-        ripple.style.transform = 'scale(0)';
-        ripple.style.animation = 'ripple 0.6s linear';
-        ripple.style.left = e.offsetX + 'px';
-        ripple.style.top = e.offsetY + 'px';
-        
-        button.style.position = 'relative';
-        button.appendChild(ripple);
-        
-        setTimeout(() => {
-          ripple.remove();
-        }, 600);
-      });
-    });
-
-    // ========================================
-    // INITIALIZE EVERYTHING ON PAGE LOAD
-    // ========================================
-    window.addEventListener('load', () => {
-      initNewsWidget();
-      setupSponsors();
-      setupPrize();
-    });
-  </script>
-</body>
-</html>
       .hero-left p.lead{
         font-size:14px; 
         max-width:100%;
@@ -658,30 +510,21 @@
   </footer>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // ========================================
-    // NEWS WIDGET - OPTIMIZED VERSION
-    // ========================================
+    // NEWS WIDGET FUNCTIONALITY - FETCH FROM GOOGLE SHEETS
     let currentNewsIndex = 0, autoRotateInterval;
     const newsContainer = document.getElementById('newsContainer');
     const newsProgress = document.getElementById('newsProgress');
 
-    // NEWS DATA FROM GOOGLE SHEETS
     async function loadNewsData() {
       try {
-        const url = "https://script.google.com/macros/s/AKfycbwLfjcRc49CpAiEDLavn5cVCUuO9j9kCFQWt7CZUwyn2FYlXA7u9aibgKYL9jn1WmCg/exec?type=news";
-        
-        console.log('📰 Loading news data...');
-        const startTime = Date.now();
-        
+        // TODO: Replace this URL with your NEW news-specific Google Apps Script URL
+        // This should be DIFFERENT from your sponsors URL
+        const url = "YOUR_NEWS_SCRIPT_URL_HERE";
         const res = await fetch(url);
         const data = await res.json();
-        
-        const loadTime = Date.now() - startTime;
-        console.log(`✅ News loaded in ${loadTime}ms`, data);
-        
         return data;
       } catch (e) {
-        console.error('❌ Error loading news:', e);
+        console.error("Error loading news data:", e);
         return [];
       }
     }
@@ -690,32 +533,16 @@
       const newsData = await loadNewsData();
       
       if (newsData.length === 0) {
-        console.log('⚠️ No news data available');
-        newsContainer.innerHTML = '<div style="color:#a8a8b3;text-align:center;padding:20px;font-size:13px;">No news available</div>';
+        console.log("No news data available");
         return;
       }
-
-      // Clear container
-      newsContainer.innerHTML = '';
-      newsProgress.innerHTML = '';
 
       newsData.forEach((news, i) => {
         const item = document.createElement('div');
         item.className = 'news-item' + (i === 0 ? ' active' : '');
-        
-        // Image path format: News/imagename.jpg
+        // Image path format: News/imagename.jpg from GitHub
         const imagePath = news["Image Name"] ? `News/${news["Image Name"]}` : '';
-        
-        item.innerHTML = `
-          <img 
-            src="${imagePath}" 
-            class="news-item-image" 
-            onerror="this.src='https://via.placeholder.com/400x300/0f0f16/ff2d55?text=News+Image'"
-            alt="${news["Event Name"] || 'News'}"
-          />
-          <h3 class="news-item-title">${news["Event Name"] || 'Untitled'}</h3>
-          <div class="news-item-date">${news["Date"] || ''}</div>
-        `;
+        item.innerHTML = `<img src="${imagePath}" class="news-item-image" onerror="this.src='https://via.placeholder.com/400x300?text=News'"/><h3 class="news-item-title">${news["Event Name"] || 'Untitled'}</h3><div class="news-item-date">${news["Date"] || ''}</div>`;
         newsContainer.appendChild(item);
 
         const dot = document.createElement('div');
@@ -727,8 +554,6 @@
       if (newsData.length > 1) {
         startAutoRotate();
       }
-      
-      console.log(`🎉 Widget initialized with ${newsData.length} items`);
     }
 
     function showNews(index) {
@@ -785,13 +610,153 @@
     document.getElementById('newsWidget').onmouseenter = stopAutoRotate;
     document.getElementById('newsWidget').onmouseleave = startAutoRotate;
 
-    // ========================================
-    // SPONSOR CAROUSEL (Keep original code)
-    // ========================================
+    // SPONSOR CAROUSEL
     async function loadSponsorData() {
       try {
         const url = "https://script.google.com/macros/s/AKfycbzxk472wrie94k1tnyYCsDckn7qMebnHwGdMvv6EfcXJxXz7FIKoQ_REUZ9xKTm6Bw_/exec";
         const res = await fetch(url);
         const data = await res.json();
         return data;
+      } catch (e) {
+        console.error("Error loading sponsor data:", e);
+        return [];
       }
+    }
+
+    async function setupSponsors() {
+      const carousel = document.getElementById('sponsorCarousel');
+      if (!carousel) return;
+      
+      const sponsors = await loadSponsorData();
+      
+      const sponsorImages = sponsors.length > 0 
+        ? sponsors.map(s => ({ 
+            src: s["Image Link"], 
+            alt: s.Sponsor, 
+            link: s["Sponsor Link"] 
+          }))
+        : [];
+      
+      const allImages = [...sponsorImages, ...sponsorImages];
+      
+      allImages.forEach(img => {
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        item.innerHTML = `<a href="${img.link}" target="_blank" rel="noopener noreferrer"><img src="${img.src}" alt="${img.alt}"></a>`;
+        carousel.appendChild(item);
+      });
+      
+      let pos = 0;
+      function animate() {
+        pos += 1.5;
+        if (pos >= carousel.scrollWidth / 2) pos = 0;
+        carousel.style.transform = `translateX(-${pos}px)`;
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // PRIZE COUNTER
+    function setupPrize() {
+      const tracks = document.querySelectorAll('.digit-track-prize');
+      const digits = [1,0,0,0], allDigits = [0,1,2,3,4,5,6,7,8,9];
+      
+      tracks.forEach((track, i) => {
+        const iterations = i + 3;
+        let str = '';
+        for (let j = 0; j < iterations; j++) str += allDigits.join(' ') + ' ';
+        track.innerText = str.trim();
+      });
+
+      function animate() {
+        document.getElementById('prize-title-text').textContent = 'CASH PRIZE';
+        document.getElementById('prize-display').style.color = 'rgb(9,252,8)';
+        document.getElementById('prize-title').style.color = 'rgb(9,252,8)';
+        document.querySelectorAll('.digit-border').forEach(b => b.style.background = 'rgb(9,252,8)');
+        
+        tracks.forEach((track, i) => {
+          const activeDigit = (i + 2) * 10 + digits[i];
+          track.style.translate = `0rem ${activeDigit * -5}rem`;
+        });
+
+        setTimeout(() => {
+          document.getElementById('prize-title').style.animation = 'shake 0.5s ease';
+          document.getElementById('prize-title-text').textContent = "DON'T MISS IT! APPLY NOW";
+          setTimeout(() => {
+            document.getElementById('prize-title').style.animation = 'shakeContinuous 0.3s ease infinite';
+            setTimeout(() => document.getElementById('prize-title').style.animation = 'none', 1000);
+          }, 500);
+          
+          document.getElementById('prize-display').style.color = 'rgb(255,45,85)';
+          document.getElementById('prize-title').style.color = 'rgb(255,45,85)';
+          document.querySelectorAll('.digit-border').forEach(b => b.style.background = 'rgb(255,45,85)');
+          tracks.forEach(track => track.style.translate = '0rem 0rem');
+          
+          setTimeout(animate, 4500);
+        }, 10000);
+      }
+      
+      setTimeout(animate, 1200);
+    }
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Intersection Observer for section animations
+    const sections = document.querySelectorAll('section');
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Add click interactions
+    document.querySelectorAll('.cta, .btn, .pill').forEach(button => {
+      button.addEventListener('click', (e) => {
+		  if (button.tagName === 'A' && button.href) return;
+        e.preventDefault();
+        const ripple = document.createElement('span');
+        ripple.style.position = 'absolute';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(255,255,255,0.3)';
+        ripple.style.transform = 'scale(0)';
+        ripple.style.animation = 'ripple 0.6s linear';
+        ripple.style.left = e.offsetX + 'px';
+        ripple.style.top = e.offsetY + 'px';
+        
+        button.style.position = 'relative';
+        button.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+    });
+
+    // Initialize on load
+    window.addEventListener('load', () => {
+      initNewsWidget();
+      setupSponsors();
+      setupPrize();
+    });
+  </script>
+</body>
+</html>
