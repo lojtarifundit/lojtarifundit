@@ -328,10 +328,19 @@
       }
 
       .news-widget {
-        width: 100%;
+        width: calc(100% - 20px);
         max-width: 100%;
-        margin: 20px 0;
+        margin: 20px 10px;
+        padding: 12px;
         box-sizing: border-box;
+      }
+      
+      .news-widget-header {
+        padding-right: 0;
+      }
+      
+      .news-nav {
+        flex-shrink: 0;
       }
     }
 
@@ -496,29 +505,65 @@
   <footer>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
       <div>&copy; 2026 LojtariFundit</div>
-      <div style="color:var(--muted)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5e3231342a3f2c37382b303a372a1e39333f3732703d3133">[email&#160;protected]</a></div>
+      <div style="color:var(--muted)">lojtarifundit@gmail.com</div>
     </div>
   </footer>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // NEWS WIDGET FUNCTIONALITY
-    const newsData = [
-      {title: "Season II Applications Now Open!", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=300&fit=crop", date: "Jan 10, 2026"},
-      {title: "Behind the Scenes: Making Squid Game Albania", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=300&fit=crop", date: "Jan 8, 2026"},
-      {title: "New Sponsors Join for Season II", image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&h=300&fit=crop", date: "Jan 5, 2026"},
-      {title: "Exclusive Interview with Season I Winner", image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop", date: "Jan 3, 2026"},
-      {title: "Training Sessions Announced for Season II", image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=300&fit=crop", date: "Dec 28, 2025"}
-    ];
-
+    // NEWS WIDGET FUNCTIONALITY - FETCH FROM GOOGLE SHEETS
     let currentNewsIndex = 0, autoRotateInterval;
     const newsContainer = document.getElementById('newsContainer');
     const newsProgress = document.getElementById('newsProgress');
 
-    function initNewsWidget() {
+    async function loadNewsData() {
+      try {
+        const url = "https://script.google.com/macros/s/AKfycbwLfjcRc49CpAiEDLavn5cVCUuO9j9kCFQWt7CZUwyn2FYlXA7u9aibgKYL9jn1WmCg/exec";
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+      } catch (e) {
+        console.error("Error loading news data:", e);
+        return [];
+      }
+    }
+
+    async function initNewsWidget() {
+      const newsData = await loadNewsData();
+      
+      if (newsData.length === 0) {
+        console.log("No news data available");
+        return;
+      }
+
+      console.log("News data loaded:", newsData);
+
       newsData.forEach((news, i) => {
         const item = document.createElement('div');
         item.className = 'news-item' + (i === 0 ? ' active' : '');
-        item.innerHTML = `<img src="${news.image}" class="news-item-image"/><h3 class="news-item-title">${news.title}</h3><div class="news-item-date">${news.date}</div>`;
+        
+        // Get data using column positions (same as your spreadsheet)
+        const columns = Object.values(news);
+        const eventName = (columns[0] || 'Untitled').toString().trim();
+        const date = (columns[1] || '').toString().trim();
+        const imageName = (columns[2] || '').toString().trim();
+        let link = (columns[3] || '#').toString().trim();
+        
+        // Fix link if needed
+        if (link && link !== '#' && !link.startsWith('http://') && !link.startsWith('https://')) {
+          link = 'https://' + link;
+        }
+        
+        // Use imageName exactly as it is from the spreadsheet (e.g., "News/lajthiza.png")
+        const imagePath = imageName || 'https://via.placeholder.com/400x300?text=News';
+        
+        console.log(`News item ${i}:`, {eventName, date, imageName, link, imagePath});
+        
+        // Make image clickable
+        const imageHtml = imageName 
+          ? `<a href="${link}" target="_blank" rel="noopener noreferrer"><img src="${imagePath}" class="news-item-image" onerror="this.src='https://via.placeholder.com/400x300?text=Image+Not+Found';console.error('Failed to load: ${imagePath}')"/></a>`
+          : `<img src="https://via.placeholder.com/400x300?text=News" class="news-item-image"/>`;
+        
+        item.innerHTML = `${imageHtml}<h3 class="news-item-title">${eventName}</h3><div class="news-item-date">${date}</div>`;
         newsContainer.appendChild(item);
 
         const dot = document.createElement('div');
@@ -526,7 +571,10 @@
         dot.innerHTML = '<div class="progress-fill"></div>';
         newsProgress.appendChild(dot);
       });
-      startAutoRotate();
+      
+      if (newsData.length > 1) {
+        startAutoRotate();
+      }
     }
 
     function showNews(index) {
@@ -534,16 +582,14 @@
       document.querySelectorAll('.progress-dot').forEach(dot => {
         dot.classList.remove('active');
         const fill = dot.querySelector('.progress-fill');
-        // Force reflow to restart animation
         fill.style.animation = 'none';
-        void fill.offsetWidth; // trigger reflow
+        void fill.offsetWidth;
       });
       
       document.querySelectorAll('.news-item')[index].classList.add('active');
       const activeDot = document.querySelectorAll('.progress-dot')[index];
       activeDot.classList.add('active');
       
-      // Start progress animation after a small delay
       setTimeout(() => {
         const activeFill = activeDot.querySelector('.progress-fill');
         activeFill.style.animation = 'progressFill 5s linear forwards';
@@ -551,12 +597,14 @@
     }
 
     function nextNews() {
-      currentNewsIndex = (currentNewsIndex + 1) % newsData.length;
+      const newsItems = document.querySelectorAll('.news-item');
+      if (newsItems.length === 0) return;
+      currentNewsIndex = (currentNewsIndex + 1) % newsItems.length;
       showNews(currentNewsIndex);
     }
 
     function startAutoRotate() { 
-      stopAutoRotate(); // Clear any existing interval
+      stopAutoRotate();
       autoRotateInterval = setInterval(nextNews, 5000); 
     }
     
@@ -568,14 +616,16 @@
     }
 
     document.getElementById('prevBtn').onclick = () => {
-      currentNewsIndex = (currentNewsIndex - 1 + newsData.length) % newsData.length;
+      const newsItems = document.querySelectorAll('.news-item');
+      if (newsItems.length === 0) return;
+      currentNewsIndex = (currentNewsIndex - 1 + newsItems.length) % newsItems.length;
       showNews(currentNewsIndex);
-      startAutoRotate(); // Restart with fresh 5 second interval
+      startAutoRotate();
     };
     
     document.getElementById('nextBtn').onclick = () => { 
       nextNews(); 
-      startAutoRotate(); // Restart with fresh 5 second interval
+      startAutoRotate();
     };
     
     document.getElementById('newsWidget').onmouseenter = stopAutoRotate;
@@ -673,9 +723,9 @@
     // Navbar scroll effect
     window.addEventListener('scroll', () => {
       const navbar = document.getElementById('navbar');
-      if (window.scrollY > 100) {
+      if (navbar && window.scrollY > 100) {
         navbar.classList.add('scrolled');
-      } else {
+      } else if (navbar) {
         navbar.classList.remove('scrolled');
       }
     });
