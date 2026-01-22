@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squid Game Riddle Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #c92a2a;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .riddle-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 4px solid #ea4283;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .riddle-box h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .riddle-box p {
+            color: #555;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #ea4283;
+            box-shadow: 0 0 0 3px rgba(234, 66, 131, 0.1);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ea4283 0%, #d63370 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(234, 66, 131, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-instagram {
+            background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+            color: white;
+            margin-top: 15px;
+        }
+        
+        .btn-instagram:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(131, 58, 180, 0.4);
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .success-message .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .success-message h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .success-message p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        .error {
+            color: #c92a2a;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #ea4283;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>🎮 Squid Game Challenge</h1>
+            <p>Solve the riddle to continue</p>
+        </div>
+
+        <!-- Step 1: Riddle -->
+        <div id="step1" class="step active">
+            <div class="riddle-box">
+                <h3>🧩 Your Riddle:</h3>
+                <p id="riddleText">Loading riddle...</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="riddleAnswer">Enter Your Answer:</label>
+                <input type="text" id="riddleAnswer" placeholder="Type your answer here...">
+                <div id="riddleError" class="error">Incorrect answer. Please try again!</div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="checkRiddle()">Submit Answer</button>
+        </div>
+
+        <!-- Step 2: Congratulations & Form -->
+        <div id="step2" class="step">
+            <div class="success-message">
+                <div class="icon">🎉</div>
+                <h2>Correct Answer!</h2>
+                <p>You've solved the riddle! Now complete your registration.</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" placeholder="Enter your first name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" placeholder="Enter your last name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="playerNumber">Player Number:</label>
+                <input type="text" id="playerNumber" placeholder="Enter your player number" required>
+            </div>
+            
+            <button class="btn btn-primary" onclick="submitForm()">Complete Registration</button>
+        </div>
+
+        <!-- Step 3: Final Success -->
+        <div id="step3" class="step">
+            <div class="success-message">
+                <div class="icon">✅</div>
+                <h2>Registration Complete!</h2>
+                <p>Congratulations! You've successfully completed the riddle challenge.</p>
+                <p style="margin-top: 15px; font-weight: 600;">Share your achievement on Instagram!</p>
+            </div>
+            
+            <button class="btn btn-instagram" onclick="shareOnInstagram()">
+                📱 Share on Instagram
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px; color: #666;">Processing...</p>
+        </div>
+    </div>
+
+    <script>
+        // REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        const SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
+        
+        let riddleData = {};
+        
+        // Load riddle on page load
+        window.onload = function() {
+            loadRiddle();
+        };
+        
+        // Load riddle from Google Script
+        async function loadRiddle() {
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getRiddle');
+                const data = await response.json();
+                riddleData = data;
+                document.getElementById('riddleText').textContent = data.riddle;
+            } catch (error) {
+                document.getElementById('riddleText').textContent = 'Error loading riddle. Please refresh the page.';
+                console.error('Error:', error);
+            }
+        }
+        
+        // Check riddle answer
+        async function checkRiddle() {
+            const answer = document.getElementById('riddleAnswer').value.trim();
+            const errorDiv = document.getElementById('riddleError');
+            
+            if (!answer) {
+                errorDiv.textContent = 'Please enter an answer!';
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'checkRiddle',
+                        answer: answer
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.correct) {
+                    errorDiv.classList.remove('show');
+                    showStep('step2');
+                } else {
+                    errorDiv.textContent = 'Incorrect answer. Please try again!';
+                    errorDiv.classList.add('show');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Error checking answer. Please try again.';
+                errorDiv.classList.add('show');
+                console.error('Error:', error);
+            }
+        }
+        
+        // Submit form
+        async function submitForm() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const playerNumber = document.getElementById('playerNumber').value.trim();
+            
+            if (!firstName || !lastName || !playerNumber) {
+                alert('Please fill in all fields!');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'submitForm',
+                        firstName: firstName,
+                        lastName: lastName,
+                        playerNumber: playerNumber
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showLoading(false);
+                    showStep('step3');
+                } else {
+                    showLoading(false);
+                    alert('Error submitting form. Please try again.');
+                }
+            } catch (error) {
+                showLoading(false);
+                alert('Error submitting form. Please try again.');
+                console.error('Error:', error);
+            }
+        }
+        
+        // Share on Instagram
+        function shareOnInstagram() {
+            const firstName = document.getElementById('firstName').value;
+            const message = `I just solved the Squid Game riddle challenge! 🎮🎉 @lojtari_fundit`;
+            
+            // For mobile devices - opens Instagram app
+            if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                window.location.href = 'instagram://story-camera';
+                
+                // Fallback: Copy text to clipboard
+                setTimeout(() => {
+                    copyToClipboard(message);
+                    alert('Text copied! Please paste it in your Instagram story and tag @lojtari_fundit');
+                }, 1000);
+            } else {
+                // For desktop - copy to clipboard and open Instagram
+                copyToClipboard(message);
+                window.open('https://www.instagram.com/lojtari_fundit', '_blank');
+                alert('Text copied to clipboard! Please paste it in your Instagram post and tag @lojtari_fundit');
+            }
+        }
+        
+        // Helper function to copy text
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+        
+        // Show specific step
+        function showStep(stepId) {
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            document.getElementById(stepId).classList.add('active');
+        }
+        
+        // Show/hide loading
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            const steps = document.querySelectorAll('.step');
+            
+            if (show) {
+                steps.forEach(step => step.style.display = 'none');
+                loading.classList.add('show');
+            } else {
+                loading.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>
