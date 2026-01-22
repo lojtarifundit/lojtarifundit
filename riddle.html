@@ -219,7 +219,7 @@
 <body>
     <div class="container">
         <div class="logo">
-            <h1>🎮 Squid Game Albania - Riddle Challenge</h1>
+            <h1>🎮 Squid Game Challenge</h1>
             <p>Solve the riddle to continue</p>
         </div>
 
@@ -270,13 +270,30 @@
             <div class="success-message">
                 <div class="icon">✅</div>
                 <h2>Registration Complete!</h2>
-                <p>Congratulations! You've successfully completed the riddle challenge.</p>
-                <p style="margin-top: 15px; font-weight: 600;">Share your achievement on Instagram!</p>
+                <p><strong id="playerName"></strong>, you've successfully completed the riddle challenge!</p>
+                <p style="margin-top: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 15px; border-radius: 8px; border-left: 4px solid #ea4283;">
+                    <strong>🎉 Share Your Victory!</strong><br>
+                    <span style="font-size: 14px; color: #666;">Post your achievement on Instagram and tag us to celebrate your win!</span>
+                </p>
+            </div>
+            
+            <div style="background: #fff3cd; border: 2px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left;">
+                <p style="margin: 0 0 10px 0; color: #856404; font-weight: 600; font-size: 14px;">📋 What to post:</p>
+                <ul style="margin: 0; padding-left: 20px; color: #856404; font-size: 13px; line-height: 1.8;">
+                    <li>A screenshot of this page</li>
+                    <li>A photo/video of your celebration</li>
+                    <li>Tag <strong>@lojtari_fundit</strong> in your story or post</li>
+                    <li>Use hashtag <strong>#SquidGameAlbania</strong></li>
+                </ul>
             </div>
             
             <button class="btn btn-instagram" onclick="shareOnInstagram()">
-                📱 Share on Instagram
+                📱 Open Instagram & Tag @lojtari_fundit
             </button>
+            
+            <p style="margin-top: 15px; font-size: 13px; color: #666; text-align: center;">
+                Clicking the button will copy the victory message to your clipboard!
+            </p>
         </div>
 
         <!-- Loading -->
@@ -287,7 +304,7 @@
     </div>
 
     <script>
-        // REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        // Google Apps Script Web App URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlOwt5tJouuwUaF1dvZyEwIN6P_JXDUD6cTKqfcMHrFiug3IiSX-Dwh_ksGpGddQ/exec';
         
         let riddleData = {};
@@ -372,11 +389,19 @@
                 
                 const result = await response.json();
                 
+                showLoading(false);
+                
                 if (result.success) {
-                    showLoading(false);
+                    // Store player name for victory message
+                    document.getElementById('playerName').textContent = firstName + ' ' + lastName;
+                    // Store values for Instagram sharing
+                    window.playerData = {
+                        firstName: firstName,
+                        lastName: lastName,
+                        playerNumber: playerNumber
+                    };
                     showStep('step3');
                 } else {
-                    showLoading(false);
                     alert('Error submitting form. Please try again.');
                 }
             } catch (error) {
@@ -388,23 +413,39 @@
         
         // Share on Instagram
         function shareOnInstagram() {
-            const firstName = document.getElementById('firstName').value;
-            const message = `I just solved the Squid Game riddle challenge! 🎮🎉 @lojtari_fundit`;
+            const data = window.playerData || {};
+            const firstName = data.firstName || 'Player';
+            const lastName = data.lastName || '';
+            const playerNumber = data.playerNumber || '';
             
-            // For mobile devices - opens Instagram app
+            const message = `🎮 I just solved the Squid Game Albania riddle challenge! 🎉
+            
+Player: ${firstName} ${lastName}
+Player Number: ${playerNumber}
+
+I'm ready for the ultimate challenge! 💪
+
+@lojtari_fundit #SquidGameAlbania #LojtariFundit`;
+            
+            // Copy to clipboard first
+            copyToClipboard(message);
+            
+            // For mobile devices - try to open Instagram app
             if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                window.location.href = 'instagram://story-camera';
+                // Show alert first
+                alert('✅ Victory message copied to clipboard!\n\nOpening Instagram...\n\n📝 Paste the message in your story or post and tag @lojtari_fundit');
                 
-                // Fallback: Copy text to clipboard
+                // Try to open Instagram app
+                window.location.href = 'instagram://';
+                
+                // Fallback to Instagram website if app doesn't open
                 setTimeout(() => {
-                    copyToClipboard(message);
-                    alert('Text copied! Please paste it in your Instagram story and tag @lojtari_fundit');
-                }, 1000);
+                    window.open('https://www.instagram.com/lojtari_fundit', '_blank');
+                }, 1500);
             } else {
-                // For desktop - copy to clipboard and open Instagram
-                copyToClipboard(message);
+                // For desktop - open Instagram website
+                alert('✅ Victory message copied to clipboard!\n\n📱 Opening Instagram...\n\n📝 Paste the message in your post and tag @lojtari_fundit');
                 window.open('https://www.instagram.com/lojtari_fundit', '_blank');
-                alert('Text copied to clipboard! Please paste it in your Instagram post and tag @lojtari_fundit');
             }
         }
         
@@ -420,10 +461,21 @@
         
         // Show specific step
         function showStep(stepId) {
+            // Hide all steps
             document.querySelectorAll('.step').forEach(step => {
                 step.classList.remove('active');
+                step.style.display = 'none';
             });
-            document.getElementById(stepId).classList.add('active');
+            
+            // Hide loading
+            document.getElementById('loading').classList.remove('show');
+            
+            // Show the requested step
+            const targetStep = document.getElementById(stepId);
+            if (targetStep) {
+                targetStep.style.display = 'block';
+                targetStep.classList.add('active');
+            }
         }
         
         // Show/hide loading
@@ -432,10 +484,15 @@
             const steps = document.querySelectorAll('.step');
             
             if (show) {
-                steps.forEach(step => step.style.display = 'none');
+                steps.forEach(step => {
+                    step.classList.remove('active');
+                    step.style.display = 'none';
+                });
                 loading.classList.add('show');
+                loading.style.display = 'block';
             } else {
                 loading.classList.remove('show');
+                loading.style.display = 'none';
             }
         }
     </script>
