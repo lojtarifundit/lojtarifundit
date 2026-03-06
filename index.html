@@ -797,7 +797,7 @@
       
       let pos = 0;
       function animate() {
-        pos += 1.5;
+        pos += 2.0;
         if (pos >= carousel.scrollWidth / 2) pos = 0;
         carousel.style.transform = `translateX(-${pos}px)`;
         requestAnimationFrame(animate);
