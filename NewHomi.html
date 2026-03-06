@@ -1,181 +1,875 @@
-import { useEffect, useRef } from "react";
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LojtariFundit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rubik:wght@400;600;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
 
-const sponsors = [
-  { label: "Alpha",   color: "#1a2535", emoji: "🏪", premium: false },
-  { label: "Beta",    color: "#2a1530", emoji: "🏬", premium: false },
-  { label: "Gamma",   color: "#1a2520", emoji: "⭐", premium: true  },
-  { label: "Delta",   color: "#252515", emoji: "🏢", premium: false },
-  { label: "Epsilon", color: "#15152a", emoji: "👑", premium: true  },
-  { label: "Zeta",    color: "#2a1515", emoji: "🏦", premium: false },
-];
-
-const CSS = `
-  @keyframes premiumGoldShift {
-    0%   { background-position: 0% center; }
-    100% { background-position: 250% center; }
-  }
-  @keyframes premiumFrameSpin {
-    0%   { background-position: 0% 0%; }
-    100% { background-position: 300% 300%; }
-  }
-  @keyframes premiumSweep {
-    0%   { background-position: -100% center; opacity: 0; }
-    5%   { opacity: 1; }
-    55%  { background-position: 200% center; opacity: 1; }
-    70%  { opacity: 0; }
-    100% { background-position: 200% center; opacity: 0; }
-  }
-  @keyframes premiumSparkle {
-    0%, 100% { transform: scale(0) rotate(0deg);    opacity: 0; }
-    40%       { transform: scale(1.6) rotate(180deg); opacity: 1; }
-    60%       { transform: scale(1)   rotate(270deg); opacity: 0.8; }
-    80%       { transform: scale(0)   rotate(360deg); opacity: 0; }
-  }
-  @keyframes scrollLeft {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  .carousel-item { position: relative; flex-shrink: 0; width: 140px; padding-top: 18px; }
-
-  .premium-label {
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    font-size: 9px; font-weight: 800; letter-spacing: 2.5px; white-space: nowrap;
-    background: linear-gradient(90deg, #a06800, #ffd700, #fff5a0, #ffd700, #a06800);
-    background-size: 250% auto;
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    animation: premiumGoldShift 2s linear infinite;
-    filter: drop-shadow(0 0 4px rgba(255,215,0,0.6));
-    z-index: 10;
-  }
-
-  .p-wrap {
-    position: relative; display: inline-block; width: 90%;
-    border-radius: 8px; overflow: visible;
-  }
-
-  .p-wrap::before {
-    content: "";
-    position: absolute; inset: -3px; border-radius: 10px; z-index: 0;
-    background: linear-gradient(135deg, #ffd700, #ff9900, #ffd700, #ffe566, #ffd700);
-    background-size: 300% 300%;
-    animation: premiumFrameSpin 3s linear infinite;
-  }
-
-  .p-box {
-    position: relative; z-index: 1;
-    width: 100%; aspect-ratio: 3/2; border-radius: 7px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 5px; font-size: 26px;
-    filter: brightness(1.12) contrast(1.06) saturate(1.1);
-  }
-
-  .p-shimmer {
-    position: absolute; inset: 0; border-radius: 7px; pointer-events: none; z-index: 2;
-    background: linear-gradient(115deg, transparent 15%, rgba(255,235,120,0.35) 45%, rgba(255,255,220,0.5) 50%, rgba(255,235,120,0.35) 55%, transparent 85%);
-    background-size: 300% 100%;
-    animation: premiumSweep 2s ease-in-out infinite;
-  }
-
-  .p-spark {
-    position: absolute; width: 7px; height: 7px; border-radius: 50%;
-    background: radial-gradient(circle, #fff 30%, #ffd700 100%);
-    pointer-events: none; z-index: 4;
-    box-shadow: 0 0 6px 2px rgba(255,215,0,0.8);
-    animation: premiumSparkle 2s ease-in-out infinite;
-  }
-  .p-spark.tl { top: -2px;  left: -2px;  animation-delay: 0s;    }
-  .p-spark.tr { top: -2px;  right: -2px; animation-delay: 0.5s;  }
-  .p-spark.bl { bottom: -2px; left: -2px;  animation-delay: 1s;  }
-  .p-spark.br { bottom: -2px; right: -2px; animation-delay: 1.5s;}
-
-  .s-box {
-    width: 90%; aspect-ratio: 3/2; border-radius: 8px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 5px; font-size: 26px;
-    opacity: 0.65; filter: saturate(0.5) brightness(0.85);
-  }
-`;
-
-function PremiumItem({ s }) {
-  return (
-    <div className="carousel-item">
-      <div className="premium-label">★ PREMIUM ★</div>
-      <div className="p-wrap">
-        <div className="p-box" style={{ background: s.color }}>
-          <span>{s.emoji}</span>
-          <span style={{ fontSize: 9, color: "#aaa", letterSpacing: 1 }}>{s.label}</span>
-        </div>
-        <div className="p-shimmer" />
-        <div className="p-spark tl" />
-        <div className="p-spark tr" />
-        <div className="p-spark bl" />
-        <div className="p-spark br" />
-      </div>
-    </div>
-  );
-}
-
-function StandardItem({ s }) {
-  return (
-    <div className="carousel-item">
-      <div className="s-box" style={{ background: s.color }}>
-        <span>{s.emoji}</span>
-        <span style={{ fontSize: 9, color: "#888", letterSpacing: 1 }}>{s.label}</span>
-      </div>
-    </div>
-  );
-}
-
-export default function App() {
-  const trackRef = useRef(null);
-  const posRef = useRef(0);
-  const rafRef = useRef(null);
-  const all = [...sponsors, ...sponsors];
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    function scroll() {
-      posRef.current += 1.2;
-      const half = track.scrollWidth / 2;
-      if (half > 0 && posRef.current >= half) posRef.current = 0;
-      track.style.transform = `translateX(-${posRef.current}px)`;
-      rafRef.current = requestAnimationFrame(scroll);
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --card:#0f0f16;
+      --accent:#ff2d55;
+      --muted:#a8a8b3;
+      --glass: rgba(255,255,255,0.04);
     }
-    rafRef.current = requestAnimationFrame(scroll);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, []);
 
-  return (
-    <div style={{ background: "#0b0b0f", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 40, gap: 24 }}>
-      <style>{CSS}</style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Rubik, Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#fff;background:linear-gradient(180deg,#07060a 0%, #0b0b0f 40%);overflow-x:hidden;}
+    a{color:inherit;text-decoration:none}
 
-      <div style={{ color: "#ff2d55", fontWeight: 800, fontSize: 18, letterSpacing: 2 }}>SPONSOR CAROUSEL — PREMIUM EFFECT DEMO</div>
+    /* Enhanced Navigation with Animations */
+    .nav{position:fixed;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;padding:18px 36px;z-index:40;backdrop-filter:blur(10px);background:rgba(11,11,15,0.8);transition:all 0.3s ease;}
+    .nav.scrolled{background:rgba(11,11,15,0.95);box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+    .nav .logo{font-weight:800;letter-spacing:1px;color:var(--accent);transition:transform 0.3s ease;}
+    .nav .logo:hover{transform:scale(1.05);}
+    .nav .menu{display:flex;gap:18px;align-items:center}
+    .nav .btn{background:var(--accent);color:#0b0b0f;padding:10px 16px;border-radius:6px;font-weight:700;transition:all 0.3s ease;cursor:pointer;}
+    .nav .btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,45,85,0.3);}
 
-      <div style={{ background: "rgba(255,255,255,0.02)", borderRadius: 12, padding: 20, width: "100%", maxWidth: 600, boxShadow: "0 6px 30px rgba(0,0,0,0.5)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-          <div style={{ fontSize: 28, color: "#ff2d55" }}>♡</div>
-          <div>
-            <div style={{ fontWeight: 700, color: "#fff" }}>Sponsors — <span style={{ color: "#ff2d55" }}>Season I</span></div>
-            <div style={{ color: "#a8a8b3", fontSize: 13 }}>+300 voices saying THANK YOU!</div>
+    /* NEWS WIDGET - BELOW HERO META */
+    .news-widget {
+      width: 280px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      margin-top: 20px;
+      animation: fadeInUp 1.8s ease;
+    }
+
+    .news-widget:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+
+    .news-widget-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .news-widget-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .news-items-container {
+      position: relative;
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .news-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+
+    .news-item.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .news-item-image {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .news-item:hover .news-item-image {
+      transform: scale(1.03);
+    }
+
+    .news-item-title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin: 0 0 4px;
+      color: #fff;
+    }
+
+    .news-item-date {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .news-progress {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .progress-dot {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    .progress-dot.active .progress-fill {
+      animation: progressFill 5s linear forwards;
+    }
+
+    @keyframes progressFill {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+
+    .news-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .news-nav-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .news-nav-btn:hover {
+      background: var(--accent);
+      transform: scale(1.1);
+    }
+
+    /* Hero Section with Parallax */
+    .hero{min-height:78vh;display:flex;align-items:center;padding:120px 6vw 60px;position:relative;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('IMG_3565.jpg');background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;}
+    .hero:hover::before{transform:scale(1.02);}
+    .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start}
+
+    .hero-left h1{font-size:clamp(48px,8vw,50px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;text-shadow:2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
+    font-family: "Game of Squids", sans-serif;}
+
+    .hero-left p.lead{color:var(--muted);max-width:60ch;font-size:16px;margin:12px 0 18px;animation:fadeInUp 1.2s ease;}
+    .cta-row{display:flex;gap:12px;align-items:center;animation:fadeInUp 1.4s ease;}
+    .cta{background:var(--accent);color:#0b0b0f;padding:12px 18px;border-radius:8px;font-weight:700;transition:all 0.3s ease;cursor:pointer;position:relative;overflow:hidden;}
+    .cta:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,45,85,0.4);}
+    .cta::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.5s;}
+    .cta:hover::before{left:100%;}
+    .meta{display:flex;gap:18px;color:var(--muted);font-size:14px;margin-top:18px;animation:fadeInUp 1.6s ease;}
+
+    /* Enhanced Cards with Hover Effects */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;box-shadow:0 6px 30px rgba(3,3,8,0.6);transition:all 0.3s ease;animation:fadeInRight 1s ease;}
+    .card:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(3,3,8,0.8);}
+    
+    /* Carousel Container */
+    .carousel-container{position:relative;overflow:hidden;width:100%;padding:5px 0;}
+    .carousel-track{display:flex;gap:5px;}
+    .carousel-track:hover{animation-play-state:paused;}
+    .carousel-item{flex:0 0 calc(33.333% - 7px);min-width:calc(33.333% - 7px);}
+    .carousel-item img{width:90%;height:auto;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;cursor:pointer;opacity:80%;}
+    .carousel-item img:hover{transform:scale(1.05);}
+    
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Section Animations */
+    section{padding:60px 6vw;opacity:0;animation:fadeInSection 0.8s ease forwards;}
+    h2.section-title{font-size:28px;margin:0 0 18px;color:#fff;position:relative;}
+    h2.section-title::after{content:"";position:absolute;left:0;bottom:-10px;height:6px;width:0;border-radius:6px;background:linear-gradient(90deg,var(--accent),#6c5ce7);animation:expandLine 1s ease 0.5s forwards;}
+    .subtitle{color:var(--muted);margin-bottom:22px}
+
+    /* Player Cards with Staggered Animation */
+    .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    .player{background:var(--card);padding:14px;border-radius:12px;overflow:hidden;transition:all 0.3s ease;cursor:pointer;opacity:0;animation:fadeInUp 0.6s ease forwards;}
+    .player:nth-child(1){animation-delay:0.1s;}
+    .player:nth-child(2){animation-delay:0.2s;}
+    .player:nth-child(3){animation-delay:0.3s;}
+    .player:nth-child(4){animation-delay:0.4s;}
+    .player:hover{transform:translateY(-8px);box-shadow:0 12px 35px rgba(255,45,85,0.2);}
+    .player img{width:100%;height:180px;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;}
+    .player:hover img{transform:scale(1.05);}
+    .player .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+
+    /* Pills with Hover Effects */
+    .pill{background:var(--glass);padding:6px 10px;border-radius:999px;font-weight:600;transition:all 0.3s ease;cursor:pointer;}
+    .pill:hover{background:rgba(255,255,255,0.08);transform:translateY(-1px);}
+
+    /* Keyframe Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes fadeInSection {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes expandLine {
+      from { width: 0; }
+      to { width: 120px; }
+    }
+
+    /* Responsive Design */
+    @media (max-width:900px){
+      .hero-grid{grid-template-columns:1fr; width:98%; overflow:hidden;}
+      .hero{padding-top:96px; padding-left:5vw; padding-right:5vw; width:100vw;}
+      .hero-left{width:100%; overflow:hidden;}
+      .hero-left h1{
+        font-size:clamp(32px, 10vw, 56px); 
+        word-wrap:break-word;
+        width:100%;
+        max-width:100%;
+      }
+      .hero-left p.lead{
+        font-size:14px; 
+        max-width:100%;
+        width:100%;
+        word-wrap:break-word;
+      }
+      .nav{padding:15px 20px;}
+      .nav .menu{gap:12px;}
+      section{padding:40px 5vw; width:100vw; box-sizing:border-box;}
+      .card{
+        padding:1rem; 
+        width:100%;
+        box-sizing:border-box;
+        overflow:hidden;
+      }
+      .card > div{
+        font-size:13px;
+        word-wrap:break-word;
+        overflow-wrap:break-word;
+      }
+      #prize-display{
+        font-size:clamp(2.5rem, 8vw, 5.5rem);
+        gap:0.3rem;
+      }
+      #prize-title{
+        font-size:clamp(1rem, 4vw, 1.5rem);
+      }
+      .digit-prize{
+        width:clamp(2rem, 8vw, 4rem);
+      }
+      .hero-left{
+        padding-right:10px;
+        width:100%;
+        max-width:100%;
+      }
+      .cta-row{
+        flex-wrap:wrap;
+        max-width:100%;
+      }
+      .cta, .pill{
+        font-size:13px;
+        padding:10px 14px;
+      }
+      .meta{
+        flex-wrap:wrap;
+        font-size:12px;
+      }
+      .carousel-item{
+        flex:0 0 calc(50% - 5px);
+        min-width:calc(50% - 5px);
+      }
+      body{
+        padding:0;
+        margin:0;
+      }
+      
+      .card{
+        padding:1rem; 
+        width:90%;
+        margin:0 auto;
+        box-sizing:border-box;
+      }
+
+      .news-widget {
+        width: calc(100% - 20px);
+        max-width: 100%;
+        margin: 20px 10px;
+        padding: 12px;
+        box-sizing: border-box;
+      }
+      
+      .news-widget-header {
+        padding-right: 0;
+      }
+      
+      .news-nav {
+        flex-shrink: 0;
+      }
+    }
+
+    footer{padding:40px 6vw;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.05);}
+
+    html{scroll-behavior:smooth;}
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    @keyframes shakeContinuous {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+      20%, 40%, 60%, 80% { transform: translateX(3px); }
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* ── PREMIUM SPONSOR STYLES ───────────────────────────────────────────── */
+    .carousel-item.premium { position: relative; padding-top: 16px; }
+
+    .carousel-item.premium::before {
+      content: "★ PREMIUM ★";
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      font-size: 9px; font-weight: 800; letter-spacing: 2.5px; white-space: nowrap;
+      background: linear-gradient(90deg, #a06800, #ffd700, #fff5a0, #ffd700, #a06800);
+      background-size: 250% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: premiumGoldShift 2s linear infinite;
+      z-index: 10; pointer-events: none;
+      text-shadow: none;
+      filter: drop-shadow(0 0 4px rgba(255,215,0,0.6));
+    }
+
+    .carousel-item.premium .p-wrap {
+      position: relative; display: inline-block; width: 90%; border-radius: 8px; overflow: visible;
+    }
+
+    /* outer golden frame */
+    .carousel-item.premium .p-wrap::before {
+      content: "";
+      position: absolute; inset: -3px; border-radius: 10px; z-index: 0;
+      background: linear-gradient(135deg, #ffd700, #ff9900, #ffd700, #ffe566, #ffd700);
+      background-size: 300% 300%;
+      animation: premiumFrameSpin 3s linear infinite;
+    }
+
+    .carousel-item.premium .p-wrap img {
+      position: relative; z-index: 1;
+      width: 100%; height: auto; display: block; border-radius: 7px;
+      opacity: 1 !important;
+      filter: brightness(1.12) contrast(1.06) saturate(1.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .carousel-item.premium .p-wrap img:hover { transform: scale(1.05); }
+
+    .carousel-item.premium .p-wrap .shimmer {
+      position: absolute; inset: 0; border-radius: 7px; pointer-events: none; z-index: 2;
+      background: linear-gradient(115deg, transparent 15%, rgba(255,235,120,0.35) 45%, rgba(255,255,220,0.5) 50%, rgba(255,235,120,0.35) 55%, transparent 85%);
+      background-size: 300% 100%;
+      animation: premiumSweep 2s ease-in-out infinite;
+    }
+
+    .carousel-item.premium .p-wrap .sp {
+      position: absolute; width: 7px; height: 7px; border-radius: 50%;
+      background: radial-gradient(circle, #fff 30%, #ffd700 100%);
+      pointer-events: none; z-index: 4;
+      box-shadow: 0 0 6px 2px rgba(255,215,0,0.8);
+      animation: premiumSparkle 2s ease-in-out infinite;
+    }
+    .carousel-item.premium .p-wrap .sp.tl { top: -2px; left: -2px; animation-delay: 0s; }
+    .carousel-item.premium .p-wrap .sp.tr { top: -2px; right: -2px; animation-delay: 0.5s; }
+    .carousel-item.premium .p-wrap .sp.bl { bottom: -2px; left: -2px; animation-delay: 1s; }
+    .carousel-item.premium .p-wrap .sp.br { bottom: -2px; right: -2px; animation-delay: 1.5s; }
+
+    /* non-premium items get same top padding so heights align */
+    .carousel-item.standard { padding-top: 16px; }
+
+    @keyframes premiumGoldShift {
+      0%   { background-position: 0% center; }
+      100% { background-position: 250% center; }
+    }
+    @keyframes premiumFrameSpin {
+      0%   { background-position: 0% 0%; }
+      100% { background-position: 300% 300%; }
+    }
+    @keyframes premiumSweep {
+      0%   { background-position: -100% center; opacity: 0; }
+      5%   { opacity: 1; }
+      55%  { background-position: 200% center; opacity: 1; }
+      70%  { opacity: 0; }
+      100% { background-position: 200% center; opacity: 0; }
+    }
+    @keyframes premiumSparkle {
+      0%, 100% { transform: scale(0) rotate(0deg);   opacity: 0; }
+      40%       { transform: scale(1.6) rotate(180deg); opacity: 1; }
+      60%       { transform: scale(1)   rotate(270deg); opacity: 0.8; }
+      80%       { transform: scale(0)   rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header"></div>
+  <script>
+    fetch('headerMenu.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header').innerHTML = data;
+      });
+  </script>
+
+  <main>
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <h1>SQUID<br>GAME ALBANIA</h1>
+          <p class="lead">Hundreds of Players. 10 Special Games. One chance to win. Everything to lose. Are you here to win cash — or earn prestige!?
+		  <br>
+		  <Strong style="color:white">By EPOKA University</strong>
+		  </p>
+          <div class="cta-row">
+			  <a class="cta" href="javascript:void(0);" onclick="window.location.href='apply.html'">Apply for Season II</a>     
+            <a class="pill" href="https://www.instagram.com/p/DSxtRWHDkC_/" target="_blank">Watch Trailer</a>
+          </div>
+          <div class="meta">
+            <div>Bigger</div>
+            <div>Bolder</div>
+            <div>Lauder</div>
+            <div>Brighter</div>
+          </div>
+          
+          <!-- News Widget -->
+          <div class="news-widget" id="newsWidget">
+            <div class="news-widget-header">
+              <div class="news-widget-title">
+                <span>📰</span>
+                <span>NEWS & EVENTS</span>
+              </div>
+              <div class="news-nav">
+                <button class="news-nav-btn" id="prevBtn">←</button>
+                <button class="news-nav-btn" id="nextBtn">→</button>
+              </div>
+            </div>
+            <div class="news-items-container" id="newsContainer"></div>
+            <div class="news-progress" id="newsProgress"></div>
           </div>
         </div>
-        <div style={{ overflow: "hidden", width: "100%", padding: "4px 0" }}>
-          <div ref={trackRef} style={{ display: "flex", gap: 8, width: "max-content", alignItems: "flex-end" }}>
-            {all.map((s, i) =>
-              s.premium
-                ? <PremiumItem key={i} s={s} />
-                : <StandardItem key={i} s={s} />
-            )}
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div class="card" style="padding:2rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;background:linear-gradient(180deg, rgba(9,252,8,0.03), rgba(9,252,8,0.01));position:relative;overflow:hidden;">
+            <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(rgb(9 252 8 / 1%) 20%, rgba(8,13,7,0.4) 70%);pointer-events:none;z-index:1;"></div>
+            <h2 id="prize-title" style="display:flex;align-items:center;justify-content:center;gap:1rem;font-size:1.5rem;color:rgb(9,252,8);opacity:0.75;z-index:3;margin:0;transition:color 3000ms ease;">
+              <span style="padding-top:0.25em;line-height:0.5em;">*</span>
+              <span id="prize-title-text">CASH PRIZE</span>
+              <span style="padding-top:0.25em;line-height:0.5em;">*</span>      
+            </h2>
+            <h1 id="prize-display" style="display:flex;gap:0.5rem;height:5rem;line-height:5rem;font-size:5.5rem;color:rgb(9,252,8);z-index:3;font-family:'Orbitron',monospace;margin:0;position:relative;">
+              <span style="opacity:0.7;position:relative;">
+                $
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </span>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+              <span style="opacity:0.5;">,</span>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+              <div class="digit-prize" style="width:4rem;position:relative;overflow:hidden;">
+                <div class="digit-border" style="position:absolute;bottom:0;left:0;width:100%;height:0.25rem;background:rgb(9,252,8);transition:background 3000ms ease;"></div>
+                <div class="digit-track-prize" style="width:100%;display:flex;flex-direction:column;align-items:center;position:absolute;left:0;top:0;translate:0% 0%;transition:translate 3000ms cubic-bezier(.1,.67,0,1);"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px);pointer-events:none;z-index:10;mix-blend-mode:multiply;"></div>
+              </div>
+            </h1>
+          </div>
+
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="width:64px;height:64px;background:linear-gradient(45deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:30pt;color:var(--accent);">♡</div>
+              <div>
+                <div style="font-weight:700">Sponsors of Squid Game Albania - <span style="color:#ff2d55">Session I</span></div>
+                <div style="color:var(--muted);font-size:13px">+300 voices saying THANK YOU to every sponsor who made the 1st Real Life - Squid Game Albania possible!</div>
+              </div>
+            </div>
+            <div class="carousel-container">
+              <div class="carousel-track" id="sponsorCarousel">
+                <!-- Images will be duplicated via JavaScript for infinite loop -->
+              </div>
+            </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <div style={{ color: "#a8a8b3", fontSize: 12, textAlign: "center" }}>
-        Sponsors 3 &amp; 5 (Gamma, Epsilon) have the ★ PREMIUM effect<br/>
-        Copy the CSS + HTML from <code style={{color:"#ff2d55"}}>index.html</code> into your live site
+    <section>
+      <h2 class="section-title">Best all-around</h2>
+      <div class="subtitle">The journey of LojtariFundit is still young, but it has already brought together passion, competition, and unforgettable moments. What started as a single event is growing into a platform for games, challenges, and community experiences.</div>
+      <div class="players">
+        <article class="player">
+          <img src="SGA_1.jpg" alt="1 Session">
+          <h3 style="margin:8px 0 0">1st Real Life Squid Game Albania</h3>
+          <div style="color:var(--muted);font-size:13px">11 Hours of Challenges, Fund, Dance, Rythm and Vistory!</div>
+          <div class="meta"><span>$1000 Prize</span><span style="color:var(--muted)">30 April, 2025</span></div>
+        </article>
+		
+		
+		        <article class="player">
+          <img src="IMG_3565.jpg" alt="1 Session">
+          <h3 style="margin:8px 0 0">The Guards</h3>
+          <div style="color:var(--muted);font-size:13px">Masked enforcers who control the fun games with ruthless precision...</div>
+          <div class="meta"><span>~50 Soldiers</span><span style="color:var(--muted)">Chaos Control</span></div>
+        </article>
+		
+		
+		        <article class="player">
+          <img src="IMG_3612.jpg" alt="1 Session">
+          <h3 style="margin:8px 0 0">The Players</h3>
+          <div style="color:var(--muted);font-size:13px">The heart of the story, struggling to survive against impossible odds...</div>
+          <div class="meta"><span>~200 Players</span><span style="color:var(--muted)">Happy Chaos</span></div>
+        </article>
       </div>
+    </section>
+
+
+  </main>
+
+  <footer>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
+      <div>&copy; 2026 LojtariFundit</div>
+      <div style="color:var(--muted)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="610d0e0b1500130807140f05081521060c00080d4f020e0c">[email&#160;protected]</a></div>
     </div>
-  );
-}
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // NEWS WIDGET FUNCTIONALITY - FETCH FROM GOOGLE SHEETS
+    let currentNewsIndex = 0, autoRotateInterval;
+    const newsContainer = document.getElementById('newsContainer');
+    const newsProgress = document.getElementById('newsProgress');
+
+    async function loadNewsData() {
+      try {
+        const url = "https://script.google.com/macros/s/AKfycbwLfjcRc49CpAiEDLavn5cVCUuO9j9kCFQWt7CZUwyn2FYlXA7u9aibgKYL9jn1WmCg/exec";
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+      } catch (e) {
+        console.error("Error loading news data:", e);
+        return [];
+      }
+    }
+
+    async function initNewsWidget() {
+      const newsData = await loadNewsData();
+      
+      if (newsData.length === 0) {
+        console.log("No news data available");
+        return;
+      }
+
+      console.log("News data loaded:", newsData);
+
+      newsData.forEach((news, i) => {
+        const item = document.createElement('div');
+        item.className = 'news-item' + (i === 0 ? ' active' : '');
+        
+        // Get data using column positions (same as your spreadsheet)
+        const columns = Object.values(news);
+        const eventName = (columns[0] || 'Untitled').toString().trim();
+        const date = (columns[1] || '').toString().trim();
+        const imageName = (columns[2] || '').toString().trim();
+        let link = (columns[3] || '#').toString().trim();
+        
+        // Fix link if needed
+        if (link && link !== '#' && !link.startsWith('http://') && !link.startsWith('https://')) {
+          link = 'https://' + link;
+        }
+        
+        // Use imageName exactly as it is from the spreadsheet (e.g., "News/lajthiza.png")
+        const imagePath = imageName || 'https://via.placeholder.com/400x300?text=News';
+        
+        console.log(`News item ${i}:`, {eventName, date, imageName, link, imagePath});
+        
+        // Make image clickable
+        const imageHtml = imageName 
+          ? `<a href="${link}" target="_blank" rel="noopener noreferrer"><img src="${imagePath}" class="news-item-image" onerror="this.src='https://via.placeholder.com/400x300?text=Image+Not+Found';console.error('Failed to load: ${imagePath}')"/></a>`
+          : `<img src="https://via.placeholder.com/400x300?text=News" class="news-item-image"/>`;
+        
+        item.innerHTML = `${imageHtml}<h3 class="news-item-title">${eventName}</h3><div class="news-item-date">${date}</div>`;
+        newsContainer.appendChild(item);
+
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
+        dot.innerHTML = '<div class="progress-fill"></div>';
+        newsProgress.appendChild(dot);
+      });
+      
+      if (newsData.length > 1) {
+        startAutoRotate();
+      }
+    }
+
+    function showNews(index) {
+      document.querySelectorAll('.news-item').forEach(item => item.classList.remove('active'));
+      document.querySelectorAll('.progress-dot').forEach(dot => {
+        dot.classList.remove('active');
+        const fill = dot.querySelector('.progress-fill');
+        fill.style.animation = 'none';
+        void fill.offsetWidth;
+      });
+      
+      document.querySelectorAll('.news-item')[index].classList.add('active');
+      const activeDot = document.querySelectorAll('.progress-dot')[index];
+      activeDot.classList.add('active');
+      
+      setTimeout(() => {
+        const activeFill = activeDot.querySelector('.progress-fill');
+        activeFill.style.animation = 'progressFill 5s linear forwards';
+      }, 50);
+    }
+
+    function nextNews() {
+      const newsItems = document.querySelectorAll('.news-item');
+      if (newsItems.length === 0) return;
+      currentNewsIndex = (currentNewsIndex + 1) % newsItems.length;
+      showNews(currentNewsIndex);
+    }
+
+    function startAutoRotate() { 
+      stopAutoRotate();
+      autoRotateInterval = setInterval(nextNews, 5000); 
+    }
+    
+    function stopAutoRotate() { 
+      if (autoRotateInterval) {
+        clearInterval(autoRotateInterval); 
+        autoRotateInterval = null;
+      }
+    }
+
+    document.getElementById('prevBtn').onclick = () => {
+      const newsItems = document.querySelectorAll('.news-item');
+      if (newsItems.length === 0) return;
+      currentNewsIndex = (currentNewsIndex - 1 + newsItems.length) % newsItems.length;
+      showNews(currentNewsIndex);
+      startAutoRotate();
+    };
+    
+    document.getElementById('nextBtn').onclick = () => { 
+      nextNews(); 
+      startAutoRotate();
+    };
+    
+    document.getElementById('newsWidget').onmouseenter = stopAutoRotate;
+    document.getElementById('newsWidget').onmouseleave = startAutoRotate;
+
+    // SPONSOR CAROUSEL
+    async function loadSponsorData() {
+      try {
+        const url = "https://script.google.com/macros/s/AKfycbzxk472wrie94k1tnyYCsDckn7qMebnHwGdMvv6EfcXJxXz7FIKoQ_REUZ9xKTm6Bw_/exec";
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+      } catch (e) {
+        console.error("Error loading sponsor data:", e);
+        return [];
+      }
+    }
+
+    // Indices (0-based) that are premium: 3rd = index 2, 5th = index 4
+    const premiumIndices = new Set([2, 4]);
+
+    async function setupSponsors() {
+      const carousel = document.getElementById('sponsorCarousel');
+      if (!carousel) return;
+      
+      const sponsors = await loadSponsorData();
+      
+      const sponsorImages = sponsors.length > 0 
+        ? sponsors.map(s => ({ 
+            src: s["Image Link"], 
+            alt: s.Sponsor, 
+            link: s["Sponsor Link"] 
+          }))
+        : [];
+      
+      const allImages = [...sponsorImages, ...sponsorImages];
+      
+      allImages.forEach((img, globalIndex) => {
+        const originalIndex = globalIndex % sponsorImages.length;
+        const isPremium = premiumIndices.has(originalIndex);
+
+        const item = document.createElement('div');
+        item.className = 'carousel-item ' + (isPremium ? 'premium' : 'standard');
+
+        if (isPremium) {
+          item.innerHTML = `
+            <a href="${img.link}" target="_blank" rel="noopener noreferrer">
+              <div class="p-wrap">
+                <img src="${img.src}" alt="${img.alt}">
+                <div class="shimmer"></div>
+                <div class="sp tl"></div>
+                <div class="sp tr"></div>
+                <div class="sp bl"></div>
+                <div class="sp br"></div>
+              </div>
+            </a>`;
+        } else {
+          item.innerHTML = `<a href="${img.link}" target="_blank" rel="noopener noreferrer"><img src="${img.src}" alt="${img.alt}"></a>`;
+        }
+
+        carousel.appendChild(item);
+      });
+      
+      let pos = 0;
+      function animate() {
+        pos += 1.5;
+        if (pos >= carousel.scrollWidth / 2) pos = 0;
+        carousel.style.transform = `translateX(-${pos}px)`;
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // PRIZE COUNTER
+    function setupPrize() {
+      const tracks = document.querySelectorAll('.digit-track-prize');
+      const digits = [1,0,0,0], allDigits = [0,1,2,3,4,5,6,7,8,9];
+      
+      tracks.forEach((track, i) => {
+        const iterations = i + 3;
+        let str = '';
+        for (let j = 0; j < iterations; j++) str += allDigits.join(' ') + ' ';
+        track.innerText = str.trim();
+      });
+
+      function animate() {
+        document.getElementById('prize-title-text').textContent = 'CASH PRIZE';
+        document.getElementById('prize-display').style.color = 'rgb(9,252,8)';
+        document.getElementById('prize-title').style.color = 'rgb(9,252,8)';
+        document.querySelectorAll('.digit-border').forEach(b => b.style.background = 'rgb(9,252,8)');
+        
+        tracks.forEach((track, i) => {
+          const activeDigit = (i + 2) * 10 + digits[i];
+          track.style.translate = `0rem ${activeDigit * -5}rem`;
+        });
+
+        setTimeout(() => {
+          document.getElementById('prize-title').style.animation = 'shake 0.5s ease';
+          document.getElementById('prize-title-text').textContent = "DON'T MISS IT! APPLY NOW";
+          setTimeout(() => {
+            document.getElementById('prize-title').style.animation = 'shakeContinuous 0.3s ease infinite';
+            setTimeout(() => document.getElementById('prize-title').style.animation = 'none', 1000);
+          }, 500);
+          
+          document.getElementById('prize-display').style.color = 'rgb(255,45,85)';
+          document.getElementById('prize-title').style.color = 'rgb(255,45,85)';
+          document.querySelectorAll('.digit-border').forEach(b => b.style.background = 'rgb(255,45,85)');
+          tracks.forEach(track => track.style.translate = '0rem 0rem');
+          
+          setTimeout(animate, 4500);
+        }, 10000);
+      }
+      
+      setTimeout(animate, 1200);
+    }
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (navbar && window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+      } else if (navbar) {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Intersection Observer for section animations
+    const sections = document.querySelectorAll('section');
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Add click interactions
+    document.querySelectorAll('.cta, .btn, .pill').forEach(button => {
+      button.addEventListener('click', (e) => {
+		  if (button.tagName === 'A' && button.href) return;
+        e.preventDefault();
+        const ripple = document.createElement('span');
+        ripple.style.position = 'absolute';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(255,255,255,0.3)';
+        ripple.style.transform = 'scale(0)';
+        ripple.style.animation = 'ripple 0.6s linear';
+        ripple.style.left = e.offsetX + 'px';
+        ripple.style.top = e.offsetY + 'px';
+        
+        button.style.position = 'relative';
+        button.appendChild(ripple);
+        
+        setTimeout(() => {
