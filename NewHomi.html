@@ -367,88 +367,84 @@
       }
     }
 
-    /* ── PREMIUM SPONSOR STYLES ───────────────────────────────────────────── */
+    /* ── PREMIUM SPONSOR STYLES (only addition) ─────────────────────────── */
     .carousel-item.premium { position: relative; padding-top: 16px; }
+    .carousel-item.standard { padding-top: 16px; }
 
     .carousel-item.premium::before {
       content: "★ PREMIUM ★";
       position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      font-size: 9px; font-weight: 800; letter-spacing: 2.5px; white-space: nowrap;
+      font-size: 9px; font-weight: 800; letter-spacing: 2px; white-space: nowrap;
       background: linear-gradient(90deg, #a06800, #ffd700, #fff5a0, #ffd700, #a06800);
       background-size: 250% auto;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      animation: premiumGoldShift 2s linear infinite;
+      animation: pgoldShift 2s linear infinite;
+      filter: drop-shadow(0 0 3px rgba(255,215,0,0.5));
       z-index: 10; pointer-events: none;
-      text-shadow: none;
-      filter: drop-shadow(0 0 4px rgba(255,215,0,0.6));
     }
 
+    /* animated gold border via pseudo on the wrap */
     .carousel-item.premium .p-wrap {
-      position: relative; display: inline-block; width: 90%; border-radius: 8px; overflow: visible;
+      position: relative; display: inline-block; width: 90%; border-radius: 8px;
     }
-
-    /* outer golden frame */
     .carousel-item.premium .p-wrap::before {
       content: "";
       position: absolute; inset: -3px; border-radius: 10px; z-index: 0;
       background: linear-gradient(135deg, #ffd700, #ff9900, #ffd700, #ffe566, #ffd700);
       background-size: 300% 300%;
-      animation: premiumFrameSpin 3s linear infinite;
+      animation: pframeSpin 3s linear infinite;
     }
-
     .carousel-item.premium .p-wrap img {
       position: relative; z-index: 1;
       width: 100%; height: auto; display: block; border-radius: 7px;
       opacity: 1 !important;
-      filter: brightness(1.12) contrast(1.06) saturate(1.1);
-      transition: transform 0.3s ease;
-      cursor: pointer;
+      filter: brightness(1.1) contrast(1.05) saturate(1.1);
+      transition: transform 0.3s ease; cursor: pointer;
     }
-
     .carousel-item.premium .p-wrap img:hover { transform: scale(1.05); }
 
-    .carousel-item.premium .p-wrap .shimmer {
-      position: absolute; inset: 0; border-radius: 7px; pointer-events: none; z-index: 2;
-      background: linear-gradient(115deg, transparent 15%, rgba(255,235,120,0.35) 45%, rgba(255,255,220,0.5) 50%, rgba(255,235,120,0.35) 55%, transparent 85%);
+    /* shimmer sweep over image */
+    .carousel-item.premium .p-wrap .pshimmer {
+      position: absolute; inset: 0; border-radius: 7px;
+      pointer-events: none; z-index: 2;
+      background: linear-gradient(115deg, transparent 15%, rgba(255,235,120,0.4) 45%, rgba(255,255,200,0.55) 50%, rgba(255,235,120,0.4) 55%, transparent 85%);
       background-size: 300% 100%;
-      animation: premiumSweep 2s ease-in-out infinite;
+      animation: psweep 2s ease-in-out infinite;
     }
 
-    .carousel-item.premium .p-wrap .sp {
+    /* corner sparkles */
+    .carousel-item.premium .p-wrap .psp {
       position: absolute; width: 7px; height: 7px; border-radius: 50%;
       background: radial-gradient(circle, #fff 30%, #ffd700 100%);
       pointer-events: none; z-index: 4;
-      box-shadow: 0 0 6px 2px rgba(255,215,0,0.8);
-      animation: premiumSparkle 2s ease-in-out infinite;
+      box-shadow: 0 0 6px 2px rgba(255,215,0,0.9);
+      animation: psparkle 2s ease-in-out infinite;
     }
-    .carousel-item.premium .p-wrap .sp.tl { top: -2px; left: -2px; animation-delay: 0s; }
-    .carousel-item.premium .p-wrap .sp.tr { top: -2px; right: -2px; animation-delay: 0.5s; }
-    .carousel-item.premium .p-wrap .sp.bl { bottom: -2px; left: -2px; animation-delay: 1s; }
-    .carousel-item.premium .p-wrap .sp.br { bottom: -2px; right: -2px; animation-delay: 1.5s; }
+    .carousel-item.premium .p-wrap .psp.tl { top:-2px; left:-2px; animation-delay:0s; }
+    .carousel-item.premium .p-wrap .psp.tr { top:-2px; right:-2px; animation-delay:0.5s; }
+    .carousel-item.premium .p-wrap .psp.bl { bottom:-2px; left:-2px; animation-delay:1s; }
+    .carousel-item.premium .p-wrap .psp.br { bottom:-2px; right:-2px; animation-delay:1.5s; }
 
-    /* non-premium items get same top padding so heights align */
-    .carousel-item.standard { padding-top: 16px; }
-
-    @keyframes premiumGoldShift {
+    @keyframes pgoldShift {
       0%   { background-position: 0% center; }
       100% { background-position: 250% center; }
     }
-    @keyframes premiumFrameSpin {
+    @keyframes pframeSpin {
       0%   { background-position: 0% 0%; }
       100% { background-position: 300% 300%; }
     }
-    @keyframes premiumSweep {
+    @keyframes psweep {
       0%   { background-position: -100% center; opacity: 0; }
       5%   { opacity: 1; }
       55%  { background-position: 200% center; opacity: 1; }
       70%  { opacity: 0; }
       100% { background-position: 200% center; opacity: 0; }
     }
-    @keyframes premiumSparkle {
-      0%, 100% { transform: scale(0) rotate(0deg);   opacity: 0; }
-      40%       { transform: scale(1.6) rotate(180deg); opacity: 1; }
-      60%       { transform: scale(1)   rotate(270deg); opacity: 0.8; }
-      80%       { transform: scale(0)   rotate(360deg); opacity: 0; }
+    @keyframes psparkle {
+      0%,100% { transform: scale(0) rotate(0deg);    opacity: 0; }
+      40%      { transform: scale(1.6) rotate(180deg); opacity: 1; }
+      60%      { transform: scale(1)   rotate(270deg); opacity: 0.8; }
+      80%      { transform: scale(0)   rotate(360deg); opacity: 0; }
     }
   </style>
 </head>
@@ -589,11 +585,11 @@
   <footer>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
       <div>&copy; 2026 LojtariFundit</div>
-      <div style="color:var(--muted)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="610d0e0b1500130807140f05081521060c00080d4f020e0c">[email&#160;protected]</a></div>
+      <div style="color:var(--muted)">lojtarifundit@gmail.com</div>
     </div>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // NEWS WIDGET FUNCTIONALITY - FETCH FROM GOOGLE SHEETS
     let currentNewsIndex = 0, autoRotateInterval;
     const newsContainer = document.getElementById('newsContainer');
@@ -728,7 +724,7 @@
       }
     }
 
-    // Indices (0-based) that are premium: 3rd = index 2, 5th = index 4
+    // 0-based: 3rd sponsor = index 2, 5th sponsor = index 4
     const premiumIndices = new Set([2, 4]);
 
     async function setupSponsors() {
@@ -759,11 +755,11 @@
             <a href="${img.link}" target="_blank" rel="noopener noreferrer">
               <div class="p-wrap">
                 <img src="${img.src}" alt="${img.alt}">
-                <div class="shimmer"></div>
-                <div class="sp tl"></div>
-                <div class="sp tr"></div>
-                <div class="sp bl"></div>
-                <div class="sp br"></div>
+                <div class="pshimmer"></div>
+                <div class="psp tl"></div>
+                <div class="psp tr"></div>
+                <div class="psp bl"></div>
+                <div class="psp br"></div>
               </div>
             </a>`;
         } else {
@@ -873,3 +869,17 @@
         button.appendChild(ripple);
         
         setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+    });
+
+    // Initialize on load
+    window.addEventListener('load', () => {
+      initNewsWidget();
+      setupSponsors();
+      setupPrize();
+    });
+  </script>
+</body>
+</html>
