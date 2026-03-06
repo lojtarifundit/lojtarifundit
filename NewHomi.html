@@ -385,7 +385,7 @@
     .carousel-item.standard { padding-top: 16px; }
 
     .carousel-item.premium::before {
-      content: "★ PREMIUM$ ★";
+      content: "★ PREMIUM ★";
       position: absolute; top: 0; left: 50%; transform: translateX(-50%);
       font-size: var(--p-badge-size); font-weight: 800; letter-spacing: 2px; white-space: nowrap;
       background: linear-gradient(90deg, #a06800, #ffd700, #fff5a0, #ffd700, #a06800);
@@ -739,7 +739,7 @@
     }
 
     // 0-based: 3rd sponsor = index 2, 5th sponsor = index 4
-    const premiumIndices = new Set([2, 4]);
+    const premiumIndices = new Set([1, 3,4]);
 
     async function setupSponsors() {
       const carousel = document.getElementById('sponsorCarousel');
