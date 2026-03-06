@@ -898,3 +898,17 @@
         button.appendChild(ripple);
         
         setTimeout(() => {
+            ripple.remove();
+        }, 600);
+      });
+    });
+
+    // Initialize on load
+    window.addEventListener('load', () => {
+      initNewsWidget();
+      setupSponsors();
+      setupPrize();
+    });
+  </script>
+</body>
+</html>
