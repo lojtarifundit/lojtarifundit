@@ -178,8 +178,23 @@
 
     /* Hero Section with Parallax */
     .hero{min-height:78vh;display:flex;align-items:center;padding:120px 6vw 60px;position:relative;overflow:hidden}
-    .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('IMG_3565.jpg');background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;}
+    .hero::before{content:"";position:absolute;inset:0;background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.05);z-index:0;transition:transform 0.5s ease;animation:heroBgSlide 20s linear infinite;}
     .hero:hover::before{transform:scale(1.02);}
+
+    /* ── HERO BACKGROUND SLIDESHOW ─────────────────────────────────────────
+       Add/remove image URLs below. Adjust timing in the animation duration (20s)
+       and the % keyframes to match the number of images.
+       Current: 3 images — each shown for ~33% of the cycle with a smooth crossfade.
+    ────────────────────────────────────────────────────────────────────────── */
+    @keyframes heroBgSlide {
+      0%        { background-image: linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('IMG_3565.jpg'); }
+      5%        { background-image: linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('IMG_3565.jpg'); }
+      33%       { background-image: linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('SGA_1.jpg'); }
+      38%       { background-image: linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('SGA_1.jpg'); }
+      66%       { background-image: linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('IMG_3612.jpg'); }
+      71%       { background-image: linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('IMG_3612.jpg'); }
+      100%      { background-image: linear-gradient(180deg, rgba(11,11,15,0.25) 0%, rgba(11,11,15,0.7) 55%), url('IMG_3565.jpg'); }
+    }
     .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start}
 
     .hero-left h1{font-size:clamp(48px,8vw,50px);line-height:0.95;margin:0 0 12px;font-weight:900;color:var(--accent);text-transform:uppercase;animation:fadeInUp 1s ease;text-shadow:2px 2px 4px #000000, -2px -2px 4px #ffffff7d;
@@ -366,6 +381,100 @@
         opacity: 0;
       }
     }
+
+    /* ── PREMIUM TUNING KNOBS ───────────────────────────────────────────── */
+    :root {
+      --p-border-size: 3px;          /* gold frame thickness: 0 = off, 3px = default */
+      --p-border-opacity: 0.85;      /* gold frame brightness: 0.0 – 1.0 */
+      --p-shimmer-opacity: 0.4;      /* shimmer sweep strength: 0.0 – 1.0 */
+      --p-shimmer-speed: 2s;         /* shimmer speed: lower = faster */
+      --p-sparkle-size: 7px;         /* corner sparkle size */
+      --p-sparkle-opacity: 0.9;      /* sparkle glow strength: 0.0 – 1.0 */
+      --p-img-brightness: 1.1;       /* image brightness boost: 1.0 = normal */
+      --p-badge-size: 9px;           /* ★ PREMIUM ★ font size */
+      --p-frame-speed: 3s;           /* gold border spin speed */
+    }
+
+    /* ── PREMIUM SPONSOR STYLES (only addition) ─────────────────────────── */
+    .carousel-item.premium { position: relative; padding-top: 16px; }
+    .carousel-item.standard { padding-top: 16px; }
+
+    .carousel-item.premium::before {
+      content: "★ PREMIUM ★";
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      font-size: var(--p-badge-size); font-weight: 800; letter-spacing: 2px; white-space: nowrap;
+      background: linear-gradient(90deg, #a06800, #ffd700, #fff5a0, #ffd700, #a06800);
+      background-size: 250% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: pgoldShift 2s linear infinite;
+      filter: drop-shadow(0 0 3px rgba(255,215,0,0.5));
+      z-index: 10; pointer-events: none;
+    }
+
+    /* animated gold border via pseudo on the wrap */
+    .carousel-item.premium .p-wrap {
+      position: relative; display: inline-block; width: 90%; border-radius: 8px;
+    }
+    .carousel-item.premium .p-wrap::before {
+      content: "";
+      position: absolute; inset: calc(var(--p-border-size) * -1); border-radius: 10px; z-index: 0;
+      background: linear-gradient(135deg, #ffd700, #ff9900, #ffd700, #ffe566, #ffd700);
+      background-size: 300% 300%;
+      opacity: var(--p-border-opacity);
+      animation: pframeSpin var(--p-frame-speed) linear infinite;
+    }
+    .carousel-item.premium .p-wrap img {
+      position: relative; z-index: 1;
+      width: 100%; height: auto; display: block; border-radius: 7px;
+      opacity: 1 !important;
+      filter: brightness(var(--p-img-brightness)) contrast(1.05) saturate(1.1);
+      transition: transform 0.3s ease; cursor: pointer;
+    }
+    .carousel-item.premium .p-wrap img:hover { transform: scale(1.05); }
+
+    /* shimmer sweep over image */
+    .carousel-item.premium .p-wrap .pshimmer {
+      position: absolute; inset: 0; border-radius: 7px;
+      pointer-events: none; z-index: 2;
+      background: linear-gradient(115deg, transparent 15%, rgba(255,235,120,var(--p-shimmer-opacity)) 45%, rgba(255,255,200,var(--p-shimmer-opacity)) 50%, rgba(255,235,120,var(--p-shimmer-opacity)) 55%, transparent 85%);
+      background-size: 300% 100%;
+      animation: psweep var(--p-shimmer-speed) ease-in-out infinite;
+    }
+
+    /* corner sparkles */
+    .carousel-item.premium .p-wrap .psp {
+      position: absolute; width: var(--p-sparkle-size); height: var(--p-sparkle-size); border-radius: 50%;
+      background: radial-gradient(circle, #fff 30%, #ffd700 100%);
+      pointer-events: none; z-index: 4;
+      box-shadow: 0 0 6px 2px rgba(255,215,0,var(--p-sparkle-opacity));
+      animation: psparkle 2s ease-in-out infinite;
+    }
+    .carousel-item.premium .p-wrap .psp.tl { top:-2px; left:-2px; animation-delay:0s; }
+    .carousel-item.premium .p-wrap .psp.tr { top:-2px; right:-2px; animation-delay:0.5s; }
+    .carousel-item.premium .p-wrap .psp.bl { bottom:-2px; left:-2px; animation-delay:1s; }
+    .carousel-item.premium .p-wrap .psp.br { bottom:-2px; right:-2px; animation-delay:1.5s; }
+
+    @keyframes pgoldShift {
+      0%   { background-position: 0% center; }
+      100% { background-position: 250% center; }
+    }
+    @keyframes pframeSpin {
+      0%   { background-position: 0% 0%; }
+      100% { background-position: 300% 300%; }
+    }
+    @keyframes psweep {
+      0%   { background-position: -100% center; opacity: 0; }
+      5%   { opacity: 1; }
+      55%  { background-position: 200% center; opacity: 1; }
+      70%  { opacity: 0; }
+      100% { background-position: 200% center; opacity: 0; }
+    }
+    @keyframes psparkle {
+      0%,100% { transform: scale(0) rotate(0deg);    opacity: 0; }
+      40%      { transform: scale(1.6) rotate(180deg); opacity: 1; }
+      60%      { transform: scale(1)   rotate(270deg); opacity: 0.8; }
+      80%      { transform: scale(0)   rotate(360deg); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -505,11 +614,11 @@
   <footer>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
       <div>&copy; 2026 LojtariFundit</div>
-      <div style="color:var(--muted)">lojtarifundit@gmail.com</div>
+      <div style="color:var(--muted)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2c404346584d5e454a59424845586c4b414d4540024f4341">[email&#160;protected]</a></div>
     </div>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // NEWS WIDGET FUNCTIONALITY - FETCH FROM GOOGLE SHEETS
     let currentNewsIndex = 0, autoRotateInterval;
     const newsContainer = document.getElementById('newsContainer');
@@ -644,6 +753,9 @@
       }
     }
 
+    // 0-based: 3rd sponsor = index 2, 5th sponsor = index 4
+    const premiumIndices = new Set([2, 4]);
+
     async function setupSponsors() {
       const carousel = document.getElementById('sponsorCarousel');
       if (!carousel) return;
@@ -660,21 +772,46 @@
       
       const allImages = [...sponsorImages, ...sponsorImages];
       
-      allImages.forEach(img => {
+      allImages.forEach((img, globalIndex) => {
+        const originalIndex = globalIndex % sponsorImages.length;
+        const isPremium = premiumIndices.has(originalIndex);
+
         const item = document.createElement('div');
-        item.className = 'carousel-item';
-        item.innerHTML = `<a href="${img.link}" target="_blank" rel="noopener noreferrer"><img src="${img.src}" alt="${img.alt}"></a>`;
+        item.className = 'carousel-item ' + (isPremium ? 'premium' : 'standard');
+
+        if (isPremium) {
+          item.innerHTML = `
+            <a href="${img.link}" target="_blank" rel="noopener noreferrer">
+              <div class="p-wrap">
+                <img src="${img.src}" alt="${img.alt}">
+                <div class="pshimmer"></div>
+                <div class="psp tl"></div>
+                <div class="psp tr"></div>
+                <div class="psp bl"></div>
+                <div class="psp br"></div>
+              </div>
+            </a>`;
+        } else {
+          item.innerHTML = `<a href="${img.link}" target="_blank" rel="noopener noreferrer"><img src="${img.src}" alt="${img.alt}"></a>`;
+        }
+
         carousel.appendChild(item);
       });
       
-      let pos = 0;
-      function animate() {
-        pos += 1.5;
-        if (pos >= carousel.scrollWidth / 2) pos = 0;
-        carousel.style.transform = `translateX(-${pos}px)`;
+      // Speed in px/second — change this one number to adjust
+      const SCROLL_SPEED = 90;
+      let pos = 0, lastTs = null;
+      function animate(ts) {
+        if (lastTs !== null) {
+          const delta = Math.min(ts - lastTs, 50);
+          pos += SCROLL_SPEED * (delta / 1000);
+          if (pos >= carousel.scrollWidth / 2) pos = 0;
+          carousel.style.transform = `translateX(-${pos}px)`;
+        }
+        lastTs = ts;
         requestAnimationFrame(animate);
       }
-      animate();
+      requestAnimationFrame(animate);
     }
 
     // PRIZE COUNTER
@@ -767,7 +904,7 @@
         button.appendChild(ripple);
         
         setTimeout(() => {
-          ripple.remove();
+            ripple.remove();
         }, 600);
       });
     });
