@@ -214,14 +214,15 @@
     
     /* Carousel Container */
     .carousel-container{position:relative;overflow:hidden;width:100%;padding:5px 0;}
-    .carousel-track{display:flex;gap:5px;}
+    /* ── Adjust duration to change speed: lower = faster ── */
+    .carousel-track{display:flex;gap:5px;width:max-content;animation:cssScrollLeft 12s linear infinite;}
     .carousel-track:hover{animation-play-state:paused;}
-    .carousel-item{flex:0 0 calc(33.333% - 7px);min-width:calc(33.333% - 7px);}
+    .carousel-item{flex-shrink:0;width:140px;}
     .carousel-item img{width:90%;height:auto;object-fit:cover;border-radius:8px;transition:transform 0.3s ease;cursor:pointer;opacity:80%;}
     .carousel-item img:hover{transform:scale(1.05);}
-    
-    @keyframes scroll-left {
-      0% { transform: translateX(0); }
+
+    @keyframes cssScrollLeft {
+      0%   { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
 
@@ -798,20 +799,7 @@
         carousel.appendChild(item);
       });
       
-      // Speed in px/second — change this one number to adjust
-      const SCROLL_SPEED = 90;
-      let pos = 0, lastTs = null;
-      function animate(ts) {
-        if (lastTs !== null) {
-          const delta = Math.min(ts - lastTs, 50);
-          pos += SCROLL_SPEED * (delta / 1000);
-          if (pos >= carousel.scrollWidth / 2) pos = 0;
-          carousel.style.transform = `translateX(-${pos}px)`;
-        }
-        lastTs = ts;
-        requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
+      // Scroll handled by CSS animation (cssScrollLeft keyframe)
     }
 
     // PRIZE COUNTER
