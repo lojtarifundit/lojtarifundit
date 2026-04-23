@@ -630,7 +630,7 @@
       let pos = 0;
       const halfWidth = () => carousel.scrollWidth / 2;
       function animateCarousel() {
-        pos += 0.1; // slightly slower = smoother feel; bump up if needed
+        pos += 2.0; // slightly slower = smoother feel; bump up if needed
         if (pos >= halfWidth()) pos = 0;
         carousel.style.transform = `translate3d(-${pos}px, 0, 0)`;
         requestAnimationFrame(animateCarousel);
